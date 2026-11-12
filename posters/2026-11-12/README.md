@@ -2,20 +2,32 @@
 
 Review and approve these in the Pak Imtehan dashboard → News Posters.
 
-## Debris from intercepted Houthi missiles falls in Saudi Arabia's Makkah region
-![newspaper](01-newspaper.png)
-*Fragments from intercepted Houthi missiles landed in the Sabuhah village of Saudi Arabia's Makkah region, while Pakistan expressed readiness to take necessary defensive measures to protect the Kingdom.*  
-Template: `newspaper` · Source: The Express Tribune, Arab News  
-Links: [1](https://tribune.com.pk/story/2639917/pakistan-ready-to-take-all-necessary-defensive-measures-to-protect-saudi-arabia-dg-ispr) · [2](https://tribune.com.pk/story/2639898/debris-from-intercepted-houthi-missiles-falls-in-saudi-arabias-makkah-region) · [3](https://news.google.com/rss/articles/CBMivAFBVV95cUxOR1JaaE1fa2VHY3FqVHd0MExGMUV4cjhBcEdVNUQ1a1FVcTN1MktFYjR2TVI4dHhhNDk5MEo3S19pTkZKMmlFX1RoRWdZeW5yd2ZoNFUwQXctbGFZSlZyckIySVdka2NwN3hqWEgwVjJqMXZVcVVYWnI0eGtoNm5Telc4XzNub0tkTXV4MUthRmg4Q1Bscm8zZVlFbVJIOUZrRFNFMVNwV0FuQWkwNVhsM1VtX3Awc1VsVU1SUw?oc=5)
+## Pakistan Aims to Value-Add Minerals as Mari Energies Signs Deal With Ivanhoe
+![breaking-photo](01-breaking-photo.png)
+*Foreign Minister Ishaq Dar stated Pakistan aims to build processing and refining capacity rather than exporting raw minerals. Meanwhile, Canadian Ivanhoe Mines signed an MoU with Mari Energies.*  
+Template: `breaking-photo` · Source: Dawn, Business Recorder  
+Links: [1](https://www.dawn.com/news/2044014/canadian-mining-company-signs-mou-with-mari-energies-in-south-asia-push) · [2](https://www.brecorder.com/news/40448594/pakistan-aims-to-move-beyond-raw-mineral-exports-says-dar)
 
-## Sindh offers investment opportunities in 27 minerals, invites local, foreign investors
-![navy-card](02-navy-card.png)
-*Sindh Chief Minister Syed Murad Ali Shah invited domestic and foreign investors to explore investment opportunities across twenty-seven minerals available in the province.*  
-Template: `navy-card` · Source: Associated Press of Pakistan  
-Links: [1](https://www.app.com.pk/national/sindh-offers-investment-opportunities-in-27-minerals-invites-local-foreign-investors-cm-murad/)
+## Interior Minister Proposes Referendum to Resolve Debate on New Administrative Units
+![brief-light](02-brief-light.png)
+*Interior Minister Mohsin Naqvi suggested political parties hold a referendum to gauge public opinion on creating new provinces and administrative units, calling it a solution to the ongoing debate.*  
+Template: `brief-light` · Source: Dawn, The Express Tribune  
+Links: [1](https://www.dawn.com/news/2044043/naqvi-suggests-referendum-as-solution-to-debate-on-new-administrative-units) · [2](https://tribune.com.pk/story/2639930/bilawal-and-i-almost-on-same-page-over-system-reset-naqvi)
 
-## US envoys arrive in Moscow for Ukraine talks with Vladimir Putin
+## Karachi Inaugurates Pakistan’s First Sponge Park to Conserve Rainwater
 ![editorial](03-editorial.png)
-*US envoys arrived at the Kremlin for talks with President Vladimir Putin in a renewed push for a Ukraine peace deal, coinciding with a European leaders summit in Dublin.*  
-Template: `editorial` · Source: BBC News, NPR +1  
-Links: [1](https://www.france24.com/en/video/20261112-european-leaders-gather-in-dublin-to-discuss-ukraine-s-security-and-their-own) · [2](https://www.npr.org/2026/11/12/nx-s1-6037558/russia-ukraine-talks) · [3](https://www.bloomberg.com/news/articles/2026-11-12/us-envoys-witkoff-kushner-putin-talks-ukraine-zelenskyy-opportunity)
+*Karachi has launched Pakistan's first sponge park, a six-month project designed to reduce urban flooding, recharge groundwater, and reuse filtered rainwater for irrigation purposes.*  
+Template: `editorial` · Source: The Express Tribune  
+Links: [1](https://tribune.com.pk/story/2639920/karachi-inaugurates-pakistans-first-sponge-park-to-conserve-rainwater)
+
+## Nepra Notifies Revised Rs25.30 Industrial Electricity Tariff Package
+![typographic](04-typographic.png)
+*Nepra notified a revised incremental consumption package of Rs25.30 per unit for industry and agriculture to encourage higher power consumption despite concerns.*  
+Template: `typographic` · Source: Dawn  
+Links: [1](https://www.dawn.com/news/2044061/nepra-notifies-rs2530-per-unit-revised-special-industrial-tariff-despite-concerns)
+
+## Chinese President Xi Jinping Calls for Peaceful Reunification With Taiwan
+![newspaper](05-newspaper.png)
+*Chinese President Xi Jinping stated that Taiwan's peaceful reunification is an unstoppable historical trend, while making no mention of military force. Taiwan promptly rejected Beijing's demands.*  
+Template: `newspaper` · Source: Dawn, DW News  
+Links: [1](https://www.dawn.com/news/2044041/chinas-xi-says-taiwan-reunification-must-happen-as-history-cannot-be-stopped) · [2](https://www.dw.com/en/china-s-xi-jinping-renews-calls-for-reunification-with-taiwan/a-79929738?maca=en-rss-en-world-4025-rdf)

@@ -280,5 +280,144 @@
   "edition": "Daily Current Affairs",
   "template": "editorial",
   "png": "1704-03-editorial.png"
+ },
+ {
+  "story_ids": [
+   2,
+   37
+  ],
+  "kicker": "Economy · Minerals",
+  "headline": "Pakistan Aims to Value-Add Minerals as Mari Energies Signs Deal With Ivanhoe",
+  "highlight": "Value-Add Minerals",
+  "summary": "Foreign Minister Ishaq Dar stated Pakistan aims to build processing and refining capacity rather than exporting raw minerals. Meanwhile, Canadian Ivanhoe Mines signed an MoU with Mari Energies.",
+  "why": "Relevant for CSS paper on Pakistan Economy, industrial development, and mineral sector policies.",
+  "syllabus": [
+   "Economy",
+   "Pakistan Affairs"
+  ],
+  "source": "Dawn, Business Recorder",
+  "image_query": "mining excavator",
+  "_editor": "gemini:gemini-3.6-flash",
+  "photo": "a",
+  "credit": "Road Travel America / Flickr, Public Domain",
+  "image_source": "https://www.flickr.com/photos/89508513@N02/51309790899",
+  "links": [
+   "https://www.dawn.com/news/2044014/canadian-mining-company-signs-mou-with-mari-energies-in-south-asia-push",
+   "https://www.brecorder.com/news/40448594/pakistan-aims-to-move-beyond-raw-mineral-exports-says-dar"
+  ],
+  "date": "12 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "breaking-photo",
+  "png": "2006-01-breaking-photo.png"
+ },
+ {
+  "story_ids": [
+   0,
+   12
+  ],
+  "kicker": "Governance · Provinces",
+  "headline": "Interior Minister Proposes Referendum to Resolve Debate on New Administrative Units",
+  "highlight": "New Administrative Units",
+  "summary": "Interior Minister Mohsin Naqvi suggested political parties hold a referendum to gauge public opinion on creating new provinces and administrative units, calling it a solution to the ongoing debate.",
+  "why": "Pertains to CSS Governance & Public Policy, Constitutional law, and administrative restructuring.",
+  "syllabus": [
+   "Governance & Public Policy",
+   "Pakistan Affairs"
+  ],
+  "source": "Dawn, The Express Tribune",
+  "image_query": "ballot box",
+  "_editor": "gemini:gemini-3.6-flash",
+  "photo": "b",
+  "credit": "secretlondon123 / Flickr, CC BY-SA 2.0",
+  "image_source": "https://www.flickr.com/photos/25834786@N03/2462581488",
+  "links": [
+   "https://www.dawn.com/news/2044043/naqvi-suggests-referendum-as-solution-to-debate-on-new-administrative-units",
+   "https://tribune.com.pk/story/2639930/bilawal-and-i-almost-on-same-page-over-system-reset-naqvi"
+  ],
+  "date": "12 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "brief-light",
+  "png": "2006-02-brief-light.png"
+ },
+ {
+  "story_ids": [
+   15
+  ],
+  "kicker": "Climate · Urban Planning",
+  "headline": "Karachi Inaugurates Pakistan’s First Sponge Park to Conserve Rainwater",
+  "highlight": "First Sponge Park",
+  "summary": "Karachi has launched Pakistan's first sponge park, a six-month project designed to reduce urban flooding, recharge groundwater, and reuse filtered rainwater for irrigation purposes.",
+  "why": "Crucial for CSS Environmental Sciences and Pakistan Affairs topics on water management and urban planning.",
+  "syllabus": [
+   "Climate",
+   "Development"
+  ],
+  "source": "The Express Tribune",
+  "image_query": "city park",
+  "_editor": "gemini:gemini-3.6-flash",
+  "photo": "b",
+  "credit": "Tim Green aka atoach / Flickr, CC BY 2.0",
+  "image_source": "https://www.flickr.com/photos/93416311@N00/8179796178",
+  "links": [
+   "https://tribune.com.pk/story/2639920/karachi-inaugurates-pakistans-first-sponge-park-to-conserve-rainwater"
+  ],
+  "date": "12 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "editorial",
+  "png": "2006-03-editorial.png"
+ },
+ {
+  "story_ids": [
+   4
+  ],
+  "kicker": "Energy · Tariff",
+  "headline": "Nepra Notifies Revised Rs25.30 Industrial Electricity Tariff Package",
+  "highlight": "Industrial Electricity Tariff",
+  "summary": "Nepra notified a revised incremental consumption package of Rs25.30 per unit for industry and agriculture to encourage higher power consumption despite concerns.",
+  "why": "Directly relates to CSS Economy & Energy issues, power sector reforms, and industrial policy.",
+  "syllabus": [
+   "Energy",
+   "Economy & Budget"
+  ],
+  "source": "Dawn",
+  "image_query": "power lines",
+  "_editor": "gemini:gemini-3.6-flash",
+  "photo": null,
+  "credit": "",
+  "links": [
+   "https://www.dawn.com/news/2044061/nepra-notifies-rs2530-per-unit-revised-special-industrial-tariff-despite-concerns"
+  ],
+  "date": "12 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "typographic",
+  "png": "2006-04-typographic.png"
+ },
+ {
+  "story_ids": [
+   10,
+   96
+  ],
+  "kicker": "Geopolitics · East Asia",
+  "headline": "Chinese President Xi Jinping Calls for Peaceful Reunification With Taiwan",
+  "highlight": "Peaceful Reunification With",
+  "summary": "Chinese President Xi Jinping stated that Taiwan's peaceful reunification is an unstoppable historical trend, while making no mention of military force. Taiwan promptly rejected Beijing's demands.",
+  "why": "Vital for CSS International Relations and Current Affairs coverage of Great Power dynamics in East Asia.",
+  "syllabus": [
+   "International Relations",
+   "Geopolitics"
+  ],
+  "source": "Dawn, DW News",
+  "image_query": "cargo ship",
+  "_editor": "gemini:gemini-3.6-flash",
+  "photo": null,
+  "credit": "",
+  "links": [
+   "https://www.dawn.com/news/2044041/chinas-xi-says-taiwan-reunification-must-happen-as-history-cannot-be-stopped",
+   "https://www.dw.com/en/china-s-xi-jinping-renews-calls-for-reunification-with-taiwan/a-79929738?maca=en-rss-en-world-4025-rdf"
+  ],
+  "date": "12 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "newspaper",
+  "png": "2006-05-newspaper.png"
  }
 ]
