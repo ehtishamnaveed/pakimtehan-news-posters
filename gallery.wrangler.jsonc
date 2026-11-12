@@ -1,0 +1,7 @@
+// Test gallery (static site on Cloudflare): every poster the pipeline generates.
+// Deployed by the workflow after each run: npx wrangler deploy --config gallery.wrangler.jsonc
+{
+  "name": "pakimtehan-posters-test",
+  "compatibility_date": "2026-09-21",
+  "assets": { "directory": "site" }
+}

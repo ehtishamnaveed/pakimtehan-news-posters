@@ -1,9 +1,10 @@
 # Daily news posters on GitHub Actions with free AI (Gemini -> Gemma 4 -> Cloudflare Workers AI).
 #
-# Output goes to a branch the Pak Imtehan server syncs from:
-#   run from main        -> daily-posters        (production)
-#   run from any branch  -> daily-posters-test   (testing; never touches production)
-# If today's posters already exist on that branch (e.g. the Claude routine made them), it does nothing.
+# Output goes to the branch in repo variable POSTERS_OUT_BRANCH (default: daily-posters-test).
+#   Testing (now):   POSTERS_OUT_BRANCH=daily-posters-test, POSTERS_TEST_MODE=true
+#                    -> runs every 5 hours, each run ADDS a new batch, gallery redeployed
+#   Production:      POSTERS_OUT_BRANCH=daily-posters, POSTERS_TEST_MODE=false, cron once a day
+#                    -> one batch per day; skipped if today's posters already exist
 #
 # Secrets (Settings -> Secrets and variables -> Actions):
 #   GEMINI_API_KEY, CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN
@@ -11,7 +12,7 @@ name: Daily posters (free AI)
 
 on:
   schedule:
-    - cron: "40 2 * * *"   # 07:40 Asia/Karachi. Scheduled runs only fire from the default branch.
+    - cron: "15 */5 * * *"   # TESTING: every 5 hours. Production: "40 2 * * *" (07:40 Asia/Karachi).
   workflow_dispatch:
   push:
     branches: [free-ai-actions]
@@ -37,7 +38,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:
-      OUT_BRANCH: ${{ github.ref_name == 'main' && 'daily-posters' || 'daily-posters-test' }}
+      OUT_BRANCH: ${{ vars.POSTERS_OUT_BRANCH || 'daily-posters-test' }}
+      TEST_MODE: ${{ vars.POSTERS_TEST_MODE || 'true' }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -61,7 +63,7 @@ jobs:
           else
             git worktree add --orphan -b "$OUT_BRANCH" out
           fi
-          if [ -f "out/posters/$TODAY/posters.json" ]; then
+          if [ "$TEST_MODE" != "true" ] && [ -f "out/posters/$TODAY/posters.json" ]; then
             echo "Posters for $TODAY already exist on $OUT_BRANCH; nothing to do."
             echo "skip=true" >> "$GITHUB_OUTPUT"
           fi
@@ -102,16 +104,24 @@ jobs:
         if: steps.out.outputs.skip != 'true'
         run: |
           mkdir -p out/posters out/state
-          cp -r "posters/$TODAY" out/posters/
+          if [ "$TEST_MODE" = "true" ]; then PREFIX=$(TZ=Asia/Karachi date +%H%M); else PREFIX=""; fi
+          python scripts/merge_batch.py "posters/$TODAY" "out/posters/$TODAY" $PREFIX
           cp state/seen.json out/state/seen.json
           cd out
           git add "posters/$TODAY" state/seen.json
-          git commit -m "Posters for $TODAY (free AI)"
+          git commit -m "Posters for $TODAY ${PREFIX:+$PREFIX }(free AI)"
           for i in 1 2 3; do
             git push origin "$OUT_BRANCH" && exit 0
             git pull --rebase origin "$OUT_BRANCH"
           done
           exit 1
+
+      - name: Deploy test gallery (Cloudflare)
+        if: steps.out.outputs.skip != 'true' && env.TEST_MODE == 'true'
+        continue-on-error: true
+        run: |
+          python scripts/build_gallery.py out site
+          npx --yes wrangler@4.160.1 deploy --config gallery.wrangler.jsonc
 
       - name: Summary
         if: always() && steps.out.outputs.skip != 'true'
