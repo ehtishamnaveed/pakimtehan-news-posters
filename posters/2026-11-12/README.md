@@ -1,0 +1,21 @@
+# Pak Imtehan posters — Thursday 12 November 2026
+
+Review and approve these in the Pak Imtehan dashboard → News Posters.
+
+## Two oil tankers disabled by explosions in the Strait of Hormuz, says IRGC
+![breaking-photo](01-breaking-photo.png)
+*Iran's Revolutionary Guards say two tankers were disabled by blasts in the strait. Iran also warned that military bases in Europe could be targeted in a new US war.*  
+Template: `breaking-photo` · Source: The Express Tribune, Al Jazeera  
+Links: [1](https://tribune.com.pk/story/2639887/no-safe-haven-iran-warns-military-bases-in-europe-could-be-targeted-in-new-us-war) · [2](https://news.google.com/rss/articles/CBMipgFBVV95cUxQWGxvd2hwTGtyaGlUa3hIS3BUSkdPYXJVNUd2Wnl1V0M1enhlSVdnUU9UN091S0JPLThfTTk3QVkwUmhPR212enhUWDUxRGdqZ0RtVXVJY3Ruc0podzdET0QtX0VCbGMwRzY5ZHMtTEQtMHNSaGtVQmVueGdCWTJ1SXFTVUlZRzVzZXdDUTZwcXo3cHdyTzlfS3gyTzMySDBmNlctcHNR0gGrAUFVX3lxTE9ETk94YXFQVXpLTFZnMUFLWDJEYWlLR2pDSkkyUTdtSFNKcXdfQUtHUkNTcnBNc05LYk4xR09nZ0ctUDVvakxYejhwT18xVURRUHA3TUdWLWpIOUVpTnFkQmRFWXhaaWpadTNOLVpxdTMzUUl6OVhuQ25sSmRUMXJfMmJiTEtHbFpMSzVaNXpTU1lRTlkwWmFyUHZQb2Q5TENUMUh1ejZVZS1jVQ?oc=5)
+
+## FBR expands use of AI to detect discrepancies in tax returns
+![typographic](02-typographic.png)
+*The Federal Board of Revenue's automated system now scrutinises individual tax returns to flag factual and legal errors and discrepancies.*  
+Template: `typographic` · Source: Dawn  
+Links: [1](https://www.dawn.com/news/2043897/fbr-deploys-ai-to-detect-discrepancies-in-tax-returns)
+
+## Russia proposes non-aggression pacts with NATO countries in security talks
+![navy-card](03-navy-card.png)
+*Russia reports progress in Abu Dhabi peace talks with Ukraine, which moved to a second round after a 'constructive' opening, but rejects an immediate EU role.*  
+Template: `navy-card` · Source: The News International  
+Links: [1](https://news.google.com/rss/articles/CBMivwFBVV95cUxNVTZyckVZQnZxQkd4b1BSRTV1ck95R2VBUW9vR0NCa2h5b1NPWjNicW92TU0yTnR0SHhDSWVGZDFJZjRkTzJPNVFxcWQ5RUlSX2Z2QVNTbE1LbE5sYWdWbkdMT0lOSExsYjFIaFZ1bEs0Y3BSS1QyYjFnZVpVMEFLeHFHMEpubXNEQ0RnbjVvWmQ4aW9RNnNwVDAzaWl4RFduS0hmeGpSaXctUGZ4TldaVEF6eGQtYVhIZnpPcEV5MNIBvwFBVV95cUxNVTZyckVZQnZxQkd4b1BSRTV1ck95R2VBUW9vR0NCa2h5b1NPWjNicW92TU0yTnR0SHhDSWVGZDFJZjRkTzJPNVFxcWQ5RUlSX2Z2QVNTbE1LbE5sYWdWbkdMT0lOSExsYjFIaFZ1bEs0Y3BSS1QyYjFnZVpVMEFLeHFHMEpubXNEQ0RnbjVvWmQ4aW9RNnNwVDAzaWl4RFduS0hmeGpSaXctUGZ4TldaVEF6eGQtYVhIZnpPcEV5MA?oc=5) · [2](https://news.google.com/rss/articles/CBMi1AFBVV95cUxNU0RaTUV6WkVNLVZtTlR6WnFTTFE4VEp6d3ZqdGF6dEV5aVNuRVhNZ1M0LTFXZE9HaEhCcy15YjhnQV9jUWZSYVQ5bW1vSkUtUmNLeFI5V1BrOEQ5dEU4MjU5SFkzSTNJa1l0WGJjRGhsQkxnVUFDenRtSWtia25OM1hRbzV3dTJnS2xXV2tJMUw0UmZzbld3MlQ4a1ExbzRsN3dtUHRkaGVvaHVHWXN6VDJ1LWVNUWJIcGlUR0VnSF93TTk1WnJ6VlFZV1V1bklzY01WQtIB1AFBVV95cUxNU0RaTUV6WkVNLVZtTlR6WnFTTFE4VEp6d3ZqdGF6dEV5aVNuRVhNZ1M0LTFXZE9HaEhCcy15YjhnQV9jUWZSYVQ5bW1vSkUtUmNLeFI5V1BrOEQ5dEU4MjU5SFkzSTNJa1l0WGJjRGhsQkxnVUFDenRtSWtia25OM1hRbzV3dTJnS2xXV2tJMUw0UmZzbld3MlQ4a1ExbzRsN3dtUHRkaGVvaHVHWXN6VDJ1LWVNUWJIcGlUR0VnSF93TTk1WnJ6VlFZV1V1bklzY01WQg?oc=5) · [3](https://news.google.com/rss/articles/CBMiygFBVV95cUxQYVBOVkY1Sk00dDBEenAxSG11b0RtRndnY0UxNTZuQ3owZ2hwb05FZkt0WDBMTHBsSmc0bllXbmFnaHgxODRDT3JodTYzWTNjcVV2V1ZqOUwwMG1nWl9SOUFXbnNUUnJJNW83ZUVrTk0xN2RDTF90WUdGYmlhT191SjF0ajRGbEFtOW8xV1NlXzFYSzIwLU9fdkNKVmVfT05uLUhUU3M0RWNxc19TY2t5b1JqN1dmM3NLd2hDRWNENnBYa1B6S0hMQjRn0gHKAUFVX3lxTFBhUE5WRjVKTTR0MER6cDFIbXVvRG1Gd2djRTE1Nm5DejBnaHBvTkVmS3RYMExMcGxKZzRuWVduYWdoeDE4NENPcmh1NjNZM2NxVXZXVmo5TDAwbWdaX1I5QVduc1RSckk1bzdlRWtOTTE3ZENMX3RZR0ZiaWFPX3VKMXRqNEZsQW05bzFXU2VfMVhLMjAtT192Q0pWZV9PTm4tSFRTczRFY3FzX1Nja3lvUmo3V2Yzc0t3aENFY0Q2cFhrUHpLSExCNGc?oc=5)
