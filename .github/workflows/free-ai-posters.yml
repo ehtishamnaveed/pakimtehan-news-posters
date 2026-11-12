@@ -12,18 +12,41 @@ name: Daily posters (free AI)
 
 on:
   schedule:
-    - cron: "15 */5 * * *"   # TESTING: every 5 hours. Production: "40 2 * * *" (07:40 Asia/Karachi).
+    - cron: "*/5 * * * *"   # FAST TEST: every 5 minutes until POSTERS_FAST_TEST_UNTIL, then the workflow
+                            # disables itself. Production: "40 2 * * *" (07:40 Asia/Karachi).
   workflow_dispatch:
 
 permissions:
   contents: write
+  actions: write   # lets the gate job switch the workflow off when the fast-test window ends
 
 concurrency:
   group: daily-posters   # one run at a time across all branches (they share the output branch)
   cancel-in-progress: false
 
 jobs:
+  # Scheduled runs only go ahead inside the fast-test window (repo variable POSTERS_FAST_TEST_UNTIL,
+  # UTC ISO time). Once it has passed, the workflow disables itself so it stops using free minutes.
+  # Manual runs (Actions -> Run workflow) always go ahead.
+  gate:
+    runs-on: ubuntu-latest
+    outputs:
+      go: ${{ steps.check.outputs.go }}
+    steps:
+      - id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          UNTIL: ${{ vars.POSTERS_FAST_TEST_UNTIL }}
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ] || [ -z "$UNTIL" ]; then echo "go=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          if [ "$(date -u +%s)" -lt "$(date -u -d "$UNTIL" +%s)" ]; then echo "go=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          echo "Fast-test window ended at $UNTIL; disabling this workflow."
+          gh workflow disable "${{ github.workflow }}" -R "${{ github.repository }}"
+          echo "go=false" >> "$GITHUB_OUTPUT"
+
   posters:
+    needs: gate
+    if: needs.gate.outputs.go == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:
