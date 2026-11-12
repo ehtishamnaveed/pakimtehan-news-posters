@@ -1,0 +1,99 @@
+[
+ {
+  "story_ids": [
+   9,
+   75,
+   98
+  ],
+  "kicker": "Security · KP Attack",
+  "headline": "Ten police officers martyred and 18 terrorists killed in Kohat attack",
+  "highlight": "18 terrorists killed",
+  "summary": "A police party in KP's Kohat district came under ambush while returning from a mine, resulting in ten police officers martyred and 18 terrorists killed in the ensuing gunbattle.",
+  "why": "Vital for CSS/PMS students covering internal security, counter-terrorism, and law enforcement in Pakistan.",
+  "syllabus": [
+   "Security",
+   "Terrorism",
+   "Pakistan Affairs"
+  ],
+  "source": "Dawn, Associated Press +1",
+  "image_query": "police vehicle",
+  "_editor": "gemini:gemini-3.5-flash",
+  "photo": null,
+  "credit": "",
+  "links": [
+   "https://news.google.com/rss/articles/CBMiSEFVX3lxTE9ZR0VXQXBvb1I1Uk1EMW82RFBGT3ZPSmUxRTlDNEp4blgzUG9JWXNhNVQ3T2VTc0llMmRsakpqdTdMaFAwemVVRw?oc=5",
+   "https://news.google.com/rss/articles/CBMitAFBVV95cUxQLUlPajFoQ0JJek9uOW5KdHMyV2tZT3I4V1FNTWtlcXpqR2JFMVBHNkRPc21yNmdWVHNPbXlZVDVZTnF2RTJSYkE3RUE5ZkNYWDdlaGR0WkcwbGJMSjhLYThJcnZvX25QcnlVb2llSTBKbWdyZkdnQUhfX09taGptZEstTnlsTjNSV0JRVS1YbWNVOHJHWlhoXy14eGRnNDRzdnFYaWg5YUhEOEllSGM3cXdOZEs?oc=5",
+   "https://www.aljazeera.com/news/2026/11/12/ten-police-officers-18-fighters-killed-in-northwest-pakistan-attack?traffic_source=rss"
+  ],
+  "date": "12 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "editorial",
+  "png": "01-editorial.png"
+ },
+ {
+  "story_ids": [
+   0,
+   14,
+   49,
+   57
+  ],
+  "kicker": "Economy · Minerals",
+  "headline": "Pakistan courts foreign investors at Minerals Investment Forum to boost exports",
+  "highlight": "courts foreign investors",
+  "summary": "At the Minerals Investment Forum, federal and provincial leaders highlighted Pakistan's vast mineral potential, offering incentives, loans, and one-window facilities to attract foreign investors and diversify exports.",
+  "why": "Important for exam questions on economic diversification, natural resources, and provincial development.",
+  "syllabus": [
+   "Economy",
+   "Development",
+   "Pakistan Affairs"
+  ],
+  "source": "Dawn, The Express Tribune +1",
+  "image_query": "gold mine",
+  "_editor": "gemini:gemini-3.5-flash",
+  "photo": "a",
+  "credit": "Uncle Kick-Kick / Flickr, CC BY-SA 2.0",
+  "image_source": "https://www.flickr.com/photos/28016468@N06/3152951160",
+  "links": [
+   "https://news.google.com/rss/articles/CBMiSEFVX3lxTE1sYWE1NkU1ZmRQbVdyaUVIdGkzVzJVeDlURE96QVFfb0QyOWl2VkR0RG9xVFE3eGJSYnZ4OThJaXJZTU90Uzc5bw?oc=5",
+   "https://tribune.com.pk/story/2639911/pakistan-courts-global-investors-at-minerals-investment-forum-as-provinces-outline-opportunities",
+   "https://www.app.com.pk/national/cm-maryam-offers-incentives-to-mineral-investors-interest-free-loans/",
+   "https://www.app.com.pk/national/kp-governor-invites-international-investors-announces-one-window-facility-for-mining-sector/"
+  ],
+  "date": "12 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "navy-card",
+  "png": "02-navy-card.png"
+ },
+ {
+  "story_ids": [
+   31,
+   71,
+   198
+  ],
+  "kicker": "Geopolitics · Peace Talks",
+  "headline": "Russia and Ukraine agree to prisoner exchange in US-mediated Abu Dhabi talks",
+  "highlight": "agree to prisoner exchange",
+  "summary": "U.S.-mediated peace talks in Abu Dhabi between Russia and Ukraine concluded with an agreement on a large exchange of prisoners of war, though negotiations ended without a major diplomatic breakthrough.",
+  "why": "Key event for CSS International Relations and Current Affairs topics on global conflicts and diplomacy.",
+  "syllabus": [
+   "International Relations",
+   "Geopolitics",
+   "Diplomacy"
+  ],
+  "source": "The News International, Associated Press +1",
+  "image_query": "Abu Dhabi",
+  "_editor": "gemini:gemini-3.5-flash",
+  "photo": "c",
+  "credit": "slleong / Flickr, CC BY 2.0",
+  "image_source": "https://www.flickr.com/photos/44688927@N05/4334205160",
+  "links": [
+   "https://news.google.com/rss/articles/CBMi1AFBVV95cUxNU0RaTUV6WkVNLVZtTlR6WnFTTFE4VEp6d3ZqdGF6dEV5aVNuRVhNZ1M0LTFXZE9HaEhCcy15YjhnQV9jUWZSYVQ5bW1vSkUtUmNLeFI5V1BrOEQ5dEU4MjU5SFkzSTNJa1l0WGJjRGhsQkxnVUFDenRtSWtia25OM1hRbzV3dTJnS2xXV2tJMUw0UmZzbld3MlQ4a1ExbzRsN3dtUHRkaGVvaHVHWXN6VDJ1LWVNUWJIcGlUR0VnSF93TTk1WnJ6VlFZV1V1bklzY01WQtIB1AFBVV95cUxNU0RaTUV6WkVNLVZtTlR6WnFTTFE4VEp6d3ZqdGF6dEV5aVNuRVhNZ1M0LTFXZE9HaEhCcy15YjhnQV9jUWZSYVQ5bW1vSkUtUmNLeFI5V1BrOEQ5dEU4MjU5SFkzSTNJa1l0WGJjRGhsQkxnVUFDenRtSWtia25OM1hRbzV3dTJnS2xXV2tJMUw0UmZzbld3MlQ4a1ExbzRsN3dtUHRkaGVvaHVHWXN6VDJ1LWVNUWJIcGlUR0VnSF93TTk1WnJ6VlFZV1V1bklzY01WQg?oc=5",
+   "https://news.google.com/rss/articles/CBMiogFBVV95cUxPZGJLX21sUk93S0w1eDdOMEtDdC1ETk4zZ0E4d1dna2xHaWxFSXIxdGFFYVV0Wm5pWlc1Uk5YczNsa09FcGJtMHpKU1VnTkVJejR2YTJxR0ZFQXE3dndEcS0teGNKbHJBS3R1N1lHbUxuR3hOQ3hyZ2s5elFlbkFBVTJMNmE3TW1vN2x5dDl2VzBvWWpiWU5WRGxBLWJTNVZBUUE?oc=5",
+   "https://www.npr.org/2026/11/11/g-s1-152954/russia-ukraine-war-talks"
+  ],
+  "date": "12 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "breaking-photo",
+  "png": "03-breaking-photo.png"
+ }
+]
