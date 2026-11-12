@@ -1,10 +1,11 @@
 """Free-AI editor: does the Claude editor's job with free models, so the daily run can go on GitHub Actions.
 
+    python ai_editor.py check    # one tiny request per provider; exits non-zero if none work
     python ai_editor.py write    # work/headlines.txt -> work/posts.json  (story choice + text)
     python ai_editor.py photos   # look at work/photos/sheet-N.jpg and set "photo" on each post
 
 Providers are tried in order until one returns valid output (AI_PROVIDERS overrides):
-    gemini:gemini-3.5-flash, gemini:gemini-3.5-flash-lite, gemini:gemma-4-31b-it,
+    gemini:gemini-3.6-flash, gemini:gemini-3.5-flash-lite, gemini:gemma-4-31b-it,
     cloudflare:@cf/google/gemma-4-26b-a4b-it
 Keys come from the environment only: GEMINI_API_KEY, CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN.
 """
@@ -20,9 +21,10 @@ import requests
 
 ROOT = Path(__file__).resolve().parent
 WORK = ROOT / "work"
-DEFAULT_PROVIDERS = ("gemini:gemini-3.5-flash,gemini:gemini-3.5-flash-lite,gemini:gemma-4-31b-it,"
+# gemini-3.5-flash was retired and is auto-routed to gemini-3.6-flash; call the live name directly.
+DEFAULT_PROVIDERS = ("gemini:gemini-3.6-flash,gemini:gemini-3.5-flash-lite,gemini:gemma-4-31b-it,"
                      "cloudflare:@cf/google/gemma-4-26b-a4b-it")
-VISION_PROVIDERS = "gemini:gemini-3.5-flash,gemini:gemini-3.5-flash-lite,gemini:gemma-4-31b-it"
+VISION_PROVIDERS = "gemini:gemini-3.6-flash,gemini:gemini-3.5-flash-lite,gemini:gemma-4-31b-it"
 
 EDITOR_PROMPT = """You are the current-affairs editor for Pak Imtehan (pakimtehan.com), a CSS/PMS exam
 preparation platform in Pakistan. From the headlines below, choose the {n} most exam-relevant stories
@@ -138,10 +140,24 @@ def call(spec, prompt, **kw):
             return fn(model, prompt, **kw)
         except RuntimeError as e:
             msg = str(e)
-            if attempt == 0 and any(c in msg for c in ("HTTP 429", "HTTP 500", "HTTP 503")):
-                time.sleep(15)
+            # 429 means the quota is gone for the day: waiting seconds cannot fix it, so move to the
+            # next provider immediately. Only a 5xx (temporary server fault) is worth one quick retry.
+            if attempt == 0 and re.search(r"HTTP 5\d\d", msg):
+                time.sleep(3)
                 continue
             raise
+
+
+def probe(spec):
+    """Is this provider usable right now? One 1-token request, no retries. -> (ok, detail)."""
+    try:
+        call(spec, "Reply with the single word OK.", max_tokens=16, timeout=30)
+        return True, ""
+    except Exception as e:  # noqa: BLE001 - any error means "not usable right now"
+        msg = str(e)
+        if "empty response" in msg:  # endpoint answered, it just had no room for text
+            return True, ""
+        return False, msg[:140]
 
 
 # ---------------------------------------------------------------------------
@@ -188,6 +204,21 @@ def validate(posts, n_items, topics, want):
 # ---------------------------------------------------------------------------
 # Commands
 # ---------------------------------------------------------------------------
+
+def cmd_check():
+    """Stop the run before any expensive work if every AI provider is out of quota."""
+    specs = [s.strip() for s in os.environ.get("AI_PROVIDERS", DEFAULT_PROVIDERS).split(",") if s.strip()]
+    usable = []
+    for spec in specs:
+        ok, detail = probe(spec)
+        print(f"  {'usable' if ok else 'FAILED':6s} {spec}" + ("" if ok else f"  -> {detail}"))
+        if ok:
+            usable.append(spec)
+    if not usable:
+        sys.exit("No AI provider is usable right now (quota exhausted or key problem). "
+                 "Stopping now instead of spending runner minutes.")
+    print(f"  {len(usable)}/{len(specs)} provider(s) usable")
+
 
 def cmd_write():
     text = (WORK / "headlines.txt").read_text(encoding="utf-8")
@@ -248,4 +279,4 @@ def cmd_photos():
 
 
 if __name__ == "__main__":
-    {"write": cmd_write, "photos": cmd_photos}[sys.argv[1]]()
+    {"write": cmd_write, "photos": cmd_photos, "check": cmd_check}[sys.argv[1]]()

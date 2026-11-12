@@ -90,9 +90,17 @@ jobs:
 
       - name: Install
         if: steps.out.outputs.skip != 'true'
-        run: |
-          pip install -r requirements.txt
-          python -m playwright install --with-deps chromium
+        run: pip install -r requirements.txt
+
+      # Cheapest possible gate: one 1-token request per AI provider. If they are all out of quota,
+      # stop here instead of downloading Chromium and burning runner minutes on a run that cannot finish.
+      - name: Check AI providers (fail fast)
+        if: steps.out.outputs.skip != 'true'
+        run: python ai_editor.py check
+
+      - name: Install Chromium
+        if: steps.out.outputs.skip != 'true'
+        run: python -m playwright install --with-deps chromium
 
       - name: Fetch news
         if: steps.out.outputs.skip != 'true'
