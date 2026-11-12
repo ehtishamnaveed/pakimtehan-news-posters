@@ -2,20 +2,20 @@
 
 Review and approve these in the Pak Imtehan dashboard → News Posters.
 
-## PM Shehbaz calls for grant-based climate finance at COP31
-![navy-card](01-navy-card.png)
-*At COP31 in Turkiye, Prime Minister Shehbaz Sharif called for grant-based climate finance and enhanced adaptation funds for vulnerable nations, while warning against the weaponisation of water resources.*  
-Template: `navy-card` · Source: Dawn, The Express Tribune  
-Links: [1](https://www.dawn.com/news/2044031/at-cop31-pm-shehbaz-calls-for-grant-based-finance-resilience-funding-for-climate-vulnerable-countries) · [2](https://tribune.com.pk/story/2639916/pm-shehbaz-urges-grant-based-climate-finance-warns-against-weaponizing-water)
+## Debris from intercepted Houthi missiles falls in Saudi Arabia's Makkah region
+![newspaper](01-newspaper.png)
+*Fragments from intercepted Houthi missiles landed in the Sabuhah village of Saudi Arabia's Makkah region, while Pakistan expressed readiness to take necessary defensive measures to protect the Kingdom.*  
+Template: `newspaper` · Source: The Express Tribune, Arab News  
+Links: [1](https://tribune.com.pk/story/2639917/pakistan-ready-to-take-all-necessary-defensive-measures-to-protect-saudi-arabia-dg-ispr) · [2](https://tribune.com.pk/story/2639898/debris-from-intercepted-houthi-missiles-falls-in-saudi-arabias-makkah-region) · [3](https://news.google.com/rss/articles/CBMivAFBVV95cUxOR1JaaE1fa2VHY3FqVHd0MExGMUV4cjhBcEdVNUQ1a1FVcTN1MktFYjR2TVI4dHhhNDk5MEo3S19pTkZKMmlFX1RoRWdZeW5yd2ZoNFUwQXctbGFZSlZyckIySVdka2NwN3hqWEgwVjJqMXZVcVVYWnI0eGtoNm5Telc4XzNub0tkTXV4MUthRmg4Q1Bscm8zZVlFbVJIOUZrRFNFMVNwV0FuQWkwNVhsM1VtX3Awc1VsVU1SUw?oc=5)
 
-## Evidence shows placer gold in Punjab rivers, CM Maryam says
-![editorial](02-editorial.png)
-*Speaking at a minerals investment forum, Punjab Chief Minister Maryam Nawaz stated there is significant evidence of sufficient quantities of placer gold flowing in the province's five rivers.*  
-Template: `editorial` · Source: Dawn  
-Links: [1](https://www.dawn.com/news/2044014/significant-evidence-of-placer-gold-in-punjab-rivers-says-cm-maryam-at-minerals-investment-forum)
+## Sindh offers investment opportunities in 27 minerals, invites local, foreign investors
+![navy-card](02-navy-card.png)
+*Sindh Chief Minister Syed Murad Ali Shah invited domestic and foreign investors to explore investment opportunities across twenty-seven minerals available in the province.*  
+Template: `navy-card` · Source: Associated Press of Pakistan  
+Links: [1](https://www.app.com.pk/national/sindh-offers-investment-opportunities-in-27-minerals-invites-local-foreign-investors-cm-murad/)
 
-## Israeli strike on Gaza hospital kills six people, officials say
-![breaking-photo](03-breaking-photo.png)
-*An Israeli strike hit Nasser Hospital in southern Gaza, killing six people and wounding around 20. Reports indicate the attack damaged surgical wards and intensive care units at the facility.*  
-Template: `breaking-photo` · Source: Dawn, The Express Tribune +3  
-Links: [1](https://www.dawn.com/news/2044030/israeli-strike-kills-6-at-southern-gaza-hospital-civil-defence) · [2](https://tribune.com.pk/story/2639893/israeli-strike-on-southern-gaza-hospital-kills-six-gaza-civil-defence-says) · [3](https://news.google.com/rss/articles/CBMiowFBVV95cUxNU3ZJQlhjSko5MDVzS25JNzdQaWprR1pORklBMUI1Qlg0T3Zkc2J1eV8yUTE1S2RMdHlLcjdDbXNrNERFdDNtYTFleFlkNHZyeXBfQ25lcS05S29hd3YtT3ZWMXE2eUs2RXpuZXV2Z01OcklJeXdKT2FzR1dqZVRHRE9Ncl9QUzVSTkVod1V6RnFjMWNIcFBkWXBWU0FWWTM3TGJj?oc=5) · [4](https://www.bbc.co.uk/news/articles/ckzd9p7e4eqeo?at_medium=RSS&at_campaign=rss) · [5](https://news.google.com/rss/articles/CBMirgFBVV95cUxOWUtJQ1VmWEJGUko2TGl1RHJQc01TQ2VCRjh3RUQtQnVLR2RPTG1TS0g3cndVaE9WZlJBckkxVUQ1VmpxQ2RkTnpjeW1IZG16eXpXQW5lVC15SnFnMEl4RWNueHpMRmRNcG1kMzVJLUtqUWhuZFJrNGcyWXM2dEN1YW81aDBsWmFDS2N2WjVXd3dxZTRLaG9mYm1DUGNoajZKUWk5UWNGWVZqWkxaT1E?oc=5)
+## US envoys arrive in Moscow for Ukraine talks with Vladimir Putin
+![editorial](03-editorial.png)
+*US envoys arrived at the Kremlin for talks with President Vladimir Putin in a renewed push for a Ukraine peace deal, coinciding with a European leaders summit in Dublin.*  
+Template: `editorial` · Source: BBC News, NPR +1  
+Links: [1](https://www.france24.com/en/video/20261112-european-leaders-gather-in-dublin-to-discuss-ukraine-s-security-and-their-own) · [2](https://www.npr.org/2026/11/12/nx-s1-6037558/russia-ukraine-talks) · [3](https://www.bloomberg.com/news/articles/2026-11-12/us-envoys-witkoff-kushner-putin-talks-ukraine-zelenskyy-opportunity)

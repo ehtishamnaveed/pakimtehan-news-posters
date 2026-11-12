@@ -188,5 +188,97 @@
   "edition": "Daily Current Affairs",
   "template": "breaking-photo",
   "png": "1647-03-breaking-photo.png"
+ },
+ {
+  "story_ids": [
+   9,
+   12,
+   250
+  ],
+  "kicker": "Diplomacy · Security",
+  "headline": "Debris from intercepted Houthi missiles falls in Saudi Arabia's Makkah region",
+  "highlight": "Debris from intercepted Houthi missiles",
+  "summary": "Fragments from intercepted Houthi missiles landed in the Sabuhah village of Saudi Arabia's Makkah region, while Pakistan expressed readiness to take necessary defensive measures to protect the Kingdom.",
+  "why": "Crucial for understanding Pakistan's strategic defense ties in the Middle East and regional security dynamics.",
+  "syllabus": [
+   "Foreign Policy",
+   "Security",
+   "Geopolitics"
+  ],
+  "source": "The Express Tribune, Arab News",
+  "image_query": "missile defense",
+  "_editor": "gemini:gemini-3.5-flash-lite",
+  "photo": "c",
+  "credit": "USACE Europe District / Flickr, CC BY 2.0",
+  "image_source": "https://www.flickr.com/photos/34728058@N08/10570918764",
+  "links": [
+   "https://tribune.com.pk/story/2639917/pakistan-ready-to-take-all-necessary-defensive-measures-to-protect-saudi-arabia-dg-ispr",
+   "https://tribune.com.pk/story/2639898/debris-from-intercepted-houthi-missiles-falls-in-saudi-arabias-makkah-region",
+   "https://news.google.com/rss/articles/CBMivAFBVV95cUxOR1JaaE1fa2VHY3FqVHd0MExGMUV4cjhBcEdVNUQ1a1FVcTN1MktFYjR2TVI4dHhhNDk5MEo3S19pTkZKMmlFX1RoRWdZeW5yd2ZoNFUwQXctbGFZSlZyckIySVdka2NwN3hqWEgwVjJqMXZVcVVYWnI0eGtoNm5Telc4XzNub0tkTXV4MUthRmg4Q1Bscm8zZVlFbVJIOUZrRFNFMVNwV0FuQWkwNVhsM1VtX3Awc1VsVU1SUw?oc=5"
+  ],
+  "date": "12 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "newspaper",
+  "png": "1704-01-newspaper.png"
+ },
+ {
+  "story_ids": [
+   45
+  ],
+  "kicker": "Economy · Minerals",
+  "headline": "Sindh offers investment opportunities in 27 minerals, invites local, foreign investors",
+  "highlight": "Sindh offers investment opportunities in 27 minerals",
+  "summary": "Sindh Chief Minister Syed Murad Ali Shah invited domestic and foreign investors to explore investment opportunities across twenty-seven minerals available in the province.",
+  "why": "Relevant for Pakistan Affairs and economic development strategies involving natural resource exploitation.",
+  "syllabus": [
+   "Economy",
+   "Development",
+   "Pakistan Affairs"
+  ],
+  "source": "Associated Press of Pakistan",
+  "image_query": "mining site",
+  "_editor": "gemini:gemini-3.5-flash-lite",
+  "photo": "b",
+  "credit": "iLoveMountains.org / Flickr, CC BY 2.0",
+  "image_source": "https://www.flickr.com/photos/15648670@N00/4534740551",
+  "links": [
+   "https://www.app.com.pk/national/sindh-offers-investment-opportunities-in-27-minerals-invites-local-foreign-investors-cm-murad/"
+  ],
+  "date": "12 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "navy-card",
+  "png": "1704-02-navy-card.png"
+ },
+ {
+  "story_ids": [
+   101,
+   184,
+   194
+  ],
+  "kicker": "Geopolitics · Diplomacy",
+  "headline": "US envoys arrive in Moscow for Ukraine talks with Vladimir Putin",
+  "highlight": "US envoys arrive in Moscow",
+  "summary": "US envoys arrived at the Kremlin for talks with President Vladimir Putin in a renewed push for a Ukraine peace deal, coinciding with a European leaders summit in Dublin.",
+  "why": "Important for analyzing great power competition, modern diplomacy, and ongoing international conflicts.",
+  "syllabus": [
+   "International Relations",
+   "Current Affairs",
+   "Diplomacy"
+  ],
+  "source": "BBC News, NPR +1",
+  "image_query": "Moscow Kremlin",
+  "_editor": "gemini:gemini-3.5-flash-lite",
+  "photo": "c",
+  "credit": "George M. Groutas / Flickr, CC BY 2.0",
+  "image_source": "https://www.flickr.com/photos/22083482@N03/8479161079",
+  "links": [
+   "https://www.france24.com/en/video/20261112-european-leaders-gather-in-dublin-to-discuss-ukraine-s-security-and-their-own",
+   "https://www.npr.org/2026/11/12/nx-s1-6037558/russia-ukraine-talks",
+   "https://www.bloomberg.com/news/articles/2026-11-12/us-envoys-witkoff-kushner-putin-talks-ukraine-zelenskyy-opportunity"
+  ],
+  "date": "12 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "editorial",
+  "png": "1704-03-editorial.png"
  }
 ]
