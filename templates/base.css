@@ -1,0 +1,42 @@
+/* Pak Imtehan brand tokens — taken from pakimtehan.com (Tailwind blue/slate on deep navy, Inter) */
+:root {
+  --navy-950: #030a1a;
+  --navy-900: #0b1530;
+  --navy-800: #10204a;
+  --blue-950: #172554;
+  --blue-900: #1e3a8a;
+  --blue-700: #1d4ed8;
+  --blue-600: #2563eb;
+  --blue-500: #3b82f6;
+  --blue-400: #60a5fa;
+  --blue-300: #93c5fd;
+  --blue-200: #bfdbfe;
+  --blue-100: #dbeafe;
+  --ink: #0f172a;
+  --slate-700: #334155;
+  --slate-600: #475569;
+  --slate-500: #64748b;
+  --line: #e2e8f0;
+  --paper: #f5f7fb;
+  --highlight: #fef08a;
+
+  --sans: "Inter", system-ui, sans-serif;
+  --condensed: "Oswald", "Inter", sans-serif;
+  --serif: "Playfair Display", Georgia, serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1080px; height: 1350px; overflow: hidden; }
+body { font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+.poster { position: relative; width: 1080px; height: 1350px; overflow: hidden; }
+img { display: block; }
+.photo { width: 100%; height: 100%; object-fit: cover; }
+
+/* Shared bits */
+.logo { height: 58px; width: auto; }
+.chip {
+  display: inline-block; font: 700 22px/1 var(--sans); letter-spacing: .08em;
+  text-transform: uppercase; padding: 12px 18px; border-radius: 6px;
+}
+.credit { font: 400 15px/1.3 var(--sans); opacity: .75; }
+mark { background: none; color: inherit; }

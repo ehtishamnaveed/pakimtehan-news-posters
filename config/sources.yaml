@@ -1,0 +1,66 @@
+# The client's 27 media channels. `rss` = direct feed. Channels without a public feed
+# (or with a blocked one) fall back to Google News RSS filtered to that site (`site`).
+# Paywalled outlets: we only ever read headline + teaser from the feed, never the article.
+sources:
+  - {name: Dawn,                         rss: "https://www.dawn.com/feeds/home",                          site: dawn.com}
+  - {name: The Express Tribune,          rss: "https://tribune.com.pk/feed/home",                          site: tribune.com.pk}
+  - {name: The News International,       rss: "https://www.thenews.com.pk/rss/1/1",                        site: thenews.com.pk}
+  - {name: Business Recorder,            rss: "https://www.brecorder.com/feeds/latest-news",               site: brecorder.com}
+  - {name: Associated Press of Pakistan, rss: "https://www.app.com.pk/feed/",                              site: app.com.pk}
+  - {name: Reuters,                                                                                         site: reuters.com}
+  - {name: Associated Press,                                                                                site: apnews.com}
+  - {name: BBC News,                     rss: "https://feeds.bbci.co.uk/news/world/rss.xml",               site: bbc.com}
+  - {name: Al Jazeera,                   rss: "https://www.aljazeera.com/xml/rss/all.xml",                 site: aljazeera.com}
+  - {name: DW News,                      rss: "https://rss.dw.com/rdf/rss-en-world",                       site: dw.com}
+  - {name: France 24,                    rss: "https://www.france24.com/en/rss",                           site: france24.com}
+  - {name: AFP,                                                                                             site: afp.com}
+  - {name: CNN International,            rss: "http://rss.cnn.com/rss/edition_world.rss",                  site: edition.cnn.com}
+  - {name: Sky News,                     rss: "https://feeds.skynews.com/feeds/rss/world.xml",             site: news.sky.com}
+  - {name: NHK World-Japan,                                                                                 site: www3.nhk.or.jp/nhkworld}
+  - {name: CNA,                          rss: "https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml", site: channelnewsasia.com}
+  - {name: ABC News Australia,           rss: "https://www.abc.net.au/news/feed/2942460/rss.xml",          site: abc.net.au}
+  - {name: Euronews,                     rss: "https://www.euronews.com/rss?level=theme&name=news",        site: euronews.com}
+  - {name: PBS NewsHour,                 rss: "https://www.pbs.org/newshour/feeds/rss/world",              site: pbs.org/newshour}
+  - {name: NPR,                          rss: "https://feeds.npr.org/1004/rss.xml",                        site: npr.org}
+  - {name: Bloomberg,                    rss: "https://feeds.bloomberg.com/politics/news.rss",             site: bloomberg.com}
+  - {name: CNBC,                         rss: "https://www.cnbc.com/id/100727362/device/rss/rss.html",     site: cnbc.com}
+  - {name: The Guardian,                 rss: "https://www.theguardian.com/world/rss",                     site: theguardian.com}
+  - {name: The Economist,                rss: "https://www.economist.com/international/rss.xml",           site: economist.com}
+  - {name: Financial Times,              rss: "https://www.ft.com/world?format=rss",                       site: ft.com}
+  - {name: Arab News,                    rss: "https://www.arabnews.com/rss.xml",                          site: arabnews.com}
+
+# The client's topic list (from "List .docx")
+topics:
+  - Politics
+  - Diplomacy
+  - Economy
+  - Trade
+  - Conflicts
+  - Security
+  - Terrorism
+  - Climate
+  - Energy
+  - Technology
+  - Human Rights
+  - Migration
+  - Health
+  - Elections
+  - Treaties
+  - Organizations
+  - Nuclear
+  - Sanctions
+  - Geopolitics
+  - Development
+  - Pakistan Affairs
+  - International Relations
+  - Current Affairs
+  - Economy & Budget
+  - Foreign Policy
+  - Constitution & Law
+  - Governance & Public Policy
+
+settings:
+  posters_per_day: 3          # how many posters to generate each run
+  max_age_hours: 30           # ignore stories older than this
+  max_per_source: 12          # cap headlines per source sent to Gemini (keeps tokens low)
+  templates: [breaking-photo, navy-card, editorial, newspaper, typographic, brief-light]

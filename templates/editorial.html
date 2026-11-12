@@ -1,0 +1,32 @@
+{% extends "_layout.html" %}
+{# Style C: light editorial — ruled header, big condensed headline with a marker highlight, photo below. Photo optional. #}
+{% block style %}
+body { background: var(--paper); }
+.poster { background: var(--paper); color: var(--ink); padding: 60px 64px 120px; display: flex; flex-direction: column; }
+.rule { display: flex; justify-content: space-between; align-items: center; border-top: 3px solid var(--ink); padding-top: 14px; font: 700 19px/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; }
+.rule img { height: 40px; }
+.kick { margin-top: 44px; color: var(--blue-600); font: 800 22px/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; }
+h1 { margin-top: 16px; font: 700 92px/1.02 var(--condensed); text-transform: uppercase; letter-spacing: -.005em; color: var(--navy-900); }
+h1 mark { background: linear-gradient(100deg, transparent 0 1%, var(--blue-300) 2% 97%, transparent 98%) 0 58% / 100% 72% no-repeat; padding: 0 6px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.sum { margin-top: 24px; font: 500 27px/1.45 var(--sans); color: var(--slate-700); }
+.pic { position: relative; flex: 1; min-height: 360px; margin-top: 34px; overflow: hidden; }
+.pic .credit { position: absolute; right: 12px; bottom: 10px; color: #fff; font-size: 14px; text-shadow: 0 1px 4px rgba(0,0,0,.7); }
+.why { margin-top: auto; background: var(--navy-900); color: #fff; padding: 30px 34px; font: 500 25px/1.45 var(--sans); }
+.why b { display: block; color: var(--blue-300); font: 800 17px/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 10px; }
+.foot { position: absolute; left: 64px; right: 64px; bottom: 0; height: 80px; display: flex; justify-content: space-between; align-items: center; font: 600 19px/1 var(--sans); color: var(--slate-600); border-top: 1px solid var(--line); }
+.foot strong { color: var(--blue-600); }
+{% endblock %}
+{% block body %}
+<div class="poster">
+  <div class="rule"><img src="{{ root }}/assets/logo-navy.png"><span>Current Affairs · {{ p.date }}</span></div>
+  <div class="kick">{{ p.kicker }}</div>
+  <h1 data-fit="{{ 400 if p.image else 560 }}" data-min="56">{{ p.headline_html }}</h1>
+  <p class="sum" data-fit="{{ 125 if p.image else 200 }}" data-min="20">{{ p.summary }}</p>
+  {% if p.image %}
+  <div class="pic"><img class="photo" src="{{ p.image }}"><span class="credit">Photo: {{ p.credit }}</span></div>
+  {% else %}
+  <div class="why"><b>Why it matters · {{ p.syllabus|join(' · ') }}</b>{{ p.why }}</div>
+  {% endif %}
+  <div class="foot"><span>Source: {{ p.source }}</span><strong>pakimtehan.com</strong></div>
+</div>
+{% endblock %}

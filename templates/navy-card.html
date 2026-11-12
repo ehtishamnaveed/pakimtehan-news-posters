@@ -1,0 +1,41 @@
+{% extends "_layout.html" %}
+{# Style B: Pak Imtehan navy card — photo, angled ribbon, summary, "why it matters". Needs a photo. #}
+{% block style %}
+body { background: var(--navy-950); }
+.poster { background: radial-gradient(120% 70% at 50% 0%, var(--blue-950) 0%, var(--navy-950) 70%); color: #fff; }
+.grid { position: absolute; inset: 0; opacity: .07;
+  background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 54px 54px; }
+.head { position: absolute; top: 46px; left: 60px; right: 60px; display: flex; justify-content: space-between; align-items: center; }
+.pill { border: 1.5px solid rgba(147,197,253,.4); color: var(--blue-100); padding: 12px 20px; border-radius: 999px; font: 600 20px/1 var(--sans); }
+.pill i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--blue-400); margin-right: 10px; vertical-align: 1px; }
+.pic { position: absolute; top: 140px; left: 60px; right: 60px; height: 470px; border-radius: 22px; overflow: hidden; box-shadow: 0 30px 60px -20px rgba(0,0,0,.6); }
+.ribbon { position: absolute; top: 640px; left: 60px; display: flex; align-items: center; gap: 18px; }
+.ribbon .k { background: linear-gradient(90deg, var(--blue-600), var(--blue-700)); padding: 14px 40px 14px 26px; font: 800 26px/1 var(--sans); letter-spacing: .05em; text-transform: uppercase; font-style: italic; clip-path: polygon(0 0, 100% 0, calc(100% - 22px) 100%, 0 100%); }
+.ribbon .d { border: 1.5px solid var(--blue-400); color: var(--blue-200); padding: 10px 18px; border-radius: 999px; font: 600 20px/1 var(--sans); }
+.body { position: absolute; top: 720px; left: 60px; right: 60px; }
+h1 { font: 800 54px/1.12 var(--sans); letter-spacing: -.015em; }
+h1 mark { color: var(--blue-400); }
+.sum { margin-top: 22px; font: 400 25px/1.5 var(--sans); color: var(--blue-100); }
+.why { margin-top: 26px; border-left: 4px solid var(--blue-400); padding: 6px 0 6px 20px; font: 500 22px/1.45 var(--sans); color: #fff; }
+.why b { color: var(--blue-300); text-transform: uppercase; letter-spacing: .08em; font-size: 17px; display: block; margin-bottom: 4px; }
+.foot { position: absolute; bottom: 0; left: 0; right: 0; height: 92px; border-top: 1px solid rgba(147,197,253,.2); display: flex; align-items: center; justify-content: space-between; padding: 0 60px; font: 500 20px/1 var(--sans); color: var(--blue-200); }
+.foot strong { color: #fff; }
+.foot .credit { font-size: 14px; max-width: 460px; text-align: right; }
+{% endblock %}
+{% block body %}
+<div class="poster">
+  <div class="grid"></div>
+  <div class="head">
+    <img class="logo" src="{{ root }}/assets/logo-white.png">
+    <span class="pill"><i></i>Daily Current Affairs</span>
+  </div>
+  <div class="pic"><img class="photo" src="{{ p.image }}"></div>
+  <div class="ribbon"><span class="k">{{ p.kicker }}</span><span class="d">{{ p.date }}</span></div>
+  <div class="body">
+    <h1 data-fit="200" data-min="38">{{ p.headline_html }}</h1>
+    <p class="sum" data-fit="160" data-min="20">{{ p.summary }}</p>
+    {% if p.why %}<p class="why"><b>Why it matters · {{ p.syllabus|join(' · ') }}</b>{{ p.why }}</p>{% endif %}
+  </div>
+  <div class="foot"><span><strong>pakimtehan.com</strong> · Source: {{ p.source }}</span><span class="credit">Photo: {{ p.credit }}</span></div>
+</div>
+{% endblock %}

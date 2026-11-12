@@ -1,0 +1,32 @@
+{
+ "solar": {
+  "title": "Solar panels roof",
+  "creator": null,
+  "license": "CC CC0 1.0",
+  "source": "https://www.rawpixel.com/image/3339452/free-photo-image-solar-energy-photovoltaic-environmental"
+ },
+ "tanker": {
+  "title": "JMSDF Oil tanker 'YOT-01' entered Kure Naval Base for the first time",
+  "creator": "https://www.mod.go.jp/msdf/index.html \u6d77\u4e0a\u81ea\u885b\u968a",
+  "license": "CC BY 4.0",
+  "source": "https://commons.wikimedia.org/w/index.php?curid=122124728"
+ },
+ "cop": {
+  "title": "Sunset at Royd Moor Wind Farm",
+  "creator": "Charles Cook",
+  "license": "CC BY 2.0",
+  "source": "https://www.flickr.com/photos/15581583@N00/380352233"
+ },
+ "gold": {
+  "title": "Sunset[Explore]",
+  "creator": "A Perfect Heart",
+  "license": "CC BY 2.0",
+  "source": "https://www.flickr.com/photos/29176783@N04/14554089711"
+ },
+ "abudhabi": {
+  "title": "Ukraine Flag",
+  "creator": "U.S. Army Europe",
+  "license": "CC PDM 1.0",
+  "source": "https://www.flickr.com/photos/37585279@N03/15171082380"
+ }
+}
