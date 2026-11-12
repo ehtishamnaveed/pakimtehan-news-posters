@@ -12,7 +12,9 @@ The routine is tied to the Claude account that created it. These are the steps t
    GitHub App** on the account or org that owns the repo.
 2. At claude.ai/code, open **Environments** and set network access on the environment the routine
    uses to **Full**, or to a custom allowlist that includes the news sites, `news.google.com`,
-   `api.openverse.org`, `live.staticflickr.com`, `pypi.org` and the Playwright CDN.
+   `api.openverse.org`, `live.staticflickr.com`, `api.pixabay.com`, `pixabay.com`, `cdn.pixabay.com`,
+   `api.unsplash.com`, `images.unsplash.com`, `commons.wikimedia.org`, `upload.wikimedia.org`,
+   `pypi.org` and the Playwright CDN.
    Without this, the run fetches 0 headlines.
 3. Recreate the routine at claude.ai/code/routines:
    - Repository: `<owner>/pakimtehan-news-posters`

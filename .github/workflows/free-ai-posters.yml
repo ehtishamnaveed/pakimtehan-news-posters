@@ -58,6 +58,8 @@ jobs:
       OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+      UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -100,6 +102,11 @@ jobs:
       - name: Check AI providers (fail fast)
         if: steps.out.outputs.skip != 'true'
         run: python ai_editor.py check
+
+      # Informational only: a poster still renders (without a photo) if every image provider is down.
+      - name: Check image providers
+        if: steps.out.outputs.skip != 'true'
+        run: python images.py check || true
 
       - name: Install Chromium
         if: steps.out.outputs.skip != 'true'

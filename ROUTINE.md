@@ -16,9 +16,12 @@ them in the dashboard (Dashboard → News Posters). Do not use any other AI serv
 3. **Fetch:** `python build.py fetch`, then read `work/headlines.txt`.
 4. **Edit:** write `work/posts.json` (format below) with the number of posters given at the top of
    `headlines.txt`.
-5. **Photos:** `python build.py photos`. Look at each `work/photos/sheet-N.jpg` and set `"photo"` on
-   post N to `"a"`, `"b"` or `"c"`, or `null` if none fits. If all candidates are poor, you may change
-   `image_query` and rerun `python build.py photos` once.
+5. **Photos:** `python build.py photos`. It tries Openverse, then Pixabay, then Unsplash, then
+   Wikimedia Commons (Pixabay and Unsplash only run when `PIXABAY_API_KEY` / `UNSPLASH_ACCESS_KEY`
+   are set), so one flaky library no longer costs a poster its image. Look at each
+   `work/photos/sheet-N.jpg` and set `"photo"` on post N to `"a"`, `"b"` or `"c"`, or `null` if none
+   fits. If all candidates are poor, you may change `image_query` and rerun `python build.py photos`
+   once.
 6. **Render:** `python build.py render`. Look at every PNG in `posters/<today>/`. If text overflows,
    is cut off, or a photo looks wrong, fix `work/posts.json` and render again.
 7. **Publish for review:** commit `posters/<today>/` and `state/seen.json` (never `work/`) with the
