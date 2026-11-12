@@ -37,3 +37,14 @@ The routine is tied to the Claude account that created it. These are the steps t
 ## 4. If the repo owner changes
 Update `NEWS_POSTERS_GITHUB_REPO` and issue a new token. Nothing else references the owner, except
 `scripts/local-stack.sh` (the local test launcher).
+
+## 5. Things to know (Claude docs, Nov 2026)
+- Scheduled tasks ("routines") are a **research preview**. Behaviour, limits and settings may change.
+  Check claude.ai/code/routines after Anthropic announcements.
+- They are included in Pro, Max, Team and Enterprise. Each run uses the account's normal Claude
+  usage: the same 5-hour and weekly limits as chat and Claude Code. The cloud VM has no separate charge.
+- If the account is at its usage limit, the run is **rejected** until the window resets, unless
+  usage credits (extra usage) are turned on. **Keep usage credits OFF** so nothing is ever billed extra.
+- If the GitHub connection breaks, runs are skipped for up to 72 hours, and then the task
+  **turns itself off**. If posters stop arriving, check the GitHub connection first.
+- The routine belongs to one person's account and can't be transferred; recreate it (section 2).
