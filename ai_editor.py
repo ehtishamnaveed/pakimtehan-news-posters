@@ -29,7 +29,8 @@ WORK = ROOT / "work"
 NVIDIA_TEXT = "nvidia/nemotron-3-ultra-550b-a55b"
 NVIDIA_VISION = "nvidia/nemotron-3.5-super-vl-120b-a12b"
 DEFAULT_PROVIDERS = (f"gemini:gemini-3.6-flash,gemini:gemini-3.5-flash-lite,"
-                     f"nvidia:{NVIDIA_TEXT},cloudflare:@cf/google/gemma-4-26b-a4b-it")
+                     f"nvidia:{NVIDIA_TEXT},nvidia:{NVIDIA_VISION},"
+                     f"cloudflare:@cf/google/gemma-4-26b-a4b-it")
 VISION_PROVIDERS = f"gemini:gemini-3.6-flash,gemini:gemini-3.5-flash-lite,nvidia:{NVIDIA_VISION}"
 
 EDITOR_PROMPT = """You are the current-affairs editor for Pak Imtehan (pakimtehan.com), a CSS/PMS exam
