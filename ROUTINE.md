@@ -6,8 +6,9 @@ The client approves by merging the PR. Do not use any other AI service.
 
 ## Steps
 
-1. **Setup** (skip anything already installed):
-   `pip install -r requirements.txt && python -m playwright install --with-deps chromium`
+1. **Setup:** run `python -m pip install -q --ignore-installed -r requirements.txt`. Then run
+   `python -m playwright install chromium || true`. If that download is blocked, `render.py` falls
+   back to the Chromium already installed in `/opt/pw-browsers`.
 2. **Branch:** `git checkout -b posters/$(TZ=Asia/Karachi date +%F)`
 3. **Fetch:** `python build.py fetch`, then read `work/headlines.txt`.
 4. **Edit:** write `work/posts.json` (format below) with the number of posters given at the top of

@@ -56,11 +56,28 @@ def to_uri(path_or_url, base: Path):
     return (base / path_or_url).resolve().as_uri()
 
 
+def launch_chromium(pw):
+    """Use Playwright's own Chromium; if it isn't downloaded, use any preinstalled one."""
+    try:
+        return pw.chromium.launch()
+    except Exception as first:
+        import glob
+        import shutil
+        paths = sorted(glob.glob("/opt/pw-browsers/chromium-*/chrome-linux*/chrome"), reverse=True)
+        paths += [p for p in (shutil.which(n) for n in ("chromium", "chromium-browser", "google-chrome")) if p]
+        for exe in paths:
+            try:
+                return pw.chromium.launch(executable_path=exe)
+            except Exception:
+                continue
+        raise first
+
+
 def render(posters, out_dir: Path, base: Path, keep_html=False):
     out_dir.mkdir(parents=True, exist_ok=True)
     results = []
     with sync_playwright() as pw:
-        browser = pw.chromium.launch()
+        browser = launch_chromium(pw)
         page = browser.new_page(viewport={"width": 1080, "height": 1350}, device_scale_factor=1)
         for i, p in enumerate(posters, 1):
             t = pick_template(p)
