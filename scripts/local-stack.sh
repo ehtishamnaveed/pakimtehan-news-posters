@@ -20,13 +20,8 @@ POSTERS_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 # A local gh login is used as the read token; nothing is stored.
 GH_TOKEN_FOR_SYNC="$(gh auth token 2>/dev/null || true)"
 
-cat <<'WARN'
-NOTE: pi_user_server runs its existing subscription-expiry cron on every start, using
-the Firebase credentials in pi_user_server/.env (the real "pak-imtehan" project) and
-the subscriptions in your LOCAL database. It is unchanged by this setup.
-WARN
-read -r -p "Start the local stack, including pi_user_server? [y/N] " ok
-[[ "$ok" =~ ^[Yy]$ ]] || { echo "Cancelled."; exit 0; }
+# DISABLE_SUBSCRIPTION_CRON=true keeps the subscription-expiry cron (Firestore writes)
+# off on this laptop, even if pi_user_server/.env loses the line.
 
 json() { python3 -c "import json,sys; d=json.load(sys.stdin); print(eval('d'+sys.argv[1]))" "$1"; }
 
@@ -42,7 +37,7 @@ server_pane=$(printf '%s' "$ws" | json "['result']['root_pane']['pane_id']")
 dash_pane=$(herdr pane split "$server_pane" --direction right --cwd "$DASH_DIR" --no-focus | json "['result']['pane']['pane_id']")
 web_pane=$(herdr pane split "$dash_pane" --direction down --cwd "$WEB_DIR" --no-focus | json "['result']['pane']['pane_id']")
 
-herdr pane run "$server_pane" "PORT=4000 ALLOWED_ORIGINS=http://localhost:5173,http://localhost:5174 NEWS_POSTERS_GITHUB_REPO=ehtishamnaveed/pakimtehan-news-posters NEWS_POSTERS_GITHUB_BRANCH=daily-posters NEWS_POSTERS_GITHUB_TOKEN=$GH_TOKEN_FOR_SYNC NEWS_POSTERS_SYNC_CRON='*/5 * * * *' npm start" >/dev/null
+herdr pane run "$server_pane" "DISABLE_SUBSCRIPTION_CRON=true PORT=4000 ALLOWED_ORIGINS=http://localhost:5173,http://localhost:5174 NEWS_POSTERS_GITHUB_REPO=ehtishamnaveed/pakimtehan-news-posters NEWS_POSTERS_GITHUB_BRANCH=daily-posters NEWS_POSTERS_GITHUB_TOKEN=$GH_TOKEN_FOR_SYNC NEWS_POSTERS_SYNC_CRON='*/5 * * * *' npm start" >/dev/null
 herdr pane run "$dash_pane" "VITE_API_URL=/ DASHBOARD_API_PROXY=http://localhost:4000 npx vite --port 5174 --strictPort" >/dev/null
 herdr pane run "$web_pane" "VITE_PI_SERVER_URL=http://localhost:4000/api/v3 npx vite --port 5173 --strictPort" >/dev/null
 
