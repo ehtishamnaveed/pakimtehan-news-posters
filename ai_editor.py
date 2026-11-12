@@ -4,7 +4,7 @@
     python ai_editor.py photos   # look at work/photos/sheet-N.jpg and set "photo" on each post
 
 Providers are tried in order until one returns valid output (AI_PROVIDERS overrides):
-    gemini:gemini-3.5-flash, gemini:gemini-2.5-flash, gemini:gemma-4-31b-it,
+    gemini:gemini-3.5-flash, gemini:gemini-3.5-flash-lite, gemini:gemma-4-31b-it,
     cloudflare:@cf/google/gemma-4-26b-a4b-it
 Keys come from the environment only: GEMINI_API_KEY, CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN.
 """
@@ -20,9 +20,9 @@ import requests
 
 ROOT = Path(__file__).resolve().parent
 WORK = ROOT / "work"
-DEFAULT_PROVIDERS = ("gemini:gemini-3.5-flash,gemini:gemini-2.5-flash,gemini:gemma-4-31b-it,"
+DEFAULT_PROVIDERS = ("gemini:gemini-3.5-flash,gemini:gemini-3.5-flash-lite,gemini:gemma-4-31b-it,"
                      "cloudflare:@cf/google/gemma-4-26b-a4b-it")
-VISION_PROVIDERS = "gemini:gemini-3.5-flash,gemini:gemini-2.5-flash,gemini:gemma-4-31b-it"
+VISION_PROVIDERS = "gemini:gemini-3.5-flash,gemini:gemini-3.5-flash-lite,gemini:gemma-4-31b-it"
 
 EDITOR_PROMPT = """You are the current-affairs editor for Pak Imtehan (pakimtehan.com), a CSS/PMS exam
 preparation platform in Pakistan. From the headlines below, choose the {n} most exam-relevant stories
@@ -82,7 +82,7 @@ SCHEMA = {
 # Providers
 # ---------------------------------------------------------------------------
 
-def _gemini(model, prompt, image=None, json_mode=False, max_tokens=4096):
+def _gemini(model, prompt, image=None, json_mode=False, max_tokens=4096, timeout=180):
     key = os.environ.get("GEMINI_API_KEY")
     if not key:
         raise RuntimeError("GEMINI_API_KEY not set")
@@ -93,7 +93,7 @@ def _gemini(model, prompt, image=None, json_mode=False, max_tokens=4096):
     if json_mode and not model.startswith("gemma"):  # Gemma on the Gemini API has no JSON mode
         cfg.update(responseMimeType="application/json", responseSchema=SCHEMA)
     r = requests.post(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
-                      headers={"x-goog-api-key": key}, timeout=180,
+                      headers={"x-goog-api-key": key}, timeout=timeout,
                       json={"contents": [{"role": "user", "parts": parts}], "generationConfig": cfg})
     if r.status_code != 200:
         raise RuntimeError(f"HTTP {r.status_code}: {r.text[:200]}")
@@ -107,14 +107,14 @@ def _gemini(model, prompt, image=None, json_mode=False, max_tokens=4096):
     return text
 
 
-def _cloudflare(model, prompt, image=None, json_mode=False, max_tokens=4096):
+def _cloudflare(model, prompt, image=None, json_mode=False, max_tokens=4096, timeout=180):
     acc, tok = os.environ.get("CLOUDFLARE_ACCOUNT_ID"), os.environ.get("CLOUDFLARE_API_TOKEN")
     if not (acc and tok):
         raise RuntimeError("CLOUDFLARE_ACCOUNT_ID / CLOUDFLARE_API_TOKEN not set")
     if image:
         raise RuntimeError("vision not used on Cloudflare")
     r = requests.post(f"https://api.cloudflare.com/client/v4/accounts/{acc}/ai/run/{model}",
-                      headers={"Authorization": f"Bearer {tok}"}, timeout=180,
+                      headers={"Authorization": f"Bearer {tok}"}, timeout=timeout,
                       json={"messages": [{"role": "user", "content": prompt}],
                             "max_tokens": max_tokens, "temperature": 0.3})
     if r.status_code != 200:
@@ -235,7 +235,7 @@ def cmd_photos():
         for spec in providers:
             try:
                 ans = call(spec.strip(), PHOTO_PROMPT.format(headline=p["headline"], query=p.get("image_query", "")),
-                           image=sheet.read_bytes(), max_tokens=256).strip().lower()
+                           image=sheet.read_bytes(), max_tokens=1024, timeout=60).strip().lower()
             except Exception as e:  # noqa: BLE001
                 print(f"  post {i}: {spec} failed: {str(e)[:120]}")
                 continue
