@@ -1,19 +1,19 @@
-# Daily news posters on GitHub Actions with free AI (Gemini -> Gemma 4 -> Cloudflare Workers AI).
+# Daily news posters on GitHub Actions with free AI (Gemini first, NVIDIA NIM as backup).
 #
 # Output goes to the branch in repo variable POSTERS_OUT_BRANCH (default: daily-posters-test).
 #   Testing (now):   POSTERS_OUT_BRANCH=daily-posters-test, POSTERS_TEST_MODE=true
-#                    -> runs every 1 hour, each run ADDS a new batch, gallery redeployed
+#                    -> one batch of posters per run, each run ADDS a new batch
 #   Production:      POSTERS_OUT_BRANCH=daily-posters, POSTERS_TEST_MODE=false, cron once a day
 #                    -> one batch per day; skipped if today's posters already exist
 #
 # Secrets (Settings -> Secrets and variables -> Actions):
-#   GEMINI_API_KEY, CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN
+#   GEMINI_API_KEY (primary), NVIDIA_API_KEY (backup), CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN
 name: Daily posters (free AI)
 
 on:
   schedule:
-    - cron: "15 * * * *"  # TESTING: every 1 hour. Optional POSTERS_FAST_TEST_UNTIL auto-disables after that time.
-                            # Production: "40 2 * * *" (07:40 Asia/Karachi).
+    # Once a day at 07:40 Asia/Karachi. Produces one batch (5 posters) per day.
+    - cron: "40 2 * * *"
   workflow_dispatch:
 
 permissions:
@@ -53,6 +53,7 @@ jobs:
       OUT_BRANCH: ${{ vars.POSTERS_OUT_BRANCH || 'daily-posters-test' }}
       TEST_MODE: ${{ vars.POSTERS_TEST_MODE || 'true' }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
     steps:
@@ -135,16 +136,6 @@ jobs:
             git pull --rebase origin "$OUT_BRANCH"
           done
           exit 1
-
-      - name: Deploy test gallery (Cloudflare)
-        if: steps.out.outputs.skip != 'true' && env.TEST_MODE == 'true'
-        continue-on-error: true
-        run: |
-          python scripts/build_gallery.py out site
-          npx --yes wrangler@4.160.1 deploy --config gallery.wrangler.jsonc
-        env:
-          # Needs a token with "Edit Cloudflare Workers" permission (secret CLOUDFLARE_DEPLOY_TOKEN).
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_DEPLOY_TOKEN || secrets.CLOUDFLARE_API_TOKEN }}
 
       - name: Summary
         if: always() && steps.out.outputs.skip != 'true'

@@ -4,10 +4,12 @@
     python ai_editor.py write    # work/headlines.txt -> work/posts.json  (story choice + text)
     python ai_editor.py photos   # look at work/photos/sheet-N.jpg and set "photo" on each post
 
-Providers are tried in order until one returns valid output (AI_PROVIDERS overrides):
-    gemini:gemini-3.6-flash, gemini:gemini-3.5-flash-lite, gemini:gemma-4-31b-it,
-    cloudflare:@cf/google/gemma-4-26b-a4b-it
-Keys come from the environment only: GEMINI_API_KEY, CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN.
+Providers are tried in order until one returns valid output (AI_PROVIDERS overrides). Gemini is the
+primary editor; NVIDIA NIM is the independent backup, so a Gemini quota error no longer kills the run:
+    gemini:gemini-3.6-flash, gemini:gemini-3.5-flash-lite,
+    nvidia:nvidia/nemotron-3-ultra-550b-a55b, cloudflare:@cf/google/gemma-4-26b-a4b-it
+Keys come from the environment only: GEMINI_API_KEY, NVIDIA_API_KEY, CLOUDFLARE_ACCOUNT_ID,
+CLOUDFLARE_API_TOKEN.
 """
 import base64
 import json
@@ -22,9 +24,13 @@ import requests
 ROOT = Path(__file__).resolve().parent
 WORK = ROOT / "work"
 # gemini-3.5-flash was retired and is auto-routed to gemini-3.6-flash; call the live name directly.
-DEFAULT_PROVIDERS = ("gemini:gemini-3.6-flash,gemini:gemini-3.5-flash-lite,gemini:gemma-4-31b-it,"
-                     "cloudflare:@cf/google/gemma-4-26b-a4b-it")
-VISION_PROVIDERS = "gemini:gemini-3.6-flash,gemini:gemini-3.5-flash-lite,gemini:gemma-4-31b-it"
+# Gemini stays first (best quality + one request a day is enough). NVIDIA NIM is the backup and has its
+# own independent quota, so a Gemini 429 no longer ends the run.
+NVIDIA_TEXT = "nvidia/nemotron-3-ultra-550b-a55b"
+NVIDIA_VISION = "nvidia/nemotron-3.5-super-vl-120b-a12b"
+DEFAULT_PROVIDERS = (f"gemini:gemini-3.6-flash,gemini:gemini-3.5-flash-lite,"
+                     f"nvidia:{NVIDIA_TEXT},cloudflare:@cf/google/gemma-4-26b-a4b-it")
+VISION_PROVIDERS = f"gemini:gemini-3.6-flash,gemini:gemini-3.5-flash-lite,nvidia:{NVIDIA_VISION}"
 
 EDITOR_PROMPT = """You are the current-affairs editor for Pak Imtehan (pakimtehan.com), a CSS/PMS exam
 preparation platform in Pakistan. From the headlines below, choose the {n} most exam-relevant stories
@@ -132,9 +138,42 @@ def _cloudflare(model, prompt, image=None, json_mode=False, max_tokens=4096, tim
     return text
 
 
+def _nvidia(model, prompt, image=None, json_mode=False, max_tokens=4096, timeout=180):
+    """NVIDIA NIM: OpenAI-compatible chat completions at integrate.api.nvidia.com."""
+    key = os.environ.get("NVIDIA_API_KEY")
+    if not key:
+        raise RuntimeError("NVIDIA_API_KEY not set")
+    if image:
+        content = [
+            {"type": "text", "text": prompt},
+            {"type": "image_url",
+             "image_url": {"url": "data:image/jpeg;base64," + base64.b64encode(image).decode()}},
+        ]
+    else:
+        content = prompt
+    r = requests.post("https://integrate.api.nvidia.com/v1/chat/completions",
+                      headers={"Authorization": f"Bearer {key}", "Accept": "application/json"},
+                      timeout=timeout,
+                      json={"model": model, "messages": [{"role": "user", "content": content}],
+                            "max_tokens": max_tokens, "temperature": 0.3, "top_p": 0.95})
+    if r.status_code != 200:
+        raise RuntimeError(f"HTTP {r.status_code}: {r.text[:200]}")
+    d = r.json()
+    choice = (d.get("choices") or [{}])[0]
+    msg = choice.get("message") or {}
+    text = msg.get("content")
+    if isinstance(text, (list, dict)):
+        text = json.dumps(text)
+    if not text:
+        raise RuntimeError(f"empty response ({choice.get('finish_reason')})")
+    u = d.get("usage") or {}
+    print(f"    tokens: {u.get('prompt_tokens')} in / {u.get('completion_tokens')} out")
+    return text
+
+
 def call(spec, prompt, **kw):
     kind, model = spec.split(":", 1)
-    fn = {"gemini": _gemini, "cloudflare": _cloudflare}[kind]
+    fn = {"gemini": _gemini, "cloudflare": _cloudflare, "nvidia": _nvidia}[kind]
     for attempt in range(2):
         try:
             return fn(model, prompt, **kw)
@@ -234,9 +273,12 @@ def cmd_write():
     for spec in os.environ.get("AI_PROVIDERS", DEFAULT_PROVIDERS).split(","):
         spec = spec.strip()
         print(f"  trying {spec} ...")
+        # Gemini and the Nemotron reasoning models need room for the full 5-poster JSON; Cloudflare's
+        # free tier is capped lower.
+        budget = 2048 if spec.startswith("cloudflare:") else 8192
         try:
             raw = call(spec, short_prompt if spec.startswith("cloudflare:") else prompt,
-                       json_mode=True, max_tokens=8192 if spec.startswith("gemini:") else 2048)
+                       json_mode=True, max_tokens=budget)
             posts = validate(extract_json_array(raw), n_items, topics, want)
         except Exception as e:  # noqa: BLE001 - any failure means: try the next provider
             print(f"    failed: {str(e)[:160]}")
