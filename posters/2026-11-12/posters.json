@@ -95,5 +95,98 @@
   "edition": "Daily Current Affairs",
   "template": "breaking-photo",
   "png": "03-breaking-photo.png"
+ },
+ {
+  "story_ids": [
+   0,
+   12
+  ],
+  "kicker": "Climate · COP31",
+  "headline": "PM Shehbaz calls for grant-based climate finance at COP31",
+  "highlight": "grant-based climate finance",
+  "summary": "At COP31 in Turkiye, Prime Minister Shehbaz Sharif called for grant-based climate finance and enhanced adaptation funds for vulnerable nations, while warning against the weaponisation of water resources.",
+  "why": "Crucial for CSS papers on climate diplomacy, Pakistan affairs, and international environmental governance.",
+  "syllabus": [
+   "Climate",
+   "Pakistan Affairs",
+   "International Relations"
+  ],
+  "source": "Dawn, The Express Tribune",
+  "image_query": "solar panels",
+  "_editor": "gemini:gemini-3.5-flash",
+  "photo": "b",
+  "credit": "spanginator / Flickr, CC BY-SA 2.0",
+  "image_source": "https://www.flickr.com/photos/52645928@N00/3414028795",
+  "links": [
+   "https://www.dawn.com/news/2044031/at-cop31-pm-shehbaz-calls-for-grant-based-finance-resilience-funding-for-climate-vulnerable-countries",
+   "https://tribune.com.pk/story/2639916/pm-shehbaz-urges-grant-based-climate-finance-warns-against-weaponizing-water"
+  ],
+  "date": "12 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "navy-card",
+  "png": "1647-01-navy-card.png"
+ },
+ {
+  "story_ids": [
+   2
+  ],
+  "kicker": "Economy · Minerals",
+  "headline": "Evidence shows placer gold in Punjab rivers, CM Maryam says",
+  "highlight": "placer gold",
+  "summary": "Speaking at a minerals investment forum, Punjab Chief Minister Maryam Nawaz stated there is significant evidence of sufficient quantities of placer gold flowing in the province's five rivers.",
+  "why": "Important for PMS and CSS aspirants covering economic development, natural resources, and provincial governance.",
+  "syllabus": [
+   "Economy",
+   "Pakistan Affairs",
+   "Governance & Public Policy"
+  ],
+  "source": "Dawn",
+  "image_query": "gold ore",
+  "_editor": "gemini:gemini-3.5-flash",
+  "photo": null,
+  "credit": "",
+  "links": [
+   "https://www.dawn.com/news/2044014/significant-evidence-of-placer-gold-in-punjab-rivers-says-cm-maryam-at-minerals-investment-forum"
+  ],
+  "date": "12 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "editorial",
+  "png": "1647-02-editorial.png"
+ },
+ {
+  "story_ids": [
+   8,
+   18,
+   74,
+   79,
+   247
+  ],
+  "kicker": "Middle East · Conflict",
+  "headline": "Israeli strike on Gaza hospital kills six people, officials say",
+  "highlight": "Gaza hospital kills six",
+  "summary": "An Israeli strike hit Nasser Hospital in southern Gaza, killing six people and wounding around 20. Reports indicate the attack damaged surgical wards and intensive care units at the facility.",
+  "why": "Essential for International Relations and Current Affairs preparation regarding Middle East conflicts and warfare.",
+  "syllabus": [
+   "Conflicts",
+   "International Relations",
+   "Current Affairs"
+  ],
+  "source": "Dawn, The Express Tribune +3",
+  "image_query": "hospital building",
+  "_editor": "gemini:gemini-3.5-flash",
+  "photo": "b",
+  "credit": "Pavel Tcholakov / Flickr, CC BY 2.0",
+  "image_source": "https://www.flickr.com/photos/24587481@N00/3210853490",
+  "links": [
+   "https://www.dawn.com/news/2044030/israeli-strike-kills-6-at-southern-gaza-hospital-civil-defence",
+   "https://tribune.com.pk/story/2639893/israeli-strike-on-southern-gaza-hospital-kills-six-gaza-civil-defence-says",
+   "https://news.google.com/rss/articles/CBMiowFBVV95cUxNU3ZJQlhjSko5MDVzS25JNzdQaWprR1pORklBMUI1Qlg0T3Zkc2J1eV8yUTE1S2RMdHlLcjdDbXNrNERFdDNtYTFleFlkNHZyeXBfQ25lcS05S29hd3YtT3ZWMXE2eUs2RXpuZXV2Z01OcklJeXdKT2FzR1dqZVRHRE9Ncl9QUzVSTkVod1V6RnFjMWNIcFBkWXBWU0FWWTM3TGJj?oc=5",
+   "https://www.bbc.co.uk/news/articles/ckzd9p7e4eqeo?at_medium=RSS&at_campaign=rss",
+   "https://news.google.com/rss/articles/CBMirgFBVV95cUxOWUtJQ1VmWEJGUko2TGl1RHJQc01TQ2VCRjh3RUQtQnVLR2RPTG1TS0g3cndVaE9WZlJBckkxVUQ1VmpxQ2RkTnpjeW1IZG16eXpXQW5lVC15SnFnMEl4RWNueHpMRmRNcG1kMzVJLUtqUWhuZFJrNGcyWXM2dEN1YW81aDBsWmFDS2N2WjVXd3dxZTRLaG9mYm1DUGNoajZKUWk5UWNGWVZqWkxaT1E?oc=5"
+  ],
+  "date": "12 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "breaking-photo",
+  "png": "1647-03-breaking-photo.png"
  }
 ]
