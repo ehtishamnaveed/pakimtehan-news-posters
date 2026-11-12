@@ -5,11 +5,13 @@
     python ai_editor.py photos   # look at work/photos/sheet-N.jpg and set "photo" on each post
 
 Providers are tried in order until one returns valid output (AI_PROVIDERS overrides). Gemini is the
-primary editor; NVIDIA NIM is the independent backup, so a Gemini quota error no longer kills the run:
+primary editor; NVIDIA NIM and OpenRouter are independent backups, so a Gemini quota error no longer
+kills the run:
     gemini:gemini-3.6-flash, gemini:gemini-3.5-flash-lite,
-    nvidia:nvidia/nemotron-3-ultra-550b-a55b, cloudflare:@cf/google/gemma-4-26b-a4b-it
-Keys come from the environment only: GEMINI_API_KEY, NVIDIA_API_KEY, CLOUDFLARE_ACCOUNT_ID,
-CLOUDFLARE_API_TOKEN.
+    nvidia:nvidia/nemotron-3-ultra-550b-a55b, openrouter:nvidia/nemotron-3-ultra-550b-a55b:free,
+    cloudflare:@cf/google/gemma-4-26b-a4b-it
+Keys come from the environment only: GEMINI_API_KEY, NVIDIA_API_KEY, OPENROUTER_API_KEY,
+CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN.
 """
 import base64
 import json
@@ -24,14 +26,26 @@ import requests
 ROOT = Path(__file__).resolve().parent
 WORK = ROOT / "work"
 # gemini-3.5-flash was retired and is auto-routed to gemini-3.6-flash; call the live name directly.
-# Gemini stays first (best quality + one request a day is enough). NVIDIA NIM is the backup and has its
-# own independent quota, so a Gemini 429 no longer ends the run.
+# Gemini stays first (best quality, and one batch a day is a single call). NVIDIA NIM is the backup,
+# OpenRouter is a second backup serving the same Nemotron models on a separate free quota, so a
+# Gemini 429 no longer ends the run.
 NVIDIA_TEXT = "nvidia/nemotron-3-ultra-550b-a55b"
 NVIDIA_VISION = "nvidia/nemotron-3.5-super-vl-120b-a12b"
+OPENROUTER_TEXT = "nvidia/nemotron-3-ultra-550b-a55b:free"
+OPENROUTER_VISION = "nvidia/nemotron-3.5-super-vl:free"
+
+OPENAI_COMPAT = {
+    "nvidia": ("https://integrate.api.nvidia.com/v1", "NVIDIA_API_KEY", {}),
+    "openrouter": ("https://openrouter.ai/api/v1", "OPENROUTER_API_KEY",
+                   {"HTTP-Referer": "https://pakimtehan.com", "X-Title": "Pak Imtehan posters"}),
+}
+
 DEFAULT_PROVIDERS = (f"gemini:gemini-3.6-flash,gemini:gemini-3.5-flash-lite,"
                      f"nvidia:{NVIDIA_TEXT},nvidia:{NVIDIA_VISION},"
+                     f"openrouter:{OPENROUTER_TEXT},"
                      f"cloudflare:@cf/google/gemma-4-26b-a4b-it")
-VISION_PROVIDERS = f"gemini:gemini-3.6-flash,gemini:gemini-3.5-flash-lite,nvidia:{NVIDIA_VISION}"
+VISION_PROVIDERS = (f"gemini:gemini-3.6-flash,gemini:gemini-3.5-flash-lite,"
+                    f"nvidia:{NVIDIA_VISION},openrouter:{OPENROUTER_VISION}")
 
 EDITOR_PROMPT = """You are the current-affairs editor for Pak Imtehan (pakimtehan.com), a CSS/PMS exam
 preparation platform in Pakistan. From the headlines below, choose the {n} most exam-relevant stories
@@ -139,11 +153,16 @@ def _cloudflare(model, prompt, image=None, json_mode=False, max_tokens=4096, tim
     return text
 
 
-def _nvidia(model, prompt, image=None, json_mode=False, max_tokens=4096, timeout=180):
-    """NVIDIA NIM: OpenAI-compatible chat completions at integrate.api.nvidia.com."""
-    key = os.environ.get("NVIDIA_API_KEY")
+def _openai_compat(kind, model, prompt, image=None, json_mode=False, max_tokens=4096, timeout=180):
+    """One adapter for every OpenAI-compatible endpoint (NVIDIA NIM, OpenRouter).
+
+    Both providers serve the same Nemotron models, but on separate quota pools, so a 429 on one
+    does not take out the other.
+    """
+    base, env, extra = OPENAI_COMPAT[kind]
+    key = os.environ.get(env)
     if not key:
-        raise RuntimeError("NVIDIA_API_KEY not set")
+        raise RuntimeError(f"{env} not set")
     if image:
         content = [
             {"type": "text", "text": prompt},
@@ -152,11 +171,13 @@ def _nvidia(model, prompt, image=None, json_mode=False, max_tokens=4096, timeout
         ]
     else:
         content = prompt
-    r = requests.post("https://integrate.api.nvidia.com/v1/chat/completions",
-                      headers={"Authorization": f"Bearer {key}", "Accept": "application/json"},
-                      timeout=timeout,
-                      json={"model": model, "messages": [{"role": "user", "content": content}],
-                            "max_tokens": max_tokens, "temperature": 0.3, "top_p": 0.95})
+    body = {"model": model, "messages": [{"role": "user", "content": content}],
+            "max_tokens": max_tokens, "temperature": 0.3, "top_p": 0.95}
+    # No response_format here: the prompt asks for a JSON *array*, and the json_object mode some
+    # providers enforce would wrap it in an object. extract_json_array() handles prose/fences instead.
+    r = requests.post(f"{base}/chat/completions",
+                      headers={"Authorization": f"Bearer {key}", "Accept": "application/json", **extra},
+                      timeout=timeout, json=body)
     if r.status_code != 200:
         raise RuntimeError(f"HTTP {r.status_code}: {r.text[:200]}")
     d = r.json()
@@ -168,13 +189,26 @@ def _nvidia(model, prompt, image=None, json_mode=False, max_tokens=4096, timeout
     if not text:
         raise RuntimeError(f"empty response ({choice.get('finish_reason')})")
     u = d.get("usage") or {}
-    print(f"    tokens: {u.get('prompt_tokens')} in / {u.get('completion_tokens')} out")
+    cost = u.get("cost")
+    print(f"    tokens: {u.get('prompt_tokens')} in / {u.get('completion_tokens')} out"
+          + (f" / ${cost}" if cost else ""))
     return text
+
+
+def _nvidia(model, prompt, **kw):
+    """NVIDIA NIM, called directly with an NVIDIA_API_KEY."""
+    return _openai_compat("nvidia", model, prompt, **kw)
+
+
+def _openrouter(model, prompt, **kw):
+    """OpenRouter, same models on a separate free-tier quota."""
+    return _openai_compat("openrouter", model, prompt, **kw)
 
 
 def call(spec, prompt, **kw):
     kind, model = spec.split(":", 1)
-    fn = {"gemini": _gemini, "cloudflare": _cloudflare, "nvidia": _nvidia}[kind]
+    fn = {"gemini": _gemini, "cloudflare": _cloudflare,
+          "nvidia": _nvidia, "openrouter": _openrouter}[kind]
     for attempt in range(2):
         try:
             return fn(model, prompt, **kw)
