@@ -1,10 +1,11 @@
 """Find free photos for the posters — several free libraries, tried in order.
 
 Providers (first usable wins, merged until we have enough candidates):
-  1. Openverse         no key      Flickr CC0 / PD / CC BY / CC BY-SA
-  2. Pixabay           PIXABAY_API_KEY        Pixabay Content Licence
-  3. Unsplash          UNSPLASH_ACCESS_KEY    Unsplash Licence
-  4. Wikimedia Commons no key      CC0 / PD / CC BY / CC BY-SA
+  1. Pexels            PEXELS_API_KEY         Pexels Licence (best stock quality)
+  2. Unsplash          UNSPLASH_ACCESS_KEY    Unsplash Licence
+  3. Pixabay           PIXABAY_API_KEY        Pixabay Content Licence
+  4. Openverse         no key                 Flickr CC0 / PD / CC BY / CC BY-SA
+  5. Wikimedia Commons no key                 CC0 / PD / CC BY / CC BY-SA
 
 * Only licences that allow commercial use and putting text over the photo.
 * Never photos from the news outlets themselves (copyrighted).
@@ -31,6 +32,7 @@ MIN_BYTES = 40_000
 MIN_WIDTH = 1000
 
 OPENVERSE = "https://api.openverse.org/v1/images/"
+PEXELS = "https://api.pexels.com/v1/search"
 PIXABAY = "https://pixabay.com/api/"
 UNSPLASH = "https://api.unsplash.com/search/photos"
 COMMONS = "https://commons.wikimedia.org/w/api.php"
@@ -53,6 +55,26 @@ def _get(url, params=None, headers=None, attempts=4):
             time.sleep((2, 6, 12, 20)[i])
     print(f"  request failed for {url.split('?')[0]}: {err}")
     return None
+
+
+def _pexels(query, want):
+    key = os.environ.get("PEXELS_API_KEY")
+    if not key:
+        return []
+    r = _get(PEXELS, params=dict(
+        query=query, orientation="landscape", size="medium",
+        per_page=max(want * 3, 10)), headers={"Authorization": key})
+    if r is None:
+        return []
+    out = []
+    for it in (r.json().get("photos") or [])[:want]:
+        src = it.get("src") or {}
+        url = src.get("large2x") or src.get("large") or src.get("original")
+        if not url:
+            continue
+        out.append({"url": url, "credit": f"{it.get('photographer') or 'Pexels'} / Pexels",
+                    "source": it.get("url"), "title": it.get("alt") or ""})
+    return out
 
 
 def _openverse(query, want):
@@ -148,8 +170,8 @@ def _commons(query, want):
     return out
 
 
-PROVIDERS = [("openverse", _openverse), ("pixabay", _pixabay),
-             ("unsplash", _unsplash), ("commons", _commons)]
+PROVIDERS = [("pexels", _pexels), ("unsplash", _unsplash), ("pixabay", _pixabay),
+             ("openverse", _openverse), ("commons", _commons)]
 
 
 def _download(url, path):
@@ -216,12 +238,13 @@ def candidates(query, dest_dir: Path, prefix: str, want=3):
 
 def check():
     """Probe every provider so CI can fail fast when none of them work."""
-    keyed = {"pixabay": "PIXABAY_API_KEY", "unsplash": "UNSPLASH_ACCESS_KEY"}
+    needed = {"pexels": ("PEXELS_API_KEY",), "unsplash": ("UNSPLASH_ACCESS_KEY", "UNSPLASH_API_KEY"),
+              "pixabay": ("PIXABAY_API_KEY",)}
     usable = 0
     for name, provider in PROVIDERS:
-        want = keyed.get(name)
-        if want and not (os.environ.get(want) or os.environ.get("UNSPLASH_API_KEY")):
-            print(f"  skipped {name}: {want} not set")
+        vars_ = needed.get(name)
+        if vars_ and not any(os.environ.get(v) for v in vars_):
+            print(f"  skipped {name}: {vars_[0]} not set")
             continue
         try:
             got = provider("solar panels", 3)

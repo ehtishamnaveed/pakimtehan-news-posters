@@ -13,7 +13,8 @@ The routine is tied to the Claude account that created it. These are the steps t
 2. At claude.ai/code, open **Environments** and set network access on the environment the routine
    uses to **Full**, or to a custom allowlist that includes the news sites, `news.google.com`,
    `api.openverse.org`, `live.staticflickr.com`, `api.pixabay.com`, `pixabay.com`, `cdn.pixabay.com`,
-   `api.unsplash.com`, `images.unsplash.com`, `commons.wikimedia.org`, `upload.wikimedia.org`,
+   `api.unsplash.com`, `images.unsplash.com`, `api.pexels.com`, `images.pexels.com`,
+   `commons.wikimedia.org`, `api.wikimedia.org`, `upload.wikimedia.org`,
    `pypi.org` and the Playwright CDN.
    Without this, the run fetches 0 headlines.
 3. Recreate the routine at claude.ai/code/routines:
