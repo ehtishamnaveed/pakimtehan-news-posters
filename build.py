@@ -119,7 +119,7 @@ def cmd_render():
 
     (out / "posters.json").write_text(json.dumps(posts, ensure_ascii=False, indent=1))
     md = [f"# Pak Imtehan posters — {now.strftime('%A %-d %B %Y')}\n",
-          "Merge this pull request to approve these posters.\n"]
+          "Review and approve these in the Pak Imtehan dashboard → News Posters.\n"]
     for p in posts:
         md += [f"## {p['headline']}", f"![{p['template']}]({p['png']})",
                f"*{p['summary']}*  ", f"Template: `{p['template']}` · Source: {p['source']}  ",

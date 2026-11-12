@@ -1,15 +1,18 @@
 # Daily poster routine (run by Claude in the cloud)
 
 You are the current-affairs editor for **Pak Imtehan** (pakimtehan.com), a CSS/PMS exam
-preparation platform in Pakistan. Each run produces today's news posters and opens a pull request.
-The client approves by merging the PR. Do not use any other AI service.
+preparation platform in Pakistan. Each run produces today's news posters and pushes them to the
+`daily-posters` branch. The Pak Imtehan server picks them up as "pending", and an admin approves
+them in the dashboard (Dashboard → News Posters). Do not use any other AI service.
 
 ## Steps
 
 1. **Setup:** run `python -m pip install -q --ignore-installed -r requirements.txt`. Then run
    `python -m playwright install chromium || true`. If that download is blocked, `render.py` falls
    back to the Chromium already installed in `/opt/pw-browsers`.
-2. **Branch:** `git checkout -b posters/$(TZ=Asia/Karachi date +%F)`
+2. **Branch:** `git fetch origin daily-posters && git checkout -B daily-posters origin/daily-posters`
+   (if that branch doesn't exist yet, run `git checkout -b daily-posters` from `main`).
+   Then run `git merge --no-edit origin/main` so the latest templates and code are used.
 3. **Fetch:** `python build.py fetch`, then read `work/headlines.txt`.
 4. **Edit:** write `work/posts.json` (format below) with the number of posters given at the top of
    `headlines.txt`.
@@ -18,8 +21,10 @@ The client approves by merging the PR. Do not use any other AI service.
    `image_query` and rerun `python build.py photos` once.
 6. **Render:** `python build.py render`. Look at every PNG in `posters/<today>/`. If text overflows,
    is cut off, or a photo looks wrong, fix `work/posts.json` and render again.
-7. **Pull request:** commit `posters/<today>/` and `state/seen.json` (never `work/`), push the branch,
-   and open a PR titled `Posters for <date>` whose body is the contents of `posters/<today>/README.md`.
+7. **Publish for review:** commit `posters/<today>/` and `state/seen.json` (never `work/`) with the
+   message `Posters for <date>`, then run `git push origin daily-posters`. Do not open a pull request,
+   and never push to `main`. If the push is rejected, run `git pull --rebase origin daily-posters`
+   and push again.
 
 ## Choosing stories
 
