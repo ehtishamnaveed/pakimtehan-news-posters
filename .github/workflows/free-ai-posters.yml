@@ -1,0 +1,122 @@
+# Daily news posters on GitHub Actions with free AI (Gemini -> Gemma 4 -> Cloudflare Workers AI).
+#
+# Output goes to a branch the Pak Imtehan server syncs from:
+#   run from main        -> daily-posters        (production)
+#   run from any branch  -> daily-posters-test   (testing; never touches production)
+# If today's posters already exist on that branch (e.g. the Claude routine made them), it does nothing.
+#
+# Secrets (Settings -> Secrets and variables -> Actions):
+#   GEMINI_API_KEY, CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN
+name: Daily posters (free AI)
+
+on:
+  schedule:
+    - cron: "40 2 * * *"   # 07:40 Asia/Karachi. Scheduled runs only fire from the default branch.
+  workflow_dispatch:
+  push:
+    branches: [free-ai-actions]
+    paths:
+      - ".github/workflows/free-ai-posters.yml"
+      - "ai_editor.py"
+      - "build.py"
+      - "images.py"
+      - "render.py"
+      - "fetch_news.py"
+      - "templates/**"
+      - "config/**"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-posters-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  posters:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      OUT_BRANCH: ${{ github.ref_name == 'main' && 'daily-posters' || 'daily-posters-test' }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Today's date (Pakistan time)
+        run: echo "TODAY=$(TZ=Asia/Karachi date +%F)" >> "$GITHUB_ENV"
+
+      - name: Prepare output branch
+        id: out
+        run: |
+          git config user.name "pakimtehan-posters[bot]"
+          git config user.email "posters@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin "$OUT_BRANCH" >/dev/null; then
+            git fetch origin "$OUT_BRANCH"
+            git worktree add out "origin/$OUT_BRANCH"
+            git -C out switch -c "$OUT_BRANCH"
+          else
+            git worktree add --orphan -b "$OUT_BRANCH" out
+          fi
+          if [ -f "out/posters/$TODAY/posters.json" ]; then
+            echo "Posters for $TODAY already exist on $OUT_BRANCH; nothing to do."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+          mkdir -p state
+          [ -f out/state/seen.json ] && cp out/state/seen.json state/seen.json || true
+
+      - uses: actions/setup-python@v5
+        if: steps.out.outputs.skip != 'true'
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install
+        if: steps.out.outputs.skip != 'true'
+        run: |
+          pip install -r requirements.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Fetch news
+        if: steps.out.outputs.skip != 'true'
+        run: python build.py fetch
+
+      - name: Choose stories and write text (free AI)
+        if: steps.out.outputs.skip != 'true'
+        run: python ai_editor.py write
+
+      - name: Find and choose photos
+        if: steps.out.outputs.skip != 'true'
+        run: |
+          python build.py photos
+          python ai_editor.py photos
+
+      - name: Render posters
+        if: steps.out.outputs.skip != 'true'
+        run: python build.py render
+
+      - name: Publish to ${{ env.OUT_BRANCH }}
+        if: steps.out.outputs.skip != 'true'
+        run: |
+          mkdir -p out/posters out/state
+          cp -r "posters/$TODAY" out/posters/
+          cp state/seen.json out/state/seen.json
+          cd out
+          git add "posters/$TODAY" state/seen.json
+          git commit -m "Posters for $TODAY (free AI)"
+          for i in 1 2 3; do
+            git push origin "$OUT_BRANCH" && exit 0
+            git pull --rebase origin "$OUT_BRANCH"
+          done
+          exit 1
+
+      - name: Summary
+        if: always() && steps.out.outputs.skip != 'true'
+        run: |
+          {
+            echo "## Posters for $TODAY -> \`$OUT_BRANCH\`"
+            python -c "import json;[print(f\"- **{p['headline']}** ({p.get('_editor','?')}, {p.get('template','?')})\") for p in json.load(open('posters/$TODAY/posters.json'))]" 2>/dev/null || echo "No posters produced."
+          } >> "$GITHUB_STEP_SUMMARY"

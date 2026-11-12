@@ -9,7 +9,7 @@ from pathlib import Path
 
 import requests
 
-UA = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) PakImtehanNewsBot/1.0"}
+UA = {"User-Agent": "PakImtehanPosters/1.0 (+https://pakimtehan.com)"}  # Flickr returns 403 to agents containing "Bot"
 API = "https://api.openverse.org/v1/images/"
 
 
