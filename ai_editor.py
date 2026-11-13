@@ -44,7 +44,9 @@ DEFAULT_PROVIDERS = (f"gemini:gemini-3.6-flash,gemini:gemini-3.5-flash-lite,"
                      f"nvidia:{NVIDIA_TEXT},nvidia:{NVIDIA_VISION},"
                      f"openrouter:{OPENROUTER_TEXT},"
                      f"cloudflare:@cf/google/gemma-4-26b-a4b-it")
-VISION_PROVIDERS = (f"gemini:gemini-3.6-flash,gemini:gemini-3.5-flash-lite,"
+# Photo picks: Flash-Lite first. In the 13 Nov run 3.6 Flash returned 429/timeouts on 13 of 15 picks
+# and spent ~980 thinking tokens on each a/b/c answer; Flash-Lite answered every one in seconds.
+VISION_PROVIDERS = (f"gemini:gemini-3.5-flash-lite,gemini:gemini-3.6-flash,"
                     f"nvidia:{NVIDIA_VISION},openrouter:{OPENROUTER_VISION}")
 
 EDITOR_PROMPT = """You are the current-affairs editor for Pak Imtehan (pakimtehan.com), a CSS/PMS exam
