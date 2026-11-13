@@ -8,12 +8,14 @@
 #
 # Secrets (Settings -> Secrets and variables -> Actions):
 #   GEMINI_API_KEY (primary), NVIDIA_API_KEY + OPENROUTER_API_KEY (backups),
-#   CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN
+#   CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN (last-resort AI),
+#   PEXELS_API_KEY, UNSPLASH_ACCESS_KEY, PIXABAY_API_KEY (optional photo libraries; without them
+#   only the keyless Openverse and Wikimedia Commons are searched)
 name: Daily posters (free AI)
 
 on:
   schedule:
-    # Once a day at 07:40 Asia/Karachi. Produces one batch (5 posters) per day.
+    # Once a day at 07:40 Asia/Karachi. Produces one batch (posters_per_day in config/sources.yaml, 15).
     - cron: "40 2 * * *"
   workflow_dispatch:
 
@@ -49,7 +51,7 @@ jobs:
     needs: gate
     if: needs.gate.outputs.go == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 40   # 15 posters: ~2 min AI pacing + up to 15 photo searches
     env:
       OUT_BRANCH: ${{ vars.POSTERS_OUT_BRANCH || 'daily-posters-test' }}
       TEST_MODE: ${{ vars.POSTERS_TEST_MODE || 'true' }}

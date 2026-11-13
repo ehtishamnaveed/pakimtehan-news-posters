@@ -126,7 +126,8 @@ def _gemini(model, prompt, image=None, json_mode=False, max_tokens=4096, timeout
     if not text:
         raise RuntimeError(f"empty response ({cand.get('finishReason')})")
     u = d.get("usageMetadata", {})
-    print(f"    tokens: {u.get('promptTokenCount')} in / {u.get('candidatesTokenCount')} out")
+    print(f"    tokens: {u.get('promptTokenCount')} in / {u.get('candidatesTokenCount')} out"
+          + (f" / {u['thoughtsTokenCount']} thinking" if u.get("thoughtsTokenCount") else ""))
     return text
 
 
@@ -205,11 +206,27 @@ def _openrouter(model, prompt, **kw):
     return _openai_compat("openrouter", model, prompt, **kw)
 
 
+# Minimum seconds between two requests to the same model. Gemini's free tier allows only a few
+# requests per minute per model: in the 12 Nov run, back-to-back photo calls got 429s. 15 photo
+# calls at this pace take ~2 min instead of hitting the limit.
+MIN_GAP = {"gemini": 7.0}
+_last_call = {}
+
+
+def _pace(spec):
+    gap = MIN_GAP.get(spec.split(":", 1)[0], 0)
+    wait = _last_call.get(spec, 0) + gap - time.monotonic()
+    if wait > 0:
+        time.sleep(wait)
+    _last_call[spec] = time.monotonic()
+
+
 def call(spec, prompt, **kw):
     kind, model = spec.split(":", 1)
     fn = {"gemini": _gemini, "cloudflare": _cloudflare,
           "nvidia": _nvidia, "openrouter": _openrouter}[kind]
     for attempt in range(2):
+        _pace(spec)
         try:
             return fn(model, prompt, **kw)
         except RuntimeError as e:
@@ -305,12 +322,23 @@ def cmd_write():
     lines = text.splitlines()
     short_prompt = EDITOR_PROMPT.format(n=want, headlines="\n".join(lines[:5 + 90]))
 
+    # ~180 output tokens per poster, plus room for Gemini thinking / Nemotron reasoning tokens,
+    # which count against the same limit. 15 posters -> 15000. Cloudflare's free tier is smaller.
+    need = max(1, -(-want * 4 // 5))  # accept 80% (12 of 15) rather than failing the whole run
+    best = []
+
+    def save(posts, spec):
+        for p in posts:  # fill outlet names from the real ids if the model left them out
+            if not p["source"]:
+                p["source"] = ", ".join(dict.fromkeys(heads[i]["source"] for i in p["story_ids"]))
+            p["_editor"] = spec
+        (WORK / "posts.json").write_text(json.dumps(posts, ensure_ascii=False, indent=1))
+        print(f"  {len(posts)} poster(s) written by {spec}")
+
     for spec in os.environ.get("AI_PROVIDERS", DEFAULT_PROVIDERS).split(","):
         spec = spec.strip()
         print(f"  trying {spec} ...")
-        # Gemini and the Nemotron reasoning models need room for the full 5-poster JSON; Cloudflare's
-        # free tier is capped lower.
-        budget = 2048 if spec.startswith("cloudflare:") else 8192
+        budget = 4096 if spec.startswith("cloudflare:") else max(8192, want * 600 + 6000)
         try:
             raw = call(spec, short_prompt if spec.startswith("cloudflare:") else prompt,
                        json_mode=True, max_tokens=budget)
@@ -318,15 +346,15 @@ def cmd_write():
         except Exception as e:  # noqa: BLE001 - any failure means: try the next provider
             print(f"    failed: {str(e)[:160]}")
             continue
-        if len(posts) < max(1, want - 1):
-            print(f"    only {len(posts)} valid poster(s), trying next provider")
+        if len(posts) < need:
+            print(f"    only {len(posts)} valid poster(s) (need {need}), trying next provider")
+            if len(posts) > len(best[0] if best else []):
+                best = [posts, spec]
             continue
-        for p in posts:  # fill outlet names from the real ids if the model left them out
-            if not p["source"]:
-                p["source"] = ", ".join(dict.fromkeys(heads[i]["source"] for i in p["story_ids"]))
-            p["_editor"] = spec
-        (WORK / "posts.json").write_text(json.dumps(posts, ensure_ascii=False, indent=1))
-        print(f"  {len(posts)} poster(s) written by {spec}")
+        save(posts, spec)
+        return
+    if best:  # nobody reached the target: publish the largest partial batch rather than nothing
+        save(*best)
         return
     sys.exit("All AI providers failed; no posters written.")
 

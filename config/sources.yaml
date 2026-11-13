@@ -60,7 +60,7 @@ topics:
   - Governance & Public Policy
 
 settings:
-  posters_per_day: 5          # how many posters to generate each run
+  posters_per_day: 15         # how many posters to generate each run
   max_age_hours: 30           # ignore stories older than this
   max_per_source: 12          # cap headlines per source sent to Gemini (keeps tokens low)
   templates: [breaking-photo, navy-card, editorial, newspaper, typographic, brief-light]

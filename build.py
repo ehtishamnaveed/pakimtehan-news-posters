@@ -84,7 +84,7 @@ def assign_templates(posts, templates, rng):
             pool = templates[:]
             rng.shuffle(pool)
         # with a photo: any template that shows one; without: only the ones that work photo-less
-        ok = [t for t in pool if (t != "typographic") if p.get("image")] if p.get("image") else \
+        ok = [t for t in pool if t != "typographic"] if p.get("image") else \
              [t for t in pool if t not in NEEDS_PHOTO]
         if not ok and p.get("image"):
             ok = [t for t in templates if t != "typographic"]
@@ -126,9 +126,10 @@ def cmd_render():
                "Links: " + " · ".join(f"[{j + 1}]({l})" for j, l in enumerate(p["links"])) + "\n"]
     (out / "README.md").write_text("\n".join(md))
 
-    seen = set(json.loads(SEEN.read_text())) if SEEN.exists() else set()
+    seen = json.loads(SEEN.read_text()) if SEEN.exists() else []  # oldest first
+    new = [l for p in posts for l in p["links"] if l not in set(seen)]
     SEEN.parent.mkdir(exist_ok=True)
-    SEEN.write_text(json.dumps(sorted(seen | {l for p in posts for l in p["links"]})[-3000:], indent=0))
+    SEEN.write_text(json.dumps((seen + list(dict.fromkeys(new)))[-3000:], indent=0))
     print(f"done -> {out.relative_to(ROOT)}")
 
 
