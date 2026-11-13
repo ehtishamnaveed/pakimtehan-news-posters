@@ -415,5 +415,494 @@
   "edition": "Daily Current Affairs",
   "template": "breaking-photo",
   "png": "1027-15-breaking-photo.png"
+ },
+ {
+  "story_ids": [
+   0,
+   13,
+   43
+  ],
+  "kicker": "Security · Operations",
+  "headline": "Security forces kill 74 terrorists in KP and Balochistan operations",
+  "highlight": "kill 74 terrorists",
+  "summary": "Pakistan's military media wing reported that security forces killed 74 terrorists during intelligence-based operations carried out in Khyber Pakhtunkhwa and Balochistan.",
+  "why": "Vital for assessing counter-terrorism efforts and internal security dynamics in Pakistan's border provinces.",
+  "syllabus": [
+   "Security",
+   "Terrorism",
+   "Pakistan Affairs"
+  ],
+  "source": "Dawn, The Express Tribune +1",
+  "image_query": "military vehicle",
+  "_editor": "gemini:gemini-3.6-flash",
+  "photo": null,
+  "credit": "",
+  "links": [
+   "https://www.dawn.com/news/2044260/security-forces-kill-74-terrorists-during-ibos-in-khyber-pakhtunkhwa-balochistan-ispr",
+   "https://tribune.com.pk/story/2640081/security-forces-kill-31-terrorists-in-balochistan-operations-ispr",
+   "https://www.brecorder.com/news/40448742/security-forces-kill-74-terrorists-in-balochistan-kp-operations-ispr"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "newspaper",
+  "file": "1247-01-newspaper.jpg"
+ },
+ {
+  "story_ids": [
+   1
+  ],
+  "kicker": "Economy · Minerals",
+  "headline": "Pakistan focuses mineral exploration on strategic global resources",
+  "highlight": "mineral exploration on",
+  "summary": "Petroleum Minister Ali Pervaiz Malik stated that Pakistan is shifting its mineral exploration focus toward resources of strategic value to global investors during an address at Pakistan Minerals.",
+  "why": "Important for studying Pakistan's mineral potential, economic revival, and foreign investment strategy.",
+  "syllabus": [
+   "Economy",
+   "Development",
+   "Pakistan Affairs"
+  ],
+  "source": "Dawn",
+  "image_query": "mine site",
+  "_editor": "gemini:gemini-3.6-flash",
+  "photo": "b",
+  "credit": "iLoveMountains.org / Flickr, CC BY 2.0",
+  "image_source": "https://www.flickr.com/photos/15648670@N00/4534740551",
+  "links": [
+   "https://www.dawn.com/news/2044267/pakistans-mineral-exploration-increasingly-focused-on-strategic-resources-minister-tells-investors"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "brief-light",
+  "file": "1247-02-brief-light.jpg"
+ },
+ {
+  "story_ids": [
+   3,
+   53,
+   260
+  ],
+  "kicker": "Diplomacy · Sanctions",
+  "headline": "UNSC updates Yemen sanctions as Pakistan urges end to Houthi attacks",
+  "highlight": "Yemen sanctions as",
+  "summary": "The UN Security Council unanimously renewed sanctions on Yemen to address Houthi missile and drone threats, while Pakistan demanded an immediate end to Houthi attacks against Saudi Arabia.",
+  "why": "Relevant to Middle East geopolitics, UN multilateralism, and Pakistan's foreign policy in the Gulf.",
+  "syllabus": [
+   "Diplomacy",
+   "International Relations",
+   "Foreign Policy"
+  ],
+  "source": "Dawn, Associated Press of Pakistan +1",
+  "image_query": "United Nations",
+  "_editor": "gemini:gemini-3.6-flash",
+  "photo": "b",
+  "credit": "japedi / Flickr, CC BY 2.0",
+  "image_source": "https://www.flickr.com/photos/7289631@N02/1751648777",
+  "links": [
+   "https://www.dawn.com/news/2044254/pakistan-calls-for-immediate-end-to-houthi-attacks-on-saudi-arabia-as-unsc-renews-yemen-sanctions",
+   "https://www.app.com.pk/foreign-correspondent/unsc-updates-yemen-sanctions-regime-to-address-houthi-threats-pakistan-slams-attacks-on-saudi-arabia/",
+   "https://news.google.com/rss/articles/CBMizgFBVV95cUxOUlBZLTd5ZU9sLWVMaTUxc2llWGdnNEZnemR2VmdEdXpQX0h2RkJ4ajUwNUJaUDlEenl4dFlOb0FBOXRkUWNhNGhUU3RTcUI3YjBtZGNvRG9uVm81SUdGUTF4b01kRVBCdkg5ejFROTVQLTZocVZhN212dmdDYW82VjdibDlzc25lNmJjSVBjRnppelptNEpvTDNBN3BZYUM0U240cHFZeWoyMlNXR0tSTzZPVURQWDNGdEpuVVNHVUlmRFpBTEtKcUpFZ3Rqdw?oc=5"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "editorial",
+  "file": "1247-03-editorial.jpg"
+ },
+ {
+  "story_ids": [
+   2,
+   56
+  ],
+  "kicker": "Climate · Pollution",
+  "headline": "Delhi overtakes Lahore as world's most polluted city amid severe smog",
+  "highlight": "world's most polluted",
+  "summary": "Delhi surpassed Lahore as the world's most polluted major city as hazardous air quality and dense smog blanketed the Indian capital, drastically reducing visibility for its 20 million residents.",
+  "why": "Highlights regional environmental degradation, transboundary air pollution, and climate challenges in South Asia.",
+  "syllabus": [
+   "Climate",
+   "Health",
+   "Current Affairs"
+  ],
+  "source": "Dawn, Reuters",
+  "image_query": "smog",
+  "_editor": "gemini:gemini-3.6-flash",
+  "photo": "c",
+  "credit": "kevin dooley / Flickr, CC BY 2.0",
+  "image_source": "https://www.flickr.com/photos/12836528@N00/386198516",
+  "links": [
+   "https://www.dawn.com/news/2044265/delhi-overtakes-lahore-as-worlds-most-polluted-major-city-as-air-quality-deteriorates",
+   "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQTDFhYWxpT2NaY1pyQmI2UU9LZGZJdTlEQ2wwbGxGNHJnbGxOUmdDWVJMQ0VUMXk5NmpBMTJoZXJzTGJuRDZnU09DT0gxTWFqRjlyTk4zSUZqRXlVb1NYTEJRaTVBMUpRcm9nTzZHTUJzanJlcVZOSE1UczBpZXdkdS1WRFVQWFJ2LTROZVVkZEt1dUF6d2NPZU0zbFVsZ0I0R012SUp2OXhEVDFJUTNTVUplbGd1cXBnS0laV2RJczE?oc=5"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "breaking-photo",
+  "file": "1247-04-breaking-photo.jpg"
+ },
+ {
+  "story_ids": [
+   5,
+   28,
+   63,
+   70,
+   231,
+   247,
+   266
+  ],
+  "kicker": "Technology · Outage",
+  "headline": "Microsoft global outage disrupts Outlook and Teams for businesses",
+  "highlight": "global outage disrupts",
+  "summary": "A major Microsoft service disruption lasting nearly 10 hours affected Outlook and Teams applications globally, impacting businesses, government agencies, and police operations across several regions.",
+  "why": "Critical for understanding global IT infrastructure vulnerability, cybersecurity, and digital governance risks.",
+  "syllabus": [
+   "Technology",
+   "Current Affairs"
+  ],
+  "source": "Dawn, The News International +5",
+  "image_query": "laptop computer",
+  "_editor": "gemini:gemini-3.6-flash",
+  "photo": "a",
+  "credit": "Image Catalog / Flickr, CC0",
+  "image_source": "https://www.flickr.com/photos/132795455@N08/17652700524",
+  "links": [
+   "https://www.dawn.com/news/2044258/microsoft-outage-drags-on-for-hours-disrupting-outlook-teams-for-businesses-and-governments",
+   "https://news.google.com/rss/articles/CBMimAFBVV95cUxQTGpWWXlfQ2tIXzBnTVdIODlXelpqVWNLVHlNV0pJNDFONmgxMUk2SWtaMGZHMU1Vd2lNT1ptUkwzSEowNnNpR0ltRWhERkhDZjRlV1RCSUxIcHdPdEZkSi1EYXNoX2h1NEgtQnhVRVZQOU1lOU5qa2RfQy1Ka05yOGlrU0IyRkhGM3RRallmLTFScUhLbzZBMtIBmAFBVV95cUxQTGpWWXlfQ2tIXzBnTVdIODlXelpqVWNLVHlNV0pJNDFONmgxMUk2SWtaMGZHMU1Vd2lNT1ptUkwzSEowNnNpR0ltRWhERkhDZjRlV1RCSUxIcHdPdEZkSi1EYXNoX2h1NEgtQnhVRVZQOU1lOU5qa2RfQy1Ka05yOGlrU0IyRkhGM3RRallmLTFScUhLbzZBMg?oc=5",
+   "https://news.google.com/rss/articles/CBMisAFBVV95cUxPQWpWeUZnbllhcFk4WktZS0s3T1N6T3k3Vnhhd3pfSE9SWF9iRmRIQUljdHZXN0UtWS1uZS1rbUNZSlVPd1NXLXRtVUVtc3NQNTgxMVFMWjVnT3pPb09EX1g1YUx3WkF2VHk0bUMwWlhkRHdpT0JFRE5SQ3pQRkdmSnpUOHNXLUo1dXNSY3lFdkpSdU5laDdwSlhWRDVnNjBFcUh2Y0FwMXNldE8tSFpPaw?oc=5",
+   "https://news.google.com/rss/articles/CBMinAFBVV95cUxOb2ZUZnZ6Z1JPSWM2YWVQel9wdC14MWloZ3FvX084b1RFcmRsUWhNZFJGSjZxd1hOOWZsb2ZEbTVqVWx3Zkl1T01TY21QUTRHVGRsUmF5bUx3UDctd0lJOGZlblJFYjRIMFEyNkZGTFl1R05jYS1PXzNXSWhIMHgtRDkwLU1XNTFUZmkxbGhoRS1CbWpKMHhfbFFWdlA?oc=5",
+   "https://www.theguardian.com/technology/2026/nov/13/major-microsoft-outage-impacts-australian-government-services-and-schools",
+   "https://www.ft.com/content/025b2769-bca8-4a74-b9f5-5d7ad7da32c7?syn-25a6b1a6=1",
+   "https://news.google.com/rss/articles/CBMigAFBVV95cUxNdExpN1FGbnZWR1J6TmZDU1lqT0hsU2xUOHlnTFJpX2NtQ1o4aDAzQ1A0UTI4NWRRVEdaNlZKTFd3VXBGYmtIQWZPeWJ0b1pxd1d6Q181Q0otOVZlX3J1UUk5T1F0dlpMZGxwZ1FuUTBKTC1mdzhzcjBUWGhoLWZHRw?oc=5"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "navy-card",
+  "file": "1247-05-navy-card.jpg"
+ },
+ {
+  "story_ids": [
+   11
+  ],
+  "kicker": "Governance · Law",
+  "headline": "Peshawar police ban private jirgas to curb illegal dispute resolution",
+  "highlight": "ban private jirgas",
+  "summary": "Police in Peshawar have prohibited private jirgas from holding dispute resolution meetings in wedding halls and hotels, citing concerns over gun culture, violent clashes, and high monetary charges.",
+  "why": "Key topic for legal reforms, judicial governance, informal justice systems, and police authority in KP.",
+  "syllabus": [
+   "Governance & Public Policy",
+   "Constitution & Law",
+   "Pakistan Affairs"
+  ],
+  "source": "Dawn",
+  "image_query": "police car",
+  "_editor": "gemini:gemini-3.6-flash",
+  "photo": null,
+  "credit": "",
+  "links": [
+   "https://www.dawn.com/news/2044193/police-ban-private-jirgas-in-peshawar"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "typographic",
+  "file": "1247-06-typographic.jpg"
+ },
+ {
+  "story_ids": [
+   36
+  ],
+  "kicker": "Economy · Investment",
+  "headline": "Nishat Group announces investment in Pakistan's proposed new port",
+  "highlight": "investment in Pakistan's",
+  "summary": "Nishat Group, one of Pakistan's major conglomerates, expressed willingness to invest in developing the country's proposed new port following discussions with federal officials.",
+  "why": "Examines infrastructure expansion, private sector investment, and maritime economic growth in Pakistan.",
+  "syllabus": [
+   "Economy & Budget",
+   "Trade",
+   "Pakistan Affairs"
+  ],
+  "source": "Business Recorder",
+  "image_query": "seaport",
+  "_editor": "gemini:gemini-3.6-flash",
+  "photo": "a",
+  "credit": "rabiem22 / Flickr, CC BY 2.0",
+  "image_source": "https://www.flickr.com/photos/28490141@N03/8278808474",
+  "links": [
+   "https://www.brecorder.com/news/40448749/manshas-nishat-group-to-invest-in-pakistans-new-port"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "navy-card",
+  "file": "1247-07-navy-card.jpg"
+ },
+ {
+  "story_ids": [
+   40
+  ],
+  "kicker": "Economy · Technology",
+  "headline": "Government extends subsidy on Raast QR merchant payment charges",
+  "highlight": "subsidy on Raast",
+  "summary": "Prime Minister Shehbaz Sharif decided to maintain the subsidy on merchant discount rate charges for Raast QR payments to promote digital payment adoption across merchants nationwide.",
+  "why": "Relevant to financial inclusion, fintech governance, and digital economy initiatives in Pakistan.",
+  "syllabus": [
+   "Economy & Budget",
+   "Technology",
+   "Pakistan Affairs"
+  ],
+  "source": "Business Recorder",
+  "image_query": "smartphone",
+  "_editor": "gemini:gemini-3.6-flash",
+  "photo": "b",
+  "credit": "anykeyh / Flickr, CC BY-SA 2.0",
+  "image_source": "https://www.flickr.com/photos/112264336@N05/15607697348",
+  "links": [
+   "https://www.brecorder.com/news/40448745/govt-moves-to-continue-subsidy-for-raast-qr-payments"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "brief-light",
+  "file": "1247-08-brief-light.jpg"
+ },
+ {
+  "story_ids": [
+   37,
+   161
+  ],
+  "kicker": "Diplomacy · Summit",
+  "headline": "Japanese PM Sanae Takaichi to visit China for APEC summit in Shenzhen",
+  "highlight": "visit China for",
+  "summary": "Japanese Prime Minister Sanae Takaichi will travel to China to attend the Asia-Pacific Economic Cooperation summit in Shenzhen, marking her first official trip to the country since taking office.",
+  "why": "Important for analyzing East Asian geopolitics, Sino-Japanese bilateral relations, and regional economic diplomacy.",
+  "syllabus": [
+   "Diplomacy",
+   "Geopolitics",
+   "International Relations"
+  ],
+  "source": "Business Recorder, CNA",
+  "image_query": "Tokyo",
+  "_editor": "gemini:gemini-3.6-flash",
+  "photo": "b",
+  "credit": "luca.sartoni / Flickr, CC BY-SA 2.0",
+  "image_source": "https://www.flickr.com/photos/21925196@N08/44592014464",
+  "links": [
+   "https://www.brecorder.com/news/40448748/takaichi-to-attend-apec-in-first-china-trip-as-pm",
+   "https://www.channelnewsasia.com/east-asia/japan-sanae-takaichi-first-china-trip-apec-summit-6548471"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "editorial",
+  "file": "1247-09-editorial.jpg"
+ },
+ {
+  "story_ids": [
+   100,
+   101,
+   104,
+   119,
+   124,
+   195,
+   196,
+   201,
+   248
+  ],
+  "kicker": "Diplomacy · Conflict",
+  "headline": "US envoys hold peace talks with Russia and Ukraine amid prisoner swap",
+  "highlight": "hold peace talks",
+  "summary": "US envoys held discussions with leaders in Moscow, Kyiv, and Dublin to negotiate a Russia-Ukraine peace framework, reaching an agreement on prisoner exchanges while debating European inclusion.",
+  "why": "Core topic for international diplomacy, conflict resolution, and global geopolitical balances.",
+  "syllabus": [
+   "Diplomacy",
+   "Conflicts",
+   "International Relations"
+  ],
+  "source": "Al Jazeera, DW News +4",
+  "image_query": "diplomatic flag",
+  "_editor": "gemini:gemini-3.6-flash",
+  "photo": "b",
+  "credit": "WorldIslandInfo.com / Flickr, CC BY 2.0",
+  "image_source": "https://www.flickr.com/photos/76074333@N00/383337161",
+  "links": [
+   "https://www.aljazeera.com/video/newsfeed/2026/11/13/aje-onl-nf_us-envoys-shuttle-between-putin-and-zelenskyy-121126?traffic_source=rss",
+   "https://www.dw.com/en/eu-leaders-tussle-over-whom-to-send-to-ukraine-russia-peace-talks/a-79935468?maca=en-rss-en-world-4025-rdf",
+   "https://www.dw.com/en/what-have-the-talks-with-russia-and-the-us-in-abu-dhabi-achieved-for-ukraine/a-79930613?maca=en-rss-en-world-4025-rdf",
+   "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNWlUzQnd4TkRvc3VTVGZURnp3M3ZrTFhkSXYwM2oyaDNOVTFHQnFDZW1oRVRmNEllVVp6WTVQVUNLVm85TjljZkFCNlRMZEpqX3M4VVlXUTlpVUJVcUp6NGZ3WnFyZ1gzaWNBb3hkZmlIWVpXdTZHMmFqUGpfMll3OWotdXpfd3FF?oc=5",
+   "https://news.google.com/rss/articles/CBMihwFBVV95cUxORlViM2FXYmJzdEtvRUk0em9kVmpjZXlvNVBRSUhqNXljeVkwUmQ1Zm5wVGp5WEo5SEQxajhUOF9leFFSTUhvRkhHWlpnLU14ajhtd0oxcHRDWktGakJucWJadl9SdHhYZ2RUWllFYk9TNW96VEJObTZQZHFiSDRoZ2syYlFjVTQ?oc=5",
+   "https://www.npr.org/2026/11/12/nx-s1-6037526/former-u-s-ambassador-william-taylor-discusses-the-latest-russia-ukraine-talks",
+   "https://www.npr.org/2026/11/12/nx-s1-6037558/u-s-officials-set-to-meet-with-putin-zelenskyy-following-abu-dhabi-peace-talks",
+   "https://www.bloomberg.com/news/videos/2026-11-13/zelenskyy-says-talks-with-us-envoys-in-dublin-made-progress",
+   "https://www.ft.com/content/73e518cb-14c5-4012-acea-3a3d01725b1b"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "breaking-photo",
+  "file": "1247-10-breaking-photo.jpg"
+ },
+ {
+  "story_ids": [
+   66,
+   79,
+   107,
+   117,
+   185,
+   191,
+   200,
+   205,
+   212,
+   224,
+   226
+  ],
+  "kicker": "Technology · Security",
+  "headline": "Nvidia CEO Jensen Huang resigns following affair and espionage probe",
+  "highlight": "Jensen Huang resigns",
+  "summary": "Nvidia chief executive Jensen Huang resigned after revelations of extramarital affairs linked to an alleged Chinese intelligence operation, triggering US congressional scrutiny and tech market volatility.",
+  "why": "Highlights tech geopolitics, corporate governance, US-China rivalry, and critical AI technology security.",
+  "syllabus": [
+   "Technology",
+   "Geopolitics",
+   "Trade"
+  ],
+  "source": "Reuters, BBC News +6",
+  "image_query": "microchip",
+  "_editor": "gemini:gemini-3.6-flash",
+  "photo": "b",
+  "credit": "etharooni / Flickr, CC BY 2.0",
+  "image_source": "https://www.flickr.com/photos/22828588@N03/2737624957",
+  "links": [
+   "https://news.google.com/rss/articles/CBMisAFBVV95cUxOMEFwN0FWdjB6blNtR0RZaTBWZXZDaWVwYkhXREttY2FaYVNNVC1qNEFHYm9Yd1pDODBDN2tvNzhnMTY4cmxWYTg1WVFidzFlNVFEdlZNb3IyZG1nS2FKcHAzUERhQW9EdG9oOER6YmwydXZOd0t1VHRub1BCdFdoR1V4dktlUVUydjZWeU53aVdKMGwtOGFtZmd2T3VhODF3eXhPazVtbV81b0hpUi1vcw?oc=5",
+   "https://www.bbc.co.uk/news/articles/cmq5vd1wdgz6o?at_medium=RSS&at_campaign=rss",
+   "https://www.dw.com/en/jensen-huang-spy-row-affairs-leave-nvidia-without-its-rockstar-ceo/a-79926972?maca=en-rss-en-world-4025-rdf",
+   "https://www.france24.com/en/tv-shows/business/20261112-jensen-huang-resigns-as-nvidia-ceo-after-mounting-scandals",
+   "https://www.euronews.com/2026/11/12/who-is-alice-huang-the-alleged-chinese-spy-linked-to-nvidias-jensen-huang",
+   "https://www.pbs.org/newshour/economy/nvidia-ceo-jensen-huang-resigns-after-his-affair-raises-national-security-concerns",
+   "https://www.bloomberg.com/news/videos/2026-11-13/ronner-says-nvidia-turmoil-so-far-appears-idiosyncratic-video",
+   "https://www.bloomberg.com/news/articles/2026-11-13/nvidia-crisis-prompts-scrutiny-of-lutnick-s-role-in-chip-policy",
+   "https://www.cnbc.com/2026/11/12/alice-huang-jensen-huang-nvidia-huawei.html",
+   "https://www.theguardian.com/technology/2026/nov/13/nvidia-scandal-sparks-us-national-security-concerns-china",
+   "https://www.theguardian.com/world/2026/nov/12/thursday-briefing-what-we-do-and-dont-know-about-alice-huang-and-the-nvidia-affair"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "newspaper",
+  "file": "1247-11-newspaper.jpg"
+ },
+ {
+  "story_ids": [
+   192,
+   202
+  ],
+  "kicker": "Politics · Governance",
+  "headline": "Indonesian Vice President resigns amid academic credentials controversy",
+  "highlight": "Vice President resigns",
+  "summary": "Indonesia's Vice President resigned after courts determined his overseas educational documents failed to meet election requirements, altering the country's executive leadership structure.",
+  "why": "Demonstrates democratic governance, constitutional compliance, and political transitions in Southeast Asia.",
+  "syllabus": [
+   "Politics",
+   "Governance & Public Policy",
+   "International Relations"
+  ],
+  "source": "NPR, Bloomberg",
+  "image_query": "parliament building",
+  "_editor": "gemini:gemini-3.6-flash",
+  "photo": "a",
+  "credit": "Cost3l / Flickr, CC BY 2.0",
+  "image_source": "https://www.flickr.com/photos/11473706@N03/11211744594",
+  "links": [
+   "https://www.npr.org/2026/11/12/g-s1-153190/indonesias-vp-resigns-as-his-eligibility-and-academic-credentials-are-questioned",
+   "https://www.bloomberg.com/news/articles/2026-11-12/jokowi-era-fades-in-indonesia-with-son-forced-out-as-prabowo-s-vice-president"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "brief-light",
+  "file": "1247-12-brief-light.jpg"
+ },
+ {
+  "story_ids": [
+   4,
+   99,
+   177,
+   209
+  ],
+  "kicker": "Politics · Elections",
+  "headline": "Senator Chris Van Hollen challenges Chuck Schumer for US Senate leader",
+  "highlight": "challenges Chuck Schumer",
+  "summary": "Democratic US Senator Chris Van Hollen announced a challenge against Chuck Schumer for Senate majority leader, calling for a progressive shift in the party's legislative agenda.",
+  "why": "Key development in American domestic politics, legislative leadership, and foreign policy orientation.",
+  "syllabus": [
+   "Politics",
+   "Current Affairs"
+  ],
+  "source": "Dawn, Al Jazeera +2",
+  "image_query": "capitol building",
+  "_editor": "gemini:gemini-3.6-flash",
+  "photo": "c",
+  "credit": "madprime / Flickr, CC BY-SA 2.0",
+  "image_source": "https://www.flickr.com/photos/66843181@N00/5156007837",
+  "links": [
+   "https://www.dawn.com/news/2044266/democratic-us-senator-chris-van-hollen-announces-run-for-us-senate-majority-leader-challenging-schumer",
+   "https://www.aljazeera.com/news/2026/11/13/who-is-us-senator-chris-van-hollen?traffic_source=rss",
+   "https://www.euronews.com/2026/11/13/us-senator-chris-van-hollen-to-challenge-chuck-schumer-for-senate-majority-leader",
+   "https://www.bloomberg.com/news/articles/2026-11-13/van-hollen-challenges-schumer-for-senate-leader-in-new-congress"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "navy-card",
+  "file": "1247-13-navy-card.jpg"
+ },
+ {
+  "story_ids": [
+   94,
+   112,
+   114,
+   188
+  ],
+  "kicker": "Human Rights · Society",
+  "headline": "Pope Leo XIV meets abuse survivors in Peru and denounces machismo",
+  "highlight": "meets abuse survivors",
+  "summary": "Pope Leo XIV met clergy abuse survivors during his visit to Peru, urging the Catholic Church to make amends while publicly calling for an end to violence against women and machismo.",
+  "why": "Relevant to international human rights, institutional accountability, and social reform movements.",
+  "syllabus": [
+   "Human Rights",
+   "Current Affairs"
+  ],
+  "source": "Al Jazeera, France 24 +1",
+  "image_query": "cathedral",
+  "_editor": "gemini:gemini-3.6-flash",
+  "photo": "a",
+  "credit": "szeke / Flickr, CC BY-SA 2.0",
+  "image_source": "https://www.flickr.com/photos/43355249@N00/28198464088",
+  "links": [
+   "https://www.aljazeera.com/video/newsfeed/2026/11/13/aje-onl-nf_pope-leo-meets-clergy-abuse-survivors-in-peru-121126?traffic_source=rss",
+   "https://www.france24.com/en/americas/20261113-pope-leo-xiv-meets-abuse-victims-in-peru-says-church-must-make-amends",
+   "https://www.france24.com/en/tv-shows/spotlight/20261112-peruvian-pope-leo-xiv-comes-home-to-a-country-that-shaped-his-life-and-faith-through-hardship",
+   "https://www.pbs.org/newshour/world/after-emotional-return-pope-leo-denounces-machismo-in-peru-and-demands-respect-for-women"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "breaking-photo",
+  "file": "1247-14-breaking-photo.jpg"
+ },
+ {
+  "story_ids": [
+   46
+  ],
+  "kicker": "Governance · Transport",
+  "headline": "Ishaq Dar demands global standard restructuring of Pakistan National Shipping",
+  "highlight": "restructuring of Pakistan",
+  "summary": "Deputy Prime Minister Ishaq Dar emphasized transforming the Pakistan National Shipping Corporation (PNSC) into a commercially viable, competitive, and globally recognized maritime enterprise.",
+  "why": "Examines public sector enterprise restructuring, trade logistics, and state revenue enhancement in Pakistan.",
+  "syllabus": [
+   "Governance & Public Policy",
+   "Economy & Budget",
+   "Pakistan Affairs"
+  ],
+  "source": "Associated Press of Pakistan",
+  "image_query": "cargo ship",
+  "_editor": "gemini:gemini-3.6-flash",
+  "photo": "b",
+  "credit": "szeke / Flickr, CC BY-SA 2.0",
+  "image_source": "https://www.flickr.com/photos/43355249@N00/34111016826",
+  "links": [
+   "https://www.app.com.pk/national/dpm-dar-for-professional-global-standard-restructuring-of-pnsc/"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "newspaper",
+  "file": "1247-15-newspaper.jpg"
  }
 ]
