@@ -55,7 +55,8 @@ and write one poster for each.
 
 Choosing stories:
 - Prefer Pakistan, its foreign relations, economy, governance and security, plus major world events.
-- Each poster must cover a DIFFERENT topic.
+- Each poster must cover a DIFFERENT story and topic. Never two posters about the same event,
+  person or company.
 - Skip sports, celebrity, crime, lifestyle and gossip, and anything you cannot state neutrally.
 - If several outlets report the same story, merge them into one poster and list every id.
 
@@ -265,6 +266,22 @@ def extract_json_array(text):
     return json.loads(text[start:end + 1])
 
 
+STOP = set("after amid over says said with from into that this their they have will would about "
+           "against before between under amid says pakistan pakistani pakistans".split())
+
+
+def _words(headline):
+    return {w for w in re.findall(r"[a-z0-9]+", headline.lower()) if len(w) > 3 and w not in STOP}
+
+
+def same_story(a, b):
+    """Two headlines about one story, e.g. 'Jensen Huang resigns as Nvidia CEO...' and
+    'Jensen Huang quits Nvidia after 33 years...' (13 Nov run)."""
+    wa, wb = _words(a), _words(b)
+    shared = wa & wb
+    return len(shared) >= 3 and len(shared) / max(1, min(len(wa), len(wb))) >= 0.5
+
+
 def validate(posts, n_items, topics, want):
     good = []
     used_ids = set()
@@ -274,6 +291,9 @@ def validate(posts, n_items, topics, want):
         ids = [i for i in p.get("story_ids", []) if isinstance(i, int) and 0 <= i < n_items]
         headline = str(p.get("headline", "")).strip()
         if not ids or not headline or used_ids & set(ids):
+            continue
+        if any(same_story(headline, g["headline"]) for g in good):
+            print(f"    dropped duplicate story: {headline}")
             continue
         hl = str(p.get("highlight", "")).strip()
         syllabus = [s for s in p.get("syllabus", []) if s in topics][:3] or ["Current Affairs"]

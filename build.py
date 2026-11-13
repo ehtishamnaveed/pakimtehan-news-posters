@@ -78,17 +78,15 @@ def validate(p, topics):
 
 def assign_templates(posts, templates, rng):
     """Random template per poster, no repeats in a day; photo templates only when there is a photo."""
+    def fits(t, p):  # with a photo: any template that shows one; without: only photo-less ones
+        return t != "typographic" if p.get("image") else t not in NEEDS_PHOTO
+
     pool = []
     for p in posts:
-        if not pool:
-            pool = templates[:]
-            rng.shuffle(pool)
-        # with a photo: any template that shows one; without: only the ones that work photo-less
-        ok = [t for t in pool if t != "typographic"] if p.get("image") else \
-             [t for t in pool if t not in NEEDS_PHOTO]
-        if not ok and p.get("image"):
-            ok = [t for t in templates if t != "typographic"]
-        p["template"] = ok[0] if ok else "typographic"
+        if not any(fits(t, p) for t in pool):  # refill when nothing left suits this poster
+            pool = templates[:]                # (before: the pool got stuck on "typographic" and
+            rng.shuffle(pool)                  #  every later photo poster became breaking-photo)
+        p["template"] = next((t for t in pool if fits(t, p)), "typographic")
         if p["template"] in pool:
             pool.remove(p["template"])
 

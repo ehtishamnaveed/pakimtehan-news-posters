@@ -91,7 +91,7 @@ def _openverse(query, want):
             continue
         lic = f"CC {str(it.get('license') or '').upper()} {it.get('license_version') or ''}".strip()
         lic = {"CC CC0 1.0": "CC0", "CC PDM 1.0": "Public Domain"}.get(lic, lic)
-        who = (it.get("creator") or "Flickr")[:40]
+        who = re.sub(r"\s*\(.*?\)|\s+-\s+.*$", "", it.get("creator") or "").strip()[:40] or "Flickr"
         out.append({"url": url, "credit": f"{who} / Flickr, {lic}",
                     "source": it.get("foreign_landing_url"), "title": it.get("title") or ""})
     return out
