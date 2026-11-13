@@ -1,10 +1,10 @@
 # Daily news posters on GitHub Actions with free AI (Gemini first, NVIDIA NIM as backup).
 #
-# Output goes to the branch in repo variable POSTERS_OUT_BRANCH (default: daily-posters-test).
-#   Testing (now):   POSTERS_OUT_BRANCH=daily-posters-test, POSTERS_TEST_MODE=true
-#                    -> one batch of posters per run, each run ADDS a new batch
-#   Production:      POSTERS_OUT_BRANCH=daily-posters, POSTERS_TEST_MODE=false, cron once a day
-#                    -> one batch per day; skipped if today's posters already exist
+# Branches: `main` (code) and `daily-posters-test` (test output you can browse on GitHub).
+#   Testing (now):   POSTERS_OUT_BRANCH=daily-posters-test, POSTERS_TEST_MODE=true, cron every 2 hours
+#                    -> each run ADDS a batch; posters/<date>/README.md shows every batch of the day
+#   Production:      planned: posters go straight to the Pak Imtehan server API instead of a branch;
+#                    cron back to once a day ("40 2 * * *" = 07:40 Asia/Karachi)
 #
 # Secrets (Settings -> Secrets and variables -> Actions):
 #   GEMINI_API_KEY (primary), NVIDIA_API_KEY + OPENROUTER_API_KEY (backups),
@@ -15,8 +15,10 @@ name: Daily posters (free AI)
 
 on:
   schedule:
-    # Once a day at 07:40 Asia/Karachi. Produces one batch (posters_per_day in config/sources.yaml, 15).
-    - cron: "40 2 * * *"
+    # TESTING: every 2 hours at :23 UTC (= :23 past 11:00, 13:00, ... Asia/Karachi), one batch of
+    # posters_per_day (15) each. Off the top of the hour, where GitHub drops most scheduled runs.
+    # Production: "40 2 * * *" (once a day, 07:40 Asia/Karachi).
+    - cron: "23 */2 * * *"
   workflow_dispatch:
 
 permissions:

@@ -1,5 +1,7 @@
 # Moving the poster routine to the client's Claude account
 
+> **Superseded (13 Nov 2026):** posters are now made by the GitHub Action (`.github/workflows/free-ai-posters.yml`). The `daily-posters` branch was removed; its last output is kept as the tag `archive/daily-posters`.
+
 The routine is tied to the Claude account that created it. These are the steps to move it.
 
 ## 1. Repository

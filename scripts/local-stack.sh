@@ -8,7 +8,7 @@
 # the command line, which beats .env for both Node (dotenv) and Vite.
 #
 # Usage:  scripts/local-stack.sh            (starts herdr's server if needed, then attach with `herdr`)
-#         POSTERS_BRANCH=daily-posters-test scripts/local-stack.sh   (show the free-AI test branch)
+#         POSTERS_BRANCH=<branch> scripts/local-stack.sh   (read posters from another branch)
 set -euo pipefail
 
 GH_DIR="${GH_DIR:-$HOME/Documents/GitHub}"
@@ -17,7 +17,7 @@ DASH_DIR="$GH_DIR/pi_user_dashboard"
 WEB_DIR="$GH_DIR/pak-imtehan-website"
 POSTERS_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 
-# Posters come from the daily-posters branch the cloud routine pushes to.
+# Posters come from the daily-posters-test branch the GitHub Action pushes to.
 # A local gh login is used as the read token; nothing is stored.
 GH_TOKEN_FOR_SYNC="$(gh auth token 2>/dev/null || true)"
 
@@ -38,7 +38,7 @@ server_pane=$(printf '%s' "$ws" | json "['result']['root_pane']['pane_id']")
 dash_pane=$(herdr pane split "$server_pane" --direction right --cwd "$DASH_DIR" --no-focus | json "['result']['pane']['pane_id']")
 web_pane=$(herdr pane split "$dash_pane" --direction down --cwd "$WEB_DIR" --no-focus | json "['result']['pane']['pane_id']")
 
-herdr pane run "$server_pane" "DISABLE_SUBSCRIPTION_CRON=true PORT=4000 ALLOWED_ORIGINS=http://localhost:5173,http://localhost:5174 NEWS_POSTERS_GITHUB_REPO=ehtishamnaveed/pakimtehan-news-posters NEWS_POSTERS_GITHUB_BRANCH=${POSTERS_BRANCH:-daily-posters} NEWS_POSTERS_GITHUB_TOKEN=$GH_TOKEN_FOR_SYNC NEWS_POSTERS_SYNC_CRON='*/5 * * * *' npm start" >/dev/null
+herdr pane run "$server_pane" "DISABLE_SUBSCRIPTION_CRON=true PORT=4000 ALLOWED_ORIGINS=http://localhost:5173,http://localhost:5174 NEWS_POSTERS_GITHUB_REPO=ehtishamnaveed/pakimtehan-news-posters NEWS_POSTERS_GITHUB_BRANCH=${POSTERS_BRANCH:-daily-posters-test} NEWS_POSTERS_GITHUB_TOKEN=$GH_TOKEN_FOR_SYNC NEWS_POSTERS_SYNC_CRON='*/5 * * * *' npm start" >/dev/null
 herdr pane run "$dash_pane" "VITE_API_URL=/ DASHBOARD_API_PROXY=http://localhost:4000 npx vite --port 5174 --strictPort" >/dev/null
 herdr pane run "$web_pane" "VITE_PI_SERVER_URL=http://localhost:4000/api/v3 npx vite --port 5173 --strictPort" >/dev/null
 

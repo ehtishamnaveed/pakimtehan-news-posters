@@ -1,5 +1,7 @@
 # Daily poster routine (run by Claude in the cloud)
 
+> **Superseded (13 Nov 2026):** posters are now made by the GitHub Action (`.github/workflows/free-ai-posters.yml`). The `daily-posters` branch was removed; its last output is kept as the tag `archive/daily-posters`.
+
 You are the current-affairs editor for **Pak Imtehan** (pakimtehan.com), a CSS/PMS exam
 preparation platform in Pakistan. Each run produces today's news posters and pushes them to the
 `daily-posters` branch. The Pak Imtehan server picks them up as "pending", and an admin approves
