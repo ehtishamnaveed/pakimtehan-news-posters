@@ -1,0 +1,419 @@
+[
+ {
+  "story_ids": [
+   1
+  ],
+  "kicker": "Climate · COP31",
+  "headline": "At COP31, PM Shehbaz calls for grant-based finance and resilience funding",
+  "highlight": "grant-based finance",
+  "summary": "Prime Minister Shehbaz Sharif urged COP31 for grant-based finance and resilience funding to support climate-vulnerable nations against environmental crises.",
+  "why": "Crucial for understanding Pakistan's climate diplomacy and multilateral negotiations.",
+  "syllabus": [
+   "Climate",
+   "International Relations"
+  ],
+  "source": "Dawn",
+  "image_query": "solar panels",
+  "_editor": "gemini:gemini-3.5-flash-lite",
+  "photo": "a",
+  "credit": "spanginator / Flickr, CC BY-SA 2.0",
+  "image_source": "https://www.flickr.com/photos/52645928@N00/3414028795",
+  "links": [
+   "https://news.google.com/rss/articles/CBMiSEFVX3lxTE8xUTd0V1NPdU9lYWR1bW5kOW9FTUc2MnZXU2tsT0duRTFELVN2WVRyYWRLSzBqRWxVLVdiRnhmenBHN2RtYy1Fdw?oc=5"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "editorial",
+  "png": "1027-01-editorial.png"
+ },
+ {
+  "story_ids": [
+   15
+  ],
+  "kicker": "Diplomacy · Turkey",
+  "headline": "Erdogan and Shehbaz stress adhering to Islamabad MoU and vulnerable aid",
+  "highlight": "Islamabad MoU",
+  "summary": "Turkish President Erdogan and Prime Minister Shehbaz stressed adhering to the Islamabad MoU while urging global support for vulnerable nations.",
+  "why": "Relevant for studying bilateral ties between Pakistan and Turkey.",
+  "syllabus": [
+   "Diplomacy",
+   "Foreign Policy"
+  ],
+  "source": "The Express Tribune",
+  "image_query": "Islamabad",
+  "_editor": "gemini:gemini-3.5-flash-lite",
+  "photo": "a",
+  "credit": "*_* / Flickr, CC BY 2.0",
+  "image_source": "https://www.flickr.com/photos/22539273@N00/9878673",
+  "links": [
+   "https://tribune.com.pk/story/2640029/erdogan-shehbaz-stress-adhering-to-islamabad-mou"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "newspaper",
+  "png": "1027-02-newspaper.png"
+ },
+ {
+  "story_ids": [
+   46
+  ],
+  "kicker": "Economy · Banking",
+  "headline": "Mobilink Bank signs agreement to acquire 82.51pc stake in Apna Bank",
+  "highlight": "Mobilink Bank",
+  "summary": "Mobilink Bank signed a Sale Purchase Agreement to acquire an 82.51 percent shareholding in Apna Microfinance Bank Limited, subject to regulatory approvals.",
+  "why": "Important for analyzing Pakistan's financial sector consolidation and microfinance.",
+  "syllabus": [
+   "Economy",
+   "Development"
+  ],
+  "source": "Business Recorder",
+  "image_query": "bank building",
+  "_editor": "gemini:gemini-3.5-flash-lite",
+  "photo": "c",
+  "credit": "DeusXFlorida (11,059,330 views) - thanks / Flickr, CC BY 2.0",
+  "image_source": "https://www.flickr.com/photos/8363028@N08/5213582988",
+  "links": [
+   "https://www.brecorder.com/news/40448705/mobilink-bank-to-acquire-8251pc-stake-in-apna-bank"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "brief-light",
+  "png": "1027-03-brief-light.png"
+ },
+ {
+  "story_ids": [
+   13
+  ],
+  "kicker": "Economy · Agriculture",
+  "headline": "Punjab and Sindh face severe water shortfall threatening wheat crops",
+  "highlight": "severe water shortfall",
+  "summary": "Punjab and Sindh are facing a severe water shortfall, with the Rabi irrigation deficit posing a direct threat to wheat and winter crops.",
+  "why": "Highlights the intersection of resource management, agriculture, and food security.",
+  "syllabus": [
+   "Economy",
+   "Pakistan Affairs"
+  ],
+  "source": "The Express Tribune",
+  "image_query": "canal",
+  "_editor": "gemini:gemini-3.5-flash-lite",
+  "photo": "b",
+  "credit": "Jorge Lascar / Flickr, CC BY 2.0",
+  "image_source": "https://www.flickr.com/photos/8721758@N06/5822070926",
+  "links": [
+   "https://tribune.com.pk/story/2640017/punjab-sindh-face-severe-water-shortfall"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "breaking-photo",
+  "png": "1027-04-breaking-photo.png"
+ },
+ {
+  "story_ids": [
+   47
+  ],
+  "kicker": "Diplomacy · UN",
+  "headline": "Pakistan re-elected to key UN programme and coordination committee",
+  "highlight": "re-elected to key UN",
+  "summary": "Pakistan was re-elected to the United Nations Committee for Programme and Coordination, reflecting its active multilateral engagement.",
+  "why": "Shows Pakistan's diplomatic standing and role within United Nations bodies.",
+  "syllabus": [
+   "International Relations",
+   "Organizations"
+  ],
+  "source": "Associated Press of Pakistan",
+  "image_query": "United Nations",
+  "_editor": "gemini:gemini-3.5-flash-lite",
+  "photo": "b",
+  "credit": "japedi / Flickr, CC BY 2.0",
+  "image_source": "https://www.flickr.com/photos/7289631@N02/1751648777",
+  "links": [
+   "https://www.app.com.pk/foreign-correspondent/pakistan-re-elected-to-key-un-programme-and-coordination-committee/"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "navy-card",
+  "png": "1027-05-navy-card.png"
+ },
+ {
+  "story_ids": [
+   8
+  ],
+  "kicker": "Governance · Units",
+  "headline": "Naqvi suggests referendum as solution to debate on administrative units",
+  "highlight": "suggests referendum",
+  "summary": "Naqvi suggested holding a referendum as a potential solution to resolve the ongoing public and political debate on new administrative units.",
+  "why": "Relevant for topics on federalism, governance, and constitutional administration.",
+  "syllabus": [
+   "Governance & Public Policy",
+   "Constitution & Law"
+  ],
+  "source": "Dawn",
+  "image_query": "Parliament",
+  "_editor": "gemini:gemini-3.5-flash-lite",
+  "photo": "a",
+  "credit": "almost witty / Flickr, CC BY-SA 2.0",
+  "image_source": "https://www.flickr.com/photos/39035181@N00/5283517961",
+  "links": [
+   "https://news.google.com/rss/articles/CBMiSEFVX3lxTE5hSHVCNy1vWVFOMHFZTHk5QTIxb0hRNzg5RVlFaXFub0JWbnNWSThTdjRwSmhvWGxTblpycHlwcFVpZVNHVDdicw?oc=5"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "breaking-photo",
+  "png": "1027-06-breaking-photo.png"
+ },
+ {
+  "story_ids": [
+   40,
+   98
+  ],
+  "kicker": "Conflicts · Middle East",
+  "headline": "Iran's Guards say they targeted US early-warning radar in Bahrain",
+  "highlight": "targeted US early-warning",
+  "summary": "Iran's Revolutionary Guards announced they targeted a US early-warning radar in Bahrain, marking a significant escalation in regional tensions.",
+  "why": "Essential for understanding Persian Gulf geopolitics and Middle Eastern security.",
+  "syllabus": [
+   "Conflicts",
+   "Geopolitics"
+  ],
+  "source": "Business Recorder, Al Jazeera",
+  "image_query": "radar",
+  "_editor": "gemini:gemini-3.5-flash-lite",
+  "photo": "c",
+  "credit": "Defence Images / Flickr, CC BY-SA 2.0",
+  "image_source": "https://www.flickr.com/photos/48399297@N04/8242258234",
+  "links": [
+   "https://www.brecorder.com/news/40448721/irans-guards-say-they-targeted-a-us-early-warning-radar-in-bahrain",
+   "https://www.aljazeera.com/news/2026/11/13/iran-says-it-struck-us-radar-site-in-bahrain?traffic_source=rss"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "breaking-photo",
+  "png": "1027-07-breaking-photo.png"
+ },
+ {
+  "story_ids": [
+   7,
+   74
+  ],
+  "kicker": "Technology · Resignation",
+  "headline": "Jensen Huang resigns as Nvidia CEO after reports of scandals",
+  "highlight": "Jensen Huang resigns",
+  "summary": "Jensen Huang resigned as Nvidia CEO amid reports of extramarital affairs and security scrutiny, leaving the AI giant without its longtime leader.",
+  "why": "Important case study on corporate governance and the global semiconductor supply chain.",
+  "syllabus": [
+   "Technology",
+   "Current Affairs"
+  ],
+  "source": "Dawn, Associated Press",
+  "image_query": "computer chip",
+  "_editor": "gemini:gemini-3.5-flash-lite",
+  "photo": "a",
+  "credit": "JD Hancock / Flickr, CC BY 2.0",
+  "image_source": "https://www.flickr.com/photos/83346641@N00/9182088790",
+  "links": [
+   "https://news.google.com/rss/articles/CBMiSEFVX3lxTE16eTFjVjlyWHNLQzF2QlVRb19rblBaT2tFeTNlMk5HNzYxZGpIZlFLQ3VqRTktZFpDLXkyY3RNVXAwRHFjRlRuaQ?oc=5",
+   "https://news.google.com/rss/articles/CBMioAFBVV95cUxOMUxqUTE0WWZBT2xoV25SLUQ2dFgyWkhwZFZyRnk3d1Fibmtrb0d4T3otSXNpNmZiTVh0QUdkWTA4UmQ3cXQyVVM3ODc0V0g4YnVVbDJRYWF4VXlaXzMzZnJWNi1UR3YyZHJGbWNzaVFab2tiM3N2RjFIOUtWcnlJVWtMVnhQNmhJeTdPajNVUXZfU2NzWkw0aGJLVFMtaGY3?oc=5"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "breaking-photo",
+  "png": "1027-08-breaking-photo.png"
+ },
+ {
+  "story_ids": [
+   190
+  ],
+  "kicker": "Geopolitics · AI",
+  "headline": "Jensen Huang quits Nvidia after 33 years amid alleged Chinese spy scandal",
+  "highlight": "Jensen Huang quits",
+  "summary": "Jensen Huang quit Nvidia after 33 years following an alleged Chinese spy scandal, prompting shareholder lawsuits and congressional queries.",
+  "why": "Highlights the intersection of corporate leadership, national security, and US-China tech rivalry.",
+  "syllabus": [
+   "Technology",
+   "Geopolitics"
+  ],
+  "source": "Euronews",
+  "image_query": "server rack",
+  "_editor": "gemini:gemini-3.5-flash-lite",
+  "photo": "a",
+  "credit": "zdw / Flickr, CC BY-SA 2.0",
+  "image_source": "https://www.flickr.com/photos/75783104@N00/65675213",
+  "links": [
+   "https://www.euronews.com/2026/11/12/nvidias-jensen-huang-resigns-over-relationship-with-suspected-chinese-spy"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "breaking-photo",
+  "png": "1027-09-breaking-photo.png"
+ },
+ {
+  "story_ids": [
+   196,
+   199
+  ],
+  "kicker": "Diplomacy · Talks",
+  "headline": "US envoys meet with Putin in Moscow before heading to Dublin",
+  "highlight": "meet with Putin",
+  "summary": "US envoys met with Vladimir Putin in Moscow for Ukraine talks before traveling to Dublin to meet with Ukrainian President Volodymyr Zelenskyy.",
+  "why": "Key development in international diplomatic efforts to resolve the Russia-Ukraine war.",
+  "syllabus": [
+   "International Relations",
+   "Diplomacy"
+  ],
+  "source": "PBS NewsHour, NPR",
+  "image_query": "Kremlin",
+  "_editor": "gemini:gemini-3.5-flash-lite",
+  "photo": "a",
+  "credit": "ikhou / Flickr, CC BY-SA 2.0",
+  "image_source": "https://www.flickr.com/photos/123903540@N03/14848960493",
+  "links": [
+   "https://www.pbs.org/newshour/world/u-s-envoys-meet-with-putin-in-moscow-on-ukraine-talks-then-head-for-dublin-to-see-zelenskyy",
+   "https://www.npr.org/2026/11/12/nx-s1-6038809/us-envoys-meet-putin-russia-ukraine-war-talks"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "breaking-photo",
+  "png": "1027-10-breaking-photo.png"
+ },
+ {
+  "story_ids": [
+   81,
+   116
+  ],
+  "kicker": "Treaties · Europe",
+  "headline": "Zelensky welcomes US bringing Europe into Russia-Ukraine peace talks",
+  "highlight": "welcomes US bringing Europe",
+  "summary": "Ukrainian President Zelensky welcomed US efforts to expand the next round of Russia-Ukraine peace talks to include European nations.",
+  "why": "Relevant for studying European security architecture and multilateral peace negotiations.",
+  "syllabus": [
+   "Treaties",
+   "International Relations"
+  ],
+  "source": "BBC News, France 24",
+  "image_query": "EU flag",
+  "_editor": "gemini:gemini-3.5-flash-lite",
+  "photo": "b",
+  "credit": "jepoirrier / Flickr, CC BY-SA 2.0",
+  "image_source": "https://www.flickr.com/photos/57519914@N00/1274267541",
+  "links": [
+   "https://www.bbc.co.uk/news/articles/ckn80j9jv3jxo?at_medium=RSS&at_campaign=rss",
+   "https://www.france24.com/en/europe/20261113-live-zelensky-and-kushner-confirm-that-europe-will-join-next-round-of-russia-ukraine-talks"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "breaking-photo",
+  "png": "1027-11-breaking-photo.png"
+ },
+ {
+  "story_ids": [
+   6,
+   97
+  ],
+  "kicker": "Politics · Election",
+  "headline": "Mississippi elects Democrat Scott Colom as state's first Black US senator",
+  "highlight": "Mississippi elects Democrat",
+  "summary": "Democrat Scott Colom won a US Senate seat in Mississippi in a stunning political upset, becoming the state's first Black senator since Reconstruction.",
+  "why": "Useful for comparative studies on electoral politics and civil rights representation.",
+  "syllabus": [
+   "Politics",
+   "Current Affairs"
+  ],
+  "source": "Dawn, Al Jazeera",
+  "image_query": "Capitol building",
+  "_editor": "gemini:gemini-3.5-flash-lite",
+  "photo": "b",
+  "credit": "Gage Skidmore / Flickr, CC BY-SA 2.0",
+  "image_source": "https://www.flickr.com/photos/22007612@N05/9977050093",
+  "links": [
+   "https://news.google.com/rss/articles/CBMiSEFVX3lxTE9uWktQZDRUZEdaNmg2dkd5cV9ZQnk1TWotc0wwQkFwckttekR3OGlLRWR0RjNZd1lFMUI4azFLZWEwbl9HRDFYYQ?oc=5",
+   "https://www.aljazeera.com/video/newsfeed/2026/11/13/mississippi-elects-first-black-senator-in-nearly-150-years?traffic_source=rss"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "breaking-photo",
+  "png": "1027-12-breaking-photo.png"
+ },
+ {
+  "story_ids": [
+   113,
+   222
+  ],
+  "kicker": "Technology · Outage",
+  "headline": "Major Microsoft Outlook outage disrupts services in dozens of countries",
+  "highlight": "Major Microsoft Outlook outage",
+  "summary": "Microsoft services including Outlook and Teams suffered a worldwide outage across multiple countries due to elevated infrastructure load.",
+  "why": "Illustrates vulnerabilities in global digital infrastructure and reliance on cloud services.",
+  "syllabus": [
+   "Technology",
+   "Current Affairs"
+  ],
+  "source": "France 24, CNBC",
+  "image_query": "computer monitor",
+  "_editor": "gemini:gemini-3.5-flash-lite",
+  "photo": "b",
+  "credit": "Wesley Fryer / Flickr, CC BY-SA 2.0",
+  "image_source": "https://www.flickr.com/photos/31442459@N00/5165070448",
+  "links": [
+   "https://www.france24.com/en/technology/20261113-major-microsoft-outlook-outage-disrupts-services-in-74-countries",
+   "https://www.cnbc.com/2026/11/12/microsoft-outage-outlook-aws-google.html"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "breaking-photo",
+  "png": "1027-13-breaking-photo.png"
+ },
+ {
+  "story_ids": [
+   107
+  ],
+  "kicker": "Human Rights · Abortion",
+  "headline": "Hungary eases abortion restrictions in women's rights overhaul",
+  "highlight": "Hungary eases abortion restrictions",
+  "summary": "Hungary introduced reforms easing abortion restrictions, scrapping the controversial heartbeat regulation and enhancing protections against violence.",
+  "why": "Relevant for discussions on global human rights, gender laws, and legislative reforms.",
+  "syllabus": [
+   "Human Rights",
+   "Constitution & Law"
+  ],
+  "source": "DW News",
+  "image_query": "court building",
+  "_editor": "gemini:gemini-3.5-flash-lite",
+  "photo": "b",
+  "credit": "D-Stanley / Flickr, CC BY 2.0",
+  "image_source": "https://www.flickr.com/photos/79721788@N00/42433103952",
+  "links": [
+   "https://www.dw.com/en/hungary-eases-abortion-restrictions-in-women-s-rights-overhaul/a-79931614?maca=en-rss-en-world-4025-rdf"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "breaking-photo",
+  "png": "1027-14-breaking-photo.png"
+ },
+ {
+  "story_ids": [
+   234
+  ],
+  "kicker": "Climate · Summit",
+  "headline": "China rules out hosting Cop33 climate summit in 2028",
+  "highlight": "China rules out hosting",
+  "summary": "China has ruled out hosting the Cop33 UN climate summit in 2028 after months of deliberations, leaving the location open.",
+  "why": "Important for tracking global climate governance and commitments by major emitters.",
+  "syllabus": [
+   "Climate",
+   "Organizations"
+  ],
+  "source": "The Guardian",
+  "image_query": "globe",
+  "_editor": "gemini:gemini-3.5-flash-lite",
+  "photo": "b",
+  "credit": "Kieran Lynam / Flickr, CC BY 2.0",
+  "image_source": "https://www.flickr.com/photos/17568422@N00/413096058",
+  "links": [
+   "https://www.theguardian.com/environment/2026/nov/12/china-rules-out-hosting-cop33-climate-summit-in-2028"
+  ],
+  "date": "13 Nov 2026",
+  "edition": "Daily Current Affairs",
+  "template": "breaking-photo",
+  "png": "1027-15-breaking-photo.png"
+ }
+]
