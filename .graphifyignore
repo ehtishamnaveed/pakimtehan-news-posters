@@ -1,0 +1,7 @@
+# Not worth graphing: brand logos, bundled fonts, stock sample photos, scratch and output
+assets/
+samples/img/
+work/
+preview/
+posters/
+out/
