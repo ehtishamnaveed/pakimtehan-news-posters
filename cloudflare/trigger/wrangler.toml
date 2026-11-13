@@ -1,0 +1,12 @@
+name = "pakimtehan-posters-trigger"
+main = "worker.js"
+compatibility_date = "2026-11-01"
+workers_dev = false
+
+[triggers]
+# Cron is in UTC. TEST: 07:10 UTC = 12:10 Asia/Karachi, once.
+# Every 2 hours later: "23 */2 * * *". Daily production: "40 2 * * *" (07:40 Asia/Karachi).
+crons = ["10 7 * * *"]
+
+[observability]
+enabled = true
