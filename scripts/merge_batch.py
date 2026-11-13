@@ -3,7 +3,7 @@
     python scripts/merge_batch.py <posters/DATE> <out/posters/DATE> [prefix]
 
 Without a prefix the batch is copied as-is (one batch per day, production).
-With a prefix (test mode, several runs a day) each PNG is renamed "<prefix>-<name>" and its
+With a prefix (test mode, several runs a day) each image is renamed "<prefix>-<name>" and its
 entry is appended to that day's posters.json, so earlier batches stay and the server imports
 only the new files.
 """
@@ -13,17 +13,22 @@ import sys
 from pathlib import Path
 
 
+def _file(p):
+    return p.get("file") or p.get("png") or ""  # batches before 13 Nov used "png"
+
+
 def write_readme(dst: Path, posters):
     """One page per day that GitHub renders: every batch, newest first, with the real file names."""
     batches = {}
     for p in posters:
-        batches.setdefault(p["png"].split("-")[0] if p["png"][:4].isdigit() and "-" in p["png"][5:] else "", []).append(p)
+        f = _file(p)
+        batches.setdefault(f.split("-")[0] if f[:4].isdigit() and "-" in f[5:] else "", []).append(p)
     md = [f"# Pak Imtehan posters - {dst.name}\n", f"{len(posters)} poster(s) in {len(batches)} batch(es).\n"]
     for key in sorted(batches, reverse=True):
         md.append(f"## Batch {key[:2]}:{key[2:]} (Pakistan time)\n" if key else "## Batch\n")
         for p in batches[key]:
             links = " · ".join(f"[{j + 1}]({l})" for j, l in enumerate(p.get("links") or []))
-            md += [f"### {p['headline']}", f"![{p.get('template', '')}]({p['png']})",
+            md += [f"### {p['headline']}", f"![{p.get('template', '')}]({_file(p)})",
                    f"*{p.get('summary', '')}*  ",
                    f"Template: `{p.get('template', '')}` · Source: {p.get('source', '')} · "
                    f"Editor: `{p.get('_editor', '?')}`  ", f"Links: {links}\n"]
@@ -36,9 +41,9 @@ def main(src: Path, dst: Path, prefix: str = ""):
     manifest = dst / "posters.json"
     existing = json.loads(manifest.read_text()) if (prefix and manifest.exists()) else []
     for p in new:
-        name = f"{prefix}-{p['png']}" if prefix else p["png"]
-        shutil.copy(src / p["png"], dst / name)
-        p["png"] = name
+        name = f"{prefix}-{p['file']}" if prefix else p["file"]
+        shutil.copy(src / p["file"], dst / name)
+        p["file"] = name
     allp = existing + new
     manifest.write_text(json.dumps(allp, ensure_ascii=False, indent=1))
     write_readme(dst, allp)

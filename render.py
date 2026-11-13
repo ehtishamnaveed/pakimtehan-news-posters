@@ -1,4 +1,7 @@
-"""Render poster JSON into 1080x1350 PNGs using the HTML templates.
+"""Render poster JSON into 1080x1350 JPEGs using the HTML templates.
+
+JPEG quality 90 with full-resolution colour (4:4:4), so coloured headline words stay sharp:
+~290 KB per poster instead of ~700 KB as PNG, and accepted by every social network.
 
 Usage:
     python render.py samples/today.json          # renders every poster in the file into out/
@@ -16,6 +19,7 @@ Each poster object:
     image      local path or URL (optional; templates that need one are skipped without it)
     credit     photo credit line
 """
+import io
 import json
 import random
 import sys
@@ -23,10 +27,12 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from markupsafe import Markup, escape
+from PIL import Image
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parent
 TEMPLATES = ["breaking-photo", "navy-card", "editorial", "newspaper", "typographic", "brief-light"]
+JPEG_OPTS = dict(quality=90, subsampling=0, optimize=True, progressive=True)
 NEEDS_PHOTO = {"breaking-photo", "navy-card", "brief-light"}
 
 env = Environment(loader=FileSystemLoader(ROOT / "templates"), autoescape=select_autoescape(["html"]))
@@ -88,12 +94,12 @@ def render(posters, out_dir: Path, base: Path, keep_html=False):
             html_path.write_text(html, encoding="utf-8")
             page.goto(html_path.as_uri(), wait_until="networkidle")
             page.wait_for_selector("body[data-ready='1']", timeout=15000)
-            png = out_dir / f"{i:02d}-{t}.png"
-            page.screenshot(path=str(png))
+            img = out_dir / f"{i:02d}-{t}.jpg"
+            Image.open(io.BytesIO(page.screenshot(type="png"))).convert("RGB").save(img, "JPEG", **JPEG_OPTS)
             if not keep_html:
                 html_path.unlink()
-            results.append({"png": str(png), "template": t, **{k: p.get(k) for k in ("headline", "source")}})
-            print(f"rendered {png.name}")
+            results.append({"file": str(img), "template": t, **{k: p.get(k) for k in ("headline", "source")}})
+            print(f"rendered {img.name}")
         browser.close()
     return results
 

@@ -4,7 +4,7 @@
     #   Claude writes work/posts.json  (see ROUTINE.md for the format)
     python build.py photos    # free CC photos -> work/photos/, contact sheets for Claude to look at
     #   Claude sets "photo": "a" | "b" | "c" | null on each post
-    python build.py render    # random templates -> posters/<date>/*.png + posters.json + README.md
+    python build.py render    # random templates -> posters/<date>/*.jpg + posters.json + README.md
 """
 import datetime as dt
 import json
@@ -112,14 +112,14 @@ def cmd_render():
 
     assign_templates(posts, cfg["settings"]["templates"], random.Random())
     for r, p in zip(render(posts, out, out), posts):
-        p["png"] = Path(r["png"]).name
+        p["file"] = Path(r["file"]).name  # the server reads "file" (older batches used "png")
         p.pop("image", None)
 
     (out / "posters.json").write_text(json.dumps(posts, ensure_ascii=False, indent=1))
     md = [f"# Pak Imtehan posters — {now.strftime('%A %-d %B %Y')}\n",
           "Review and approve these in the Pak Imtehan dashboard → News Posters.\n"]
     for p in posts:
-        md += [f"## {p['headline']}", f"![{p['template']}]({p['png']})",
+        md += [f"## {p['headline']}", f"![{p['template']}]({p['file']})",
                f"*{p['summary']}*  ", f"Template: `{p['template']}` · Source: {p['source']}  ",
                "Links: " + " · ".join(f"[{j + 1}]({l})" for j, l in enumerate(p["links"])) + "\n"]
     (out / "README.md").write_text("\n".join(md))
