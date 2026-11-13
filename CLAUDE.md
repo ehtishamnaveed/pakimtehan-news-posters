@@ -2,17 +2,24 @@
 
 Daily news posters for pakimtehan.com. Python does the fetching, photo search and rendering; Claude
 does the editing. Posters are produced by the GitHub Action `.github/workflows/free-ai-posters.yml`
-(free AI via `ai_editor.py`) and pushed to the `daily-posters-test` branch. `ROUTINE.md` is the older
-Claude-routine flow, kept for reference.
+(free AI via `ai_editor.py`) and stored in the Cloudflare Worker `pakimtehan-posters` (D1) with every
+value used to render them. GitHub does not store posters. `ROUTINE.md` is the older Claude-routine
+flow, kept for reference.
+
+Poster life cycle: daily run -> Worker (pending) -> dashboard (`pi_user_dashboard`, served by
+`pi_user_server`) -> admin edits (Worker starts `.github/workflows/poster-edit.yml` -> `edit.py`
+re-renders with the admin's exact text/photo, rev+1) -> approve (server copies the image to its own
+disk on Namecheap, deletes it from the Worker) or reject (deleted from the Worker).
 
 - `templates/` holds 6 HTML poster templates (1080×1350) with brand tokens in `base.css`. Fonts are
   bundled in `assets/fonts/`, so rendering works offline.
 - `config/sources.yaml` lists the client's 27 channels and topics, and settings such as `posters_per_day`.
 - `build.py fetch | photos | render` are the pipeline steps. `render.py` turns posts into JPEGs.
-- `posters/<date>/` is the output; the Action commits it to the `daily-posters-test` branch, never to
-  `main`. `work/` is scratch and is never committed.
-- `cloudflare/trigger/` is the Cloudflare Worker that starts the Action on a cron (GitHub's own
-  scheduler never fired for this repo).
+- `store.py` talks to the Worker's storage API; `edit.py` applies dashboard edits.
+- `posters/<date>/` and `work/` are local scratch output and are never committed.
+- `cloudflare/worker/` is the Worker: cron that starts the daily Action (GitHub's own scheduler
+  never fired for this repo), the D1 storage API (`schema.sql`) and the edit dispatcher.
+  Deploy with `cd cloudflare/worker && wrangler deploy`.
 
 ## Every session in this folder
 

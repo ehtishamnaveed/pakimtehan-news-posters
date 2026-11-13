@@ -64,6 +64,15 @@ def cmd_photos():
     POSTS.write_text(json.dumps(posts, ensure_ascii=False, indent=1))
 
 
+def save_photo(src, dest, max_width=1600):
+    """Store a photo as a JPEG of at most 1600 px wide (keeps each stored file well under 1 MB)."""
+    with Image.open(src) as im:
+        im = im.convert("RGB")
+        if im.width > max_width:
+            im = im.resize((max_width, round(im.height * max_width / im.width)), Image.LANCZOS)
+        im.save(dest, "JPEG", quality=85, optimize=True, progressive=True)
+
+
 def validate(p, topics):
     p["headline"] = p["headline"].strip()
     if p.get("highlight") and p["highlight"] not in p["headline"]:
@@ -112,7 +121,10 @@ def cmd_render():
 
     assign_templates(posts, cfg["settings"]["templates"], random.Random())
     for r, p in zip(render(posts, out, out), posts):
-        p["file"] = Path(r["file"]).name  # the server reads "file" (older batches used "png")
+        p["file"] = Path(r["file"]).name
+        if p.get("image"):  # keep the photo, so an admin's text edit can re-render the same poster
+            p["photo_file"] = f"{Path(r['file']).stem}-photo.jpg"
+            save_photo(p["image"], out / p["photo_file"])
         p.pop("image", None)
 
     (out / "posters.json").write_text(json.dumps(posts, ensure_ascii=False, indent=1))

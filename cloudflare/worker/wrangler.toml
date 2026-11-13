@@ -1,0 +1,25 @@
+# pakimtehan-posters: daily cron trigger + D1 poster storage + edit dispatcher. See worker.js.
+# Deploy:   wrangler deploy
+# Schema:   wrangler d1 execute pakimtehan-posters --remote --file schema.sql
+# Secrets:  wrangler secret put GITHUB_TOKEN   (Actions read/write on the posters repo)
+#           wrangler secret put STORE_TOKEN    (same value as GitHub secret POSTERS_STORE_TOKEN
+#                                               and the server's NEWS_POSTERS_STORE_TOKEN)
+name = "pakimtehan-posters"
+main = "worker.js"
+compatibility_date = "2026-11-01"
+workers_dev = true   # https://pakimtehan-posters.ehtisham-bsit597.workers.dev (every call needs STORE_TOKEN)
+
+[[d1_databases]]
+binding = "DB"
+database_name = "pakimtehan-posters"
+database_id = "5843fdc9-6667-4974-954a-05eb7611a228"
+
+[triggers]
+# Cron is in UTC. Now: 07:40 UTC = 12:40 Asia/Karachi, once a day (test).
+# Every 2 hours: "23 */2 * * *". Daily production: "40 2 * * *" (07:40 Asia/Karachi).
+# A new or changed cron takes up to 15 minutes to reach Cloudflare's network: set test times
+# at least 20 minutes ahead.
+crons = ["40 7 * * *"]
+
+[observability]
+enabled = true

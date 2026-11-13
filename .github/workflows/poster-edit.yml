@@ -1,0 +1,38 @@
+# Applies the changes an admin requested in the dashboard (Dashboard -> News Posters -> Request
+# changes) and stores the re-rendered posters as a new revision. No AI: the admin's text and photo are
+# used exactly as sent. Started by the Cloudflare Worker the moment an edit arrives; every run
+# processes all waiting edits, so a missed start is caught by the next one.
+name: Poster edits
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: poster-edits
+  cancel-in-progress: false
+
+jobs:
+  edit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      POSTERS_STORE_URL: ${{ vars.POSTERS_STORE_URL }}
+      POSTERS_STORE_TOKEN: ${{ secrets.POSTERS_STORE_TOKEN }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install
+        run: |
+          pip install -r requirements.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Apply edits and re-render
+        run: python edit.py

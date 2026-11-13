@@ -1,12 +1,16 @@
-# Daily news posters on GitHub Actions with free AI (Gemini first, NVIDIA NIM as backup).
+# Daily news posters on GitHub Actions with free AI (Gemini first, NVIDIA NIM / OpenRouter as backup).
 #
-# Branches: `main` (code) and `daily-posters-test` (test output you can browse on GitHub).
-#   Testing (now):   POSTERS_OUT_BRANCH=daily-posters-test, POSTERS_TEST_MODE=true, cron every 2 hours
-#                    -> each run ADDS a batch; posters/<date>/README.md shows every batch of the day
-#   Production:      planned: posters go straight to the Pak Imtehan server API instead of a branch;
-#                    cron back to once a day ("40 2 * * *" = 07:40 Asia/Karachi)
+# Started by the Cloudflare Worker `pakimtehan-posters` (cloudflare/worker), not by GitHub's own cron,
+# which never fired for this repo. Its schedule is `crons` in cloudflare/worker/wrangler.toml.
+#
+# Output: posters are stored in the Worker (Cloudflare D1) with every value used to make them, and
+# wait there until an admin approves (server copies them to its own disk) or rejects them in the
+# dashboard. Nothing is committed to GitHub.
+#   POSTERS_TEST_MODE=true  -> every run adds a batch (several a day)
+#   POSTERS_TEST_MODE=false -> one batch a day; skipped if today's batch is already stored
 #
 # Secrets (Settings -> Secrets and variables -> Actions):
+#   POSTERS_STORE_TOKEN (+ variable POSTERS_STORE_URL): the Worker's storage API
 #   GEMINI_API_KEY (primary), NVIDIA_API_KEY + OPENROUTER_API_KEY (backups),
 #   CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN (last-resort AI),
 #   PEXELS_API_KEY, UNSPLASH_ACCESS_KEY, PIXABAY_API_KEY (optional photo libraries; without them
@@ -14,49 +18,23 @@
 name: Daily posters (free AI)
 
 on:
-  schedule:
-    # TESTING: every 2 hours at :23 UTC (= :23 past 11:00, 13:00, ... Asia/Karachi), one batch of
-    # posters_per_day (15) each. Off the top of the hour, where GitHub drops most scheduled runs.
-    # Production: "40 2 * * *" (once a day, 07:40 Asia/Karachi).
-    - cron: "23 */2 * * *"
   workflow_dispatch:
 
 permissions:
-  contents: write
-  actions: write   # lets the gate job switch the workflow off when the fast-test window ends
+  contents: read
 
 concurrency:
-  group: daily-posters   # one run at a time across all branches (they share the output branch)
+  group: daily-posters   # one run at a time
   cancel-in-progress: false
 
 jobs:
-  # Scheduled runs only go ahead inside the fast-test window (repo variable POSTERS_FAST_TEST_UNTIL,
-  # UTC ISO time). Once it has passed, the workflow disables itself so it stops using free minutes.
-  # Manual runs (Actions -> Run workflow) always go ahead.
-  gate:
-    runs-on: ubuntu-latest
-    outputs:
-      go: ${{ steps.check.outputs.go }}
-    steps:
-      - id: check
-        env:
-          GH_TOKEN: ${{ github.token }}
-          UNTIL: ${{ vars.POSTERS_FAST_TEST_UNTIL }}
-        run: |
-          if [ "${{ github.event_name }}" != "schedule" ] || [ -z "$UNTIL" ]; then echo "go=true" >> "$GITHUB_OUTPUT"; exit 0; fi
-          if [ "$(date -u +%s)" -lt "$(date -u -d "$UNTIL" +%s)" ]; then echo "go=true" >> "$GITHUB_OUTPUT"; exit 0; fi
-          echo "Fast-test window ended at $UNTIL; disabling this workflow."
-          gh workflow disable "${{ github.workflow }}" -R "${{ github.repository }}"
-          echo "go=false" >> "$GITHUB_OUTPUT"
-
   posters:
-    needs: gate
-    if: needs.gate.outputs.go == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 40   # 15 posters: ~2 min AI pacing + up to 15 photo searches
     env:
-      OUT_BRANCH: ${{ vars.POSTERS_OUT_BRANCH || 'daily-posters-test' }}
       TEST_MODE: ${{ vars.POSTERS_TEST_MODE || 'true' }}
+      POSTERS_STORE_URL: ${{ vars.POSTERS_STORE_URL }}
+      POSTERS_STORE_TOKEN: ${{ secrets.POSTERS_STORE_TOKEN }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
       OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
@@ -67,94 +45,75 @@ jobs:
       UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
     steps:
       - uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
 
-      - name: Today's date (Pakistan time)
-        run: echo "TODAY=$(TZ=Asia/Karachi date +%F)" >> "$GITHUB_ENV"
-
-      - name: Prepare output branch
-        id: out
+      - name: Date and batch time (Pakistan time)
         run: |
-          git config user.name "pakimtehan-posters[bot]"
-          git config user.email "posters@users.noreply.github.com"
-          if git ls-remote --exit-code --heads origin "$OUT_BRANCH" >/dev/null; then
-            git fetch origin "$OUT_BRANCH"
-            git worktree add out "origin/$OUT_BRANCH"
-            git -C out switch -c "$OUT_BRANCH"
-          else
-            git worktree add --orphan -b "$OUT_BRANCH" out
-          fi
-          if [ "$TEST_MODE" != "true" ] && [ -f "out/posters/$TODAY/posters.json" ]; then
-            echo "Posters for $TODAY already exist on $OUT_BRANCH; nothing to do."
-            echo "skip=true" >> "$GITHUB_OUTPUT"
-          fi
-          mkdir -p state
-          [ -f out/state/seen.json ] && cp out/state/seen.json state/seen.json || true
+          echo "TODAY=$(TZ=Asia/Karachi date +%F)" >> "$GITHUB_ENV"
+          echo "BATCH=$(TZ=Asia/Karachi date +%H%M)" >> "$GITHUB_ENV"
 
       - uses: actions/setup-python@v7
-        if: steps.out.outputs.skip != 'true'
         with:
           python-version: "3.12"
           cache: pip
 
       - name: Install
-        if: steps.out.outputs.skip != 'true'
         run: pip install -r requirements.txt
+
+      - name: Already done today? (production only)
+        id: done
+        run: |
+          if [ "$TEST_MODE" != "true" ] && python store.py ran-today "$TODAY"; then
+            echo "Today's posters are already stored; nothing to do."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Load seen links
+        if: steps.done.outputs.skip != 'true'
+        run: python store.py pull-state
 
       # Cheapest possible gate: one 1-token request per AI provider. If they are all out of quota,
       # stop here instead of downloading Chromium and burning runner minutes on a run that cannot finish.
       - name: Check AI providers (fail fast)
-        if: steps.out.outputs.skip != 'true'
+        if: steps.done.outputs.skip != 'true'
         run: python ai_editor.py check
 
       # Informational only: a poster still renders (without a photo) if every image provider is down.
       - name: Check image providers
-        if: steps.out.outputs.skip != 'true'
+        if: steps.done.outputs.skip != 'true'
         run: python images.py check || true
 
       - name: Install Chromium
-        if: steps.out.outputs.skip != 'true'
+        if: steps.done.outputs.skip != 'true'
         run: python -m playwright install --with-deps chromium
 
       - name: Fetch news
-        if: steps.out.outputs.skip != 'true'
+        if: steps.done.outputs.skip != 'true'
         run: python build.py fetch
 
       - name: Choose stories and write text (free AI)
-        if: steps.out.outputs.skip != 'true'
+        if: steps.done.outputs.skip != 'true'
         run: python ai_editor.py write
 
       - name: Find and choose photos
-        if: steps.out.outputs.skip != 'true'
+        if: steps.done.outputs.skip != 'true'
         run: |
           python build.py photos
           python ai_editor.py photos
 
       - name: Render posters
-        if: steps.out.outputs.skip != 'true'
+        if: steps.done.outputs.skip != 'true'
         run: python build.py render
 
-      - name: Publish to ${{ env.OUT_BRANCH }}
-        if: steps.out.outputs.skip != 'true'
+      - name: Store posters for review (Cloudflare)
+        if: steps.done.outputs.skip != 'true'
         run: |
-          mkdir -p out/posters out/state
-          if [ "$TEST_MODE" = "true" ]; then PREFIX=$(TZ=Asia/Karachi date +%H%M); else PREFIX=""; fi
-          python scripts/merge_batch.py "posters/$TODAY" "out/posters/$TODAY" $PREFIX
-          cp state/seen.json out/state/seen.json
-          cd out
-          git add "posters/$TODAY" state/seen.json
-          git commit -m "Posters for $TODAY ${PREFIX:+$PREFIX }(free AI)"
-          for i in 1 2 3; do
-            git push origin "$OUT_BRANCH" && exit 0
-            git pull --rebase origin "$OUT_BRANCH"
-          done
-          exit 1
+          python store.py upload "posters/$TODAY" "$BATCH"
+          python store.py push-state "$TODAY"
 
       - name: Summary
-        if: always() && steps.out.outputs.skip != 'true'
+        if: always() && steps.done.outputs.skip != 'true'
         run: |
           {
-            echo "## Posters for $TODAY -> \`$OUT_BRANCH\`"
+            echo "## Posters for $TODAY, batch $BATCH (stored for review in the dashboard)"
             python -c "import json;[print(f\"- **{p['headline']}** ({p.get('_editor','?')}, {p.get('template','?')})\") for p in json.load(open('posters/$TODAY/posters.json'))]" 2>/dev/null || echo "No posters produced."
           } >> "$GITHUB_STEP_SUMMARY"
