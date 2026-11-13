@@ -10,7 +10,7 @@ Last updated: 2026-11-13
   with all values + the photo, id `<date>_<HHMM batch>-<nn>`. GitHub no longer stores posters.
 
 ## Worker (`cloudflare/worker/`, https://pakimtehan-posters.ehtisham-bsit597.workers.dev)
-- Cron starts the daily Action; current cron `40 7 * * *` (12:40 PKT, once a day, test). Crons take
+- **PAUSED (13 Nov): Worker cron removed (`crons = []`) until the client meeting.** Crons take
   up to 15 min to propagate: set test times 20+ min ahead. GitHub's own cron was removed (never fired).
 - Storage API (Bearer STORE_TOKEN): list/get/file/edit/render/delete posters, state (seen links, last_run).
 - Edits: dashboard -> server -> Worker `POST /posters/<id>/edit` -> starts `poster-edit.yml` ->

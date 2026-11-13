@@ -19,7 +19,9 @@ database_id = "5843fdc9-6667-4974-954a-05eb7611a228"
 # Every 2 hours: "23 */2 * * *". Daily production: "40 2 * * *" (07:40 Asia/Karachi).
 # A new or changed cron takes up to 15 minutes to reach Cloudflare's network: set test times
 # at least 20 minutes ahead.
-crons = ["40 7 * * *"]
+# PAUSED 13 Nov 2026 until the client meeting: no automatic runs. To resume, set e.g.
+# crons = ["40 2 * * *"]  (07:40 Asia/Karachi) and run `wrangler deploy`.
+crons = []
 
 [observability]
 enabled = true
