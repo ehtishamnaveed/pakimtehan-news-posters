@@ -30,7 +30,7 @@ h1 mark { color: var(--blue-600); }
   </div>
   <div class="foot">
     <span><strong>pakimtehan.com</strong> · Daily Current Affairs</span>
-    <span class="credit">Photo: {{ p.credit }}</span>
+    {% if p.credit %}<span class="credit">Photo: {{ p.credit }}</span>{% endif %}
   </div>
 </div>
 {% endblock %}

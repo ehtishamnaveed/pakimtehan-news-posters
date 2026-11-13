@@ -33,7 +33,7 @@ h1 mark { color: var(--blue-700); font-style: italic; }
   <span class="kick">{{ p.kicker }}</span>
   <h1 data-fit="{{ 300 if p.image else 360 }}" data-min="44">{{ p.headline_html }}</h1>
   <div class="cols">
-    {% if p.image %}<div class="pic"><img class="photo" src="{{ p.image }}"><span class="credit">Photo: {{ p.credit }}</span></div>{% endif %}
+    {% if p.image %}<div class="pic"><img class="photo" src="{{ p.image }}">{% if p.credit %}<span class="credit">Photo: {{ p.credit }}</span>{% endif %}</div>{% endif %}
     <div class="text" data-fit="box" data-min="18">
       <p>{{ p.summary }}</p>
       {% if p.why %}<div class="why"><b>Why it matters · {{ p.syllabus|join(' · ') }}</b>{{ p.why }}</div>{% endif %}

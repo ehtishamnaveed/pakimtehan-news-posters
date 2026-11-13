@@ -23,7 +23,7 @@ h1 mark { color: var(--blue-600); }
 <div class="poster">
   <div class="head"><img src="{{ root }}/assets/logo-navy.png"><span class="d">{{ p.date }}</span></div>
   <div class="banner">{{ p.kicker }}</div>
-  <div class="pic"><img class="photo" src="{{ p.image }}"><span class="credit">Photo: {{ p.credit }}</span></div>
+  <div class="pic"><img class="photo" src="{{ p.image }}">{% if p.credit %}<span class="credit">Photo: {{ p.credit }}</span>{% endif %}</div>
   <h1 data-fit="180" data-min="36">{{ p.headline_html }}</h1>
   <p class="sum" data-fit="150" data-min="20">{{ p.summary }}</p>
   <div class="foot"><span class="cta">Full brief on pakimtehan.com</span><span class="src">Source<br><b>{{ p.source }}</b></span></div>

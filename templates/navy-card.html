@@ -36,6 +36,6 @@ h1 mark { color: var(--blue-400); }
     <p class="sum" data-fit="160" data-min="20">{{ p.summary }}</p>
     {% if p.why %}<p class="why"><b>Why it matters · {{ p.syllabus|join(' · ') }}</b>{{ p.why }}</p>{% endif %}
   </div>
-  <div class="foot"><span><strong>pakimtehan.com</strong> · Source: {{ p.source }}</span><span class="credit">Photo: {{ p.credit }}</span></div>
+  <div class="foot"><span><strong>pakimtehan.com</strong> · Source: {{ p.source }}</span>{% if p.credit %}<span class="credit">Photo: {{ p.credit }}</span>{% endif %}</div>
 </div>
 {% endblock %}

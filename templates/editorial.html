@@ -23,7 +23,7 @@ h1 mark { background: linear-gradient(100deg, transparent 0 1%, var(--blue-300) 
   <h1 data-fit="{{ 400 if p.image else 560 }}" data-min="56">{{ p.headline_html }}</h1>
   <p class="sum" data-fit="{{ 125 if p.image else 200 }}" data-min="20">{{ p.summary }}</p>
   {% if p.image %}
-  <div class="pic"><img class="photo" src="{{ p.image }}"><span class="credit">Photo: {{ p.credit }}</span></div>
+  <div class="pic"><img class="photo" src="{{ p.image }}">{% if p.credit %}<span class="credit">Photo: {{ p.credit }}</span>{% endif %}</div>
   {% else %}
   <div class="why"><b>Why it matters · {{ p.syllabus|join(' · ') }}</b>{{ p.why }}</div>
   {% endif %}
