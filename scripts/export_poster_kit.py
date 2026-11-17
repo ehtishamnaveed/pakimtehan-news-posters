@@ -24,5 +24,6 @@ for f in (ROOT / "templates").iterdir():
         shutil.copy(f, out / "templates" / f.name)
 shutil.copytree(ROOT / "assets", out / "assets")
 catalog = yaml.safe_load((ROOT / "templates" / "catalog.yaml").read_text(encoding="utf-8"))["templates"]
-(out / "catalog.json").write_text(json.dumps(catalog, ensure_ascii=False))
+(dash / "src" / "poster").mkdir(parents=True, exist_ok=True)  # bundled into the app (the dev server will not serve it from public/)
+(dash / "src" / "poster" / "catalog.json").write_text(json.dumps(catalog, ensure_ascii=False))
 print(f"{len(catalog)} designs -> {out}")

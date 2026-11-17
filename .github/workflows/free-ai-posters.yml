@@ -60,11 +60,11 @@ jobs:
         run: pip install -r requirements.txt
 
       # The Worker starts a run every hour. This only stops a manual start from doubling a run that just finished.
-      - name: Ran in the last 45 minutes? (production only)
+      - name: Ran in the last 20 minutes? (production only)
         id: done
         run: |
-          if [ "$TEST_MODE" != "true" ] && python store.py ran-recently 45; then
-            echo "A batch was stored less than 45 minutes ago; nothing to do."
+          if [ "$TEST_MODE" != "true" ] && python store.py ran-recently 20; then
+            echo "A batch was stored less than 20 minutes ago; nothing to do."
             echo "skip=true" >> "$GITHUB_OUTPUT"
           fi
 
