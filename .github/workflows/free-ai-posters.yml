@@ -11,7 +11,7 @@
 #
 # Secrets (Settings -> Secrets and variables -> Actions):
 #   POSTERS_STORE_TOKEN (+ variable POSTERS_STORE_URL): the Worker's storage API
-#   GEMINI_API_KEY (primary), NVIDIA_API_KEY + OPENROUTER_API_KEY (backups),
+#   GEMINI_API_KEY (primary), ZAI_API_KEY + GROQ_API_KEY + NVIDIA_API_KEY + OPENROUTER_API_KEY (backups),
 #   CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN (last-resort AI),
 #   PEXELS_API_KEY, UNSPLASH_ACCESS_KEY, PIXABAY_API_KEY (optional photo libraries; without them
 #   only the keyless Openverse and Wikimedia Commons are searched)
@@ -38,6 +38,7 @@ jobs:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
       ZAI_API_KEY: ${{ secrets.ZAI_API_KEY }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
       OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

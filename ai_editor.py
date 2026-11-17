@@ -43,20 +43,25 @@ ZAI_FREE = {"glm-4.7-flash", "glm-4.5-flash", "glm-4.6v-flash"}
 ZAI_TEXT = "glm-4.7-flash"
 ZAI_VISION = "glm-4.6v-flash"
 
+# Groq (free, no card): 1,000 requests/day but only 8,000 TOKENS PER MINUTE, so requests must stay small (see GROQ_* below).
+GROQ_TEXT = "openai/gpt-oss-120b"
+GROQ_VISION = "qwen/qwen3.8-27b"
+
 OPENAI_COMPAT = {
+    "groq": ("https://api.groq.com/openai/v1", "GROQ_API_KEY", {}),
     "zai": ("https://api.z.ai/api/paas/v4", "ZAI_API_KEY", {}),
     "nvidia": ("https://integrate.api.nvidia.com/v1", "NVIDIA_API_KEY", {}),
     "openrouter": ("https://openrouter.ai/api/v1", "OPENROUTER_API_KEY",
                    {"HTTP-Referer": "https://pakimtehan.com", "X-Title": "Pak Imtehan posters"}),
 }
 
-DEFAULT_PROVIDERS = (f"gemini:gemini-3.6-flash,gemini:gemini-3.5-flash-lite,zai:{ZAI_TEXT},"
+DEFAULT_PROVIDERS = (f"gemini:gemini-3.6-flash,gemini:gemini-3.5-flash-lite,zai:{ZAI_TEXT},groq:{GROQ_TEXT},"
                      f"nvidia:{NVIDIA_TEXT},nvidia:{NVIDIA_VISION},"
                      f"openrouter:{OPENROUTER_TEXT},"
                      f"cloudflare:@cf/google/gemma-4-26b-a4b-it")
 # Photo picks: Flash-Lite first. In the 13 Nov run 3.6 Flash returned 429/timeouts on 13 of 15 picks
 # and spent ~980 thinking tokens on each a/b/c answer; Flash-Lite answered every one in seconds.
-VISION_PROVIDERS = (f"gemini:gemini-3.5-flash-lite,gemini:gemini-3.6-flash,zai:{ZAI_VISION},"
+VISION_PROVIDERS = (f"gemini:gemini-3.5-flash-lite,groq:{GROQ_VISION},gemini:gemini-3.6-flash,zai:{ZAI_VISION},"
                     f"nvidia:{NVIDIA_VISION},openrouter:{OPENROUTER_VISION}")
 
 EDITOR_PROMPT = """You are the current-affairs editor for Pak Imtehan (pakimtehan.com), a CSS/PMS exam
@@ -243,6 +248,12 @@ def _nvidia(model, prompt, **kw):
     return _openai_compat("nvidia", model, prompt, **kw)
 
 
+def _groq(model, prompt, think=False, **kw):
+    """Groq. gpt-oss is a reasoning model: keep its reasoning short so it does not eat the token budget."""
+    extra = {"reasoning_effort": "medium" if think else "low"} if model.startswith("openai/gpt-oss") else None
+    return _openai_compat("groq", model, prompt, extra_body=extra, **kw)
+
+
 def _zai(model, prompt, think=False, **kw):
     """Z.ai (GLM), free Flash models only: 1 request at a time, so MIN_GAP paces it.
     Thinking is OFF unless asked for: with it on, GLM spends most of max_tokens reasoning and can return nothing."""
@@ -259,7 +270,7 @@ def _openrouter(model, prompt, **kw):
 # Minimum seconds between two requests to the same model. Gemini's free tier allows only a few
 # requests per minute per model: in the 12 Nov run, back-to-back photo calls got 429s. 15 photo
 # calls at this pace take ~2 min instead of hitting the limit.
-MIN_GAP = {"gemini": 7.0, "zai": 2.0}
+MIN_GAP = {"gemini": 7.0, "zai": 2.0, "groq": 13.0}  # groq: ~7,000 input tokens/min; a photo-sheet call is ~1,400 tokens, so at most ~5 a minute
 _last_call = {}
 
 
@@ -273,10 +284,10 @@ def _pace(spec):
 
 def call(spec, prompt, **kw):
     kind, model = spec.split(":", 1)
-    if kind != "zai":
-        kw.pop("think", None)  # only Z.ai has a thinking switch
+    if kind not in ("zai", "groq"):
+        kw.pop("think", None)  # only Z.ai and Groq (gpt-oss) have a thinking switch
     fn = {"gemini": _gemini, "cloudflare": _cloudflare,
-          "nvidia": _nvidia, "openrouter": _openrouter, "zai": _zai}[kind]
+          "nvidia": _nvidia, "openrouter": _openrouter, "zai": _zai, "groq": _groq}[kind]
     for attempt in range(3):
         _pace(spec)
         try:
@@ -424,18 +435,23 @@ def cmd_write():
         (WORK / "posts.json").write_text(json.dumps(posts, ensure_ascii=False, indent=1))
         print(f"  {len(posts)} poster(s) written by {spec}")
 
+    g_want = min(want, 4)  # Groq: 8,000 tokens/min for input AND output together, so a short list and a few posters
+    groq_prompt = EDITOR_PROMPT.format(n=g_want, headlines="\n".join(lines[:5 + 35]),
+                                       covered="\n".join(f"- {r['h']}" for r in recent[-15:]) or "(none yet)")
+
     for spec in os.environ.get("AI_PROVIDERS", DEFAULT_PROVIDERS).split(","):
         spec = spec.strip()
         print(f"  trying {spec} ...")
-        budget = 4096 if spec.startswith("cloudflare:") else max(8192, want * 600 + 6000)
+        small = spec.startswith(("cloudflare:", "groq:"))
+        budget = 4096 if spec.startswith("cloudflare:") else 3300 if spec.startswith("groq:") else max(8192, want * 600 + 6000)
         try:
-            raw = call(spec, short_prompt if spec.startswith("cloudflare:") else prompt,
+            raw = call(spec, groq_prompt if spec.startswith("groq:") else short_prompt if spec.startswith("cloudflare:") else prompt,
                        json_mode=True, max_tokens=budget)
-            posts = validate(extract_json_array(raw), n_items, topics, want, recent)
+            posts = validate(extract_json_array(raw), n_items, topics, g_want if spec.startswith("groq:") else want, recent)
         except Exception as e:  # noqa: BLE001 - any failure means: try the next provider
             print(f"    failed: {str(e)[:160]}")
             continue
-        if len(posts) < need:
+        if len(posts) < (min(need, g_want) if spec.startswith('groq:') else need):
             print(f"    only {len(posts)} valid poster(s) (need {need}), trying next provider")
             if len(posts) > len(best[0] if best else []):
                 best = [posts, spec]
@@ -486,6 +502,19 @@ def _verify_batch(batch, evidence, earlier, providers, avoid):
     prompt = VERIFY_PROMPT.format(earlier=earlier, posters="\n".join(_poster_block(i + 1, posts_i, evidence[i]) for i, posts_i in batch))
     order = [s for s in providers if s != avoid] + [s for s in providers if s == avoid]
     for spec in order:
+        if spec.startswith("groq:"):  # 8,000 tokens/min: one poster per request with a short "earlier posters" list
+            got = {}
+            for i, p in batch:
+                one = VERIFY_PROMPT.format(earlier="\n".join(earlier.splitlines()[-20:]), posters=_poster_block(1, p, dict(evidence[i], text=evidence[i]["text"][:3500])))
+                try:
+                    row = extract_json_array(call(spec, one, think=True, max_tokens=2500, timeout=120))[0]
+                    got[i] = row
+                except Exception as e:  # noqa: BLE001
+                    print(f"    {spec} failed: {str(e)[:140]}")
+                    break
+            if len(got) == len(batch):
+                return got, spec
+            continue
         try:
             raw = call(spec, prompt, think=True, max_tokens=max(12000, len(batch) * 2500 + 6000), timeout=300)  # reasoning models (GLM, Nemotron) spend most of it thinking
             rows = extract_json_array(raw)

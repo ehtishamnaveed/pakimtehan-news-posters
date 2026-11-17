@@ -60,6 +60,10 @@ Last updated: 2026-11-17
   models are allowed (code refuses others). Secret ZAI_API_KEY (must be set in GitHub). Thinking is OFF for writing (else it returns nothing)
   and ON for fact-check. 429/1305 = "overloaded" (random, retried), NOT quota. No official monthly cap is published; check z.ai/manage-apikey/rate-limits.
 
+- Groq free backup (17 Nov): text `groq:openai/gpt-oss-120b`, vision `groq:qwen/qwen3.8-27b`, secret GROQ_API_KEY (must be set in GitHub). Limits seen in
+  headers: 1,000 requests/day, but only ~8,000 tokens/MIN (7,000 input for vision), so the writer sends Groq a short list (4 posters), the fact-check one poster per
+  request, and photo calls are paced 13 s apart. Used as a fallback, not the main writer.
+
 ## Branches
 - `main` only is used now. `daily-posters-test` (old test output) is no longer written; can be deleted.
   Tag `archive/daily-posters` keeps the 12 Nov routine output.
