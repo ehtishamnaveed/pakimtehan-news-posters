@@ -68,6 +68,18 @@ async function cleanup(env) {
   return { oldPosters: posters.meta?.changes || 0, oldFiles: old.meta?.changes || 0, orphanFiles: orphans.meta?.changes || 0 };
 }
 
+async function startEdit(env, id) {
+  await env.DB.prepare("UPDATE posters SET state = 'editing', error = NULL, updated_at = ? WHERE id = ?").bind(now(), id).run();
+  try {
+    await dispatch(env, EDIT_WORKFLOW);
+  } catch (e) {
+    await env.DB.prepare("UPDATE posters SET state = 'ready', error = ?, updated_at = ? WHERE id = ?")
+      .bind(`Could not start the edit job: ${e.message}`, now(), id).run();
+    return fail(502, e.message);
+  }
+  return json({ ok: true, state: "editing" });
+}
+
 const rowOut = (r) => ({
   id: r.id, date: r.date, rev: r.rev, state: r.state, error: r.error,
   data: JSON.parse(r.data), edit: r.edit ? JSON.parse(r.edit) : null,
@@ -172,7 +184,9 @@ async function route(req, env, ctx) {
     return json({ ok: true });
   }
 
-  // POST /posters/<id>/edit   {changes:{...}, photo:"keep"|"replace"|"remove", note?}
+  // POST /posters/<id>/edit   {changes:{...}, photo:"keep"|"replace"|"remove", note?, apply?}
+  // apply:false  = only SAVE the changes (merged with earlier saved ones); nothing is re-rendered yet.
+  // otherwise    = save and start the re-render (same as POST .../apply).
   if (m === "POST" && action === "edit") {
     if (row.state === "editing") return fail(409, "an edit is already being applied");
     const b = await body();
@@ -181,17 +195,33 @@ async function route(req, env, ctx) {
       const f = await env.DB.prepare("SELECT 1 FROM files WHERE poster_id = ? AND kind = 'edit_photo'").bind(id).first();
       if (!f) return fail(400, "upload the new photo first");
     }
-    const edit = { changes: b.changes, photo: b.photo || "keep", note: (b.note || "").slice(0, 500), by: (b.by || "").slice(0, 120), at: now() };
-    await env.DB.prepare("UPDATE posters SET state = 'editing', edit = ?, error = NULL, updated_at = ? WHERE id = ?")
+    const old = row.edit ? JSON.parse(row.edit) : null;
+    const edit = {
+      changes: { ...(old?.changes || {}), ...b.changes },
+      photo: (b.photo && b.photo !== "keep") ? b.photo : (old?.photo || "keep"),
+      note: (b.note || old?.note || "").slice(0, 500), by: (b.by || old?.by || "").slice(0, 120), at: now(),
+    };
+    await env.DB.prepare("UPDATE posters SET edit = ?, error = NULL, updated_at = ? WHERE id = ?")
       .bind(JSON.stringify(edit), now(), id).run();
-    try {
-      await dispatch(env, EDIT_WORKFLOW);
-    } catch (e) {
-      await env.DB.prepare("UPDATE posters SET state = 'ready', edit = NULL, error = ?, updated_at = ? WHERE id = ?")
-        .bind(`Could not start the edit job: ${e.message}`, now(), id).run();
-      return fail(502, e.message);
-    }
-    return json({ ok: true, state: "editing" });
+    if (b.apply === false) return json({ ok: true, state: "ready", saved: true });
+    return startEdit(env, id);
+  }
+
+  // POST /posters/<id>/apply   re-render the poster with the saved changes
+  if (m === "POST" && action === "apply") {
+    if (row.state === "editing") return fail(409, "an edit is already being applied");
+    if (!row.edit) return fail(400, "no saved changes to apply");
+    return startEdit(env, id);
+  }
+
+  // POST /posters/<id>/discard   drop the saved (not yet rendered) changes
+  if (m === "POST" && action === "discard") {
+    if (row.state === "editing") return fail(409, "an edit is already being applied");
+    await env.DB.batch([
+      env.DB.prepare("DELETE FROM files WHERE poster_id = ? AND kind = 'edit_photo'").bind(id),
+      env.DB.prepare("UPDATE posters SET edit = NULL, error = NULL, updated_at = ? WHERE id = ?").bind(now(), id),
+    ]);
+    return json({ ok: true });
   }
 
   // PUT /posters/<id>/render   {data, image, photo?, keep_photo?}   result of an edit, from the Action
