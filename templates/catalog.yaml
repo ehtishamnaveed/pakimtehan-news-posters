@@ -1,7 +1,8 @@
 # The poster library. One entry = one finished design (a layout file + a colour theme).
 # The selector (select_template.py) scores every entry against the story: its category, tone, whether it has a
 # photo / a striking number / a quotation, and how long the headline is. It never picks at random: it picks among the
-# best fits and avoids what was used recently. NO YELLOW anywhere (client requirement).
+# best fits and avoids what was used recently. PALETTE: only the website's blues, navy and white (client requirement:
+# no yellow, red, black, green, violet or cream). A test enforces it.
 #
 #   photo:       required | optional | none   (how the design uses a photo)
 #   photo_heavy: true                         (optional photo, but the design looks thin without one: avoided then)
@@ -21,50 +22,50 @@ templates:
   - {id: brief-light,    layout: brief-light,    label: "Light brief (photo)", family: general,  photo: required, categories: [education, economy, pakistan-affairs, climate-environment], tones: [explainer, hopeful, analytical], chars: [30, 100]}
 
   # ---- breaking / urgent -----------------------------------------------------------------------------------------
-  - {id: bold-ink,   layout: bold-type, theme: ink,   label: "Bold black",  family: breaking, photo: optional, categories: [security-defence, geopolitics, international-affairs, politics-governance], tones: [urgent, serious, solemn], chars: [24, 80]}
-  - {id: bold-red,   layout: bold-type, theme: red,   label: "Bold red",    family: breaking, photo: optional, categories: [security-defence, geopolitics, pakistan-affairs, politics-governance], tones: [urgent], chars: [24, 80]}
-  - {id: bold-royal, layout: bold-type, theme: royal, label: "Bold blue",   family: breaking, photo: optional, categories: [science-technology, economy, international-affairs, geopolitics], tones: [urgent, analytical, serious], chars: [24, 80]}
+  - {id: bold-navy,   layout: bold-type, theme: navy,   label: "Bold navy",  family: breaking, photo: optional, categories: [security-defence, geopolitics, international-affairs, politics-governance], tones: [urgent, serious, solemn], chars: [24, 80]}
+  - {id: bold-blue,   layout: bold-type, theme: blue,   label: "Bold blue",    family: breaking, photo: optional, categories: [security-defence, geopolitics, pakistan-affairs, politics-governance], tones: [urgent], chars: [24, 80]}
+  - {id: bold-ice, layout: bold-type, theme: ice, label: "Bold light",   family: breaking, photo: optional, categories: [science-technology, economy, international-affairs, geopolitics], tones: [urgent, analytical, serious], chars: [24, 80]}
 
   # ---- politics and governance -----------------------------------------------------------------------------------
-  - {id: statement-paper, layout: statement-photo, theme: paper, label: "Statement (paper)", family: politics, photo: required, categories: [politics-governance, pakistan-affairs, international-affairs, geopolitics], tones: [statement, serious, analytical], chars: [30, 100]}
-  - {id: statement-ink,   layout: statement-photo, theme: ink,   label: "Statement (dark)",  family: politics, photo: required, categories: [politics-governance, security-defence, geopolitics], tones: [statement, serious, solemn, urgent], chars: [30, 100]}
+  - {id: statement-ice, layout: statement-photo, theme: ice, label: "Statement (light)", family: politics, photo: required, categories: [politics-governance, pakistan-affairs, international-affairs, geopolitics], tones: [statement, serious, analytical], chars: [30, 100]}
+  - {id: statement-navy,   layout: statement-photo, theme: navy,   label: "Statement (navy)",  family: politics, photo: required, categories: [politics-governance, security-defence, geopolitics], tones: [statement, serious, solemn, urgent], chars: [30, 100]}
 
   # ---- economy and data ------------------------------------------------------------------------------------------
   - {id: data-blue,  layout: data-hero, theme: blue,  label: "Big number (blue)",  family: economy, photo: none, needs: [stat], categories: [economy, science-technology, climate-environment, pakistan-affairs], tones: [data, analytical, hopeful], chars: [30, 95]}
-  - {id: data-ink,   layout: data-hero, theme: ink,   label: "Big number (dark)",  family: economy, photo: none, needs: [stat], categories: [economy, security-defence, geopolitics, international-affairs], tones: [data, serious, urgent], chars: [30, 95]}
-  - {id: data-paper, layout: data-hero, theme: paper, label: "Big number (paper)", family: economy, photo: none, needs: [stat], categories: [economy, education, politics-governance, pakistan-affairs], tones: [data, explainer, analytical], chars: [30, 95]}
+  - {id: data-navy,   layout: data-hero, theme: navy,   label: "Big number (navy)",  family: economy, photo: none, needs: [stat], categories: [economy, security-defence, geopolitics, international-affairs], tones: [data, serious, urgent], chars: [30, 95]}
+  - {id: data-ice, layout: data-hero, theme: ice, label: "Big number (light)", family: economy, photo: none, needs: [stat], categories: [economy, education, politics-governance, pakistan-affairs], tones: [data, explainer, analytical], chars: [30, 95]}
 
   # ---- education and explainers ----------------------------------------------------------------------------------
-  - {id: notes-mint,  layout: field-notes, theme: mint,  label: "Field notes (mint)",  family: education, photo: optional, categories: [education, science-technology, climate-environment, pakistan-affairs], tones: [explainer, hopeful, analytical], chars: [30, 90]}
+  - {id: notes-ice,  layout: field-notes, theme: ice,  label: "Field notes (light)",  family: education, photo: optional, categories: [education, science-technology, climate-environment, pakistan-affairs], tones: [explainer, hopeful, analytical], chars: [30, 90]}
   - {id: notes-sky,   layout: field-notes, theme: sky,   label: "Field notes (sky)",   family: education, photo: optional, categories: [education, economy, science-technology, international-affairs], tones: [explainer, analytical, data], chars: [30, 90]}
-  - {id: notes-coral, layout: field-notes, theme: coral, label: "Field notes (coral)", family: education, photo: optional, categories: [education, politics-governance, pakistan-affairs, geopolitics], tones: [explainer, urgent, statement], chars: [30, 90]}
+  - {id: notes-blue, layout: field-notes, theme: blue, label: "Field notes (blue)", family: education, photo: optional, categories: [education, politics-governance, pakistan-affairs, geopolitics], tones: [explainer, urgent, statement], chars: [30, 90]}
 
   # ---- politics: covers and statements ---------------------------------------------------------------------------
-  - {id: cover-green, layout: magazine-cover, theme: green, label: "Magazine cover (green)", family: politics, photo: required, categories: [politics-governance, international-affairs, geopolitics, pakistan-affairs], tones: [analytical, serious, statement], chars: [20, 60]}
-  - {id: cover-ink,   layout: magazine-cover, theme: ink,   label: "Magazine cover (dark)",  family: politics, photo: required, categories: [geopolitics, security-defence, politics-governance, economy], tones: [serious, analytical, urgent], chars: [20, 60]}
-  - {id: quote-royal, layout: quote-card, theme: royal, label: "Quote (blue)",  family: politics, photo: optional, needs: [quote], categories: [politics-governance, pakistan-affairs, international-affairs, education, economy], tones: [statement, hopeful, serious], chars: [20, 110]}
-  - {id: quote-paper, layout: quote-card, theme: paper, label: "Quote (paper)", family: politics, photo: optional, needs: [quote], categories: [politics-governance, geopolitics, security-defence, international-affairs], tones: [statement, serious, solemn], chars: [20, 110]}
+  - {id: cover-blue, layout: magazine-cover, theme: blue, label: "Magazine cover (blue)", family: politics, photo: required, categories: [politics-governance, international-affairs, geopolitics, pakistan-affairs], tones: [analytical, serious, statement], chars: [20, 60]}
+  - {id: cover-navy,   layout: magazine-cover, theme: navy,   label: "Magazine cover (navy)",  family: politics, photo: required, categories: [geopolitics, security-defence, politics-governance, economy], tones: [serious, analytical, urgent], chars: [20, 60]}
+  - {id: quote-blue, layout: quote-card, theme: blue, label: "Quote (blue)",  family: politics, photo: optional, needs: [quote], categories: [politics-governance, pakistan-affairs, international-affairs, education, economy], tones: [statement, hopeful, serious], chars: [20, 110]}
+  - {id: quote-navy, layout: quote-card, theme: navy, label: "Quote (navy)", family: politics, photo: optional, needs: [quote], categories: [politics-governance, geopolitics, security-defence, international-affairs], tones: [statement, serious, solemn], chars: [20, 110]}
 
   # ---- economy ---------------------------------------------------------------------------------------------------
   - {id: ledger-collage, layout: ledger-collage, label: "Ledger collage", family: economy, photo: optional, categories: [economy, pakistan-affairs, politics-governance], tones: [analytical, serious, data], chars: [30, 80]}
 
   # ---- world: scrapbook / evidence board -------------------------------------------------------------------------
-  - {id: dossier-paper, layout: dossier-board, theme: paper, label: "Evidence board (paper)", family: world, photo: required, categories: [geopolitics, international-affairs, security-defence, politics-governance], tones: [analytical, serious, explainer], chars: [30, 85]}
-  - {id: dossier-slate, layout: dossier-board, theme: slate, label: "Evidence board (slate)", family: world, photo: required, categories: [international-affairs, geopolitics, science-technology, economy], tones: [analytical, explainer, serious], chars: [30, 85]}
+  - {id: dossier-ice, layout: dossier-board, theme: ice, label: "Evidence board (light)", family: world, photo: required, categories: [geopolitics, international-affairs, security-defence, politics-governance], tones: [analytical, serious, explainer], chars: [30, 85]}
+  - {id: dossier-navy, layout: dossier-board, theme: navy, label: "Evidence board (navy)", family: world, photo: required, categories: [international-affairs, geopolitics, science-technology, economy], tones: [analytical, explainer, serious], chars: [30, 85]}
 
   # ---- security / solemn -----------------------------------------------------------------------------------------
   - {id: solemn-dusk, layout: solemn-serif, theme: dusk, label: "Solemn", family: security, photo: required, categories: [security-defence, geopolitics, international-affairs, pakistan-affairs], tones: [solemn, serious, hopeful], chars: [10, 42]}
 
   # ---- science and technology ------------------------------------------------------------------------------------
-  - {id: tech-royal, photo_heavy: true,  layout: tech-highlight, theme: royal,  label: "Tech (blue)",   family: science-tech, photo: optional, categories: [science-technology, economy, education, geopolitics], tones: [analytical, explainer, hopeful, urgent], chars: [30, 95]}
-  - {id: tech-violet, photo_heavy: true, layout: tech-highlight, theme: violet, label: "Tech (violet)", family: science-tech, photo: optional, categories: [science-technology, climate-environment, education, international-affairs], tones: [analytical, explainer, hopeful], chars: [30, 95]}
-  - {id: circle-teal, photo_heavy: true, layout: dark-circle, theme: teal, label: "Explainer circle (teal)", family: science-tech, photo: optional, categories: [science-technology, climate-environment, economy, education], tones: [explainer, analytical, hopeful], chars: [25, 70]}
-  - {id: circle-ink, photo_heavy: true,  layout: dark-circle, theme: ink,  label: "Explainer circle (night)", family: science-tech, photo: optional, categories: [science-technology, geopolitics, security-defence, politics-governance], tones: [analytical, serious, explainer], chars: [25, 70]}
+  - {id: tech-blue, photo_heavy: true,  layout: tech-highlight, theme: blue,  label: "Tech (blue)",   family: science-tech, photo: optional, categories: [science-technology, economy, education, geopolitics], tones: [analytical, explainer, hopeful, urgent], chars: [30, 95]}
+  - {id: tech-navy, photo_heavy: true, layout: tech-highlight, theme: navy, label: "Tech (navy)", family: science-tech, photo: optional, categories: [science-technology, climate-environment, education, international-affairs], tones: [analytical, explainer, hopeful], chars: [30, 95]}
+  - {id: circle-navy, photo_heavy: true, layout: dark-circle, theme: navy, label: "Explainer circle (navy)", family: science-tech, photo: optional, categories: [science-technology, climate-environment, economy, education], tones: [explainer, analytical, hopeful], chars: [25, 70]}
+  - {id: circle-deep, photo_heavy: true,  layout: dark-circle, theme: deep,  label: "Explainer circle (deep blue)", family: science-tech, photo: optional, categories: [science-technology, geopolitics, security-defence, politics-governance], tones: [analytical, serious, explainer], chars: [25, 70]}
 
   # ---- climate and environment -----------------------------------------------------------------------------------
-  - {id: sage-grid, photo_heavy: true, layout: sage-grid, theme: sage, label: "Notebook (sage)", family: climate, photo: optional, categories: [climate-environment, education, science-technology, pakistan-affairs], tones: [hopeful, explainer, analytical], chars: [20, 60]}
-  - {id: mist-grid, photo_heavy: true, layout: sage-grid, theme: mist, label: "Notebook (mist)", family: climate, photo: optional, categories: [climate-environment, economy, science-technology, international-affairs], tones: [explainer, analytical, serious], chars: [20, 60]}
+  - {id: notebook-ice, photo_heavy: true, layout: notebook-grid, theme: ice, label: "Notebook (light)", family: climate, photo: optional, categories: [climate-environment, education, science-technology, pakistan-affairs], tones: [hopeful, explainer, analytical], chars: [20, 60]}
+  - {id: notebook-sky, photo_heavy: true, layout: notebook-grid, theme: sky, label: "Notebook (sky)", family: climate, photo: optional, categories: [climate-environment, economy, science-technology, international-affairs], tones: [explainer, analytical, serious], chars: [20, 60]}
 
   # ---- society and human interest --------------------------------------------------------------------------------
-  - {id: stat-coral,  layout: stat-column, theme: coral, label: "Photo and facts", family: society, photo: required, categories: [pakistan-affairs, education, climate-environment, economy, security-defence], tones: [data, serious, hopeful, solemn], chars: [25, 70]}
-  - {id: human-warm,  layout: human-story, theme: warm,  label: "Human story",     family: society, photo: required, categories: [education, pakistan-affairs, climate-environment, politics-governance], tones: [hopeful, solemn, explainer, serious], chars: [25, 75]}
+  - {id: stat-blue,  layout: stat-column, theme: blue, label: "Photo and facts", family: society, photo: required, categories: [pakistan-affairs, education, climate-environment, economy, security-defence], tones: [data, serious, hopeful, solemn], chars: [25, 70]}
+  - {id: human-ice,  layout: human-story, theme: ice,  label: "Human story",     family: society, photo: required, categories: [education, pakistan-affairs, climate-environment, politics-governance], tones: [hopeful, solemn, explainer, serious], chars: [25, 75]}

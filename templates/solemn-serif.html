@@ -1,10 +1,10 @@
 {% extends "_layout.html" %}
 {# Solemn / remembrance: full photo, tall serif capitals, quiet summary. Theme: dusk. Needs a photo. #}
 {% block style %}
-body { background: #10141c; }
-.poster { background: #10141c; color: #fff; }
+body { background: #0b1530; }
+.poster { background: #0b1530; color: #fff; }
 .pic { position: absolute; inset: 0; }
-.pic::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,14,22,.62), rgba(10,14,22,.15) 38%, rgba(10,14,22,.2) 58%, rgba(10,14,22,.92) 100%); }
+.pic::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,21,48,.62), rgba(11,21,48,.15) 38%, rgba(11,21,48,.2) 58%, rgba(11,21,48,.92) 100%); }
 .top { position: absolute; left: 64px; right: 64px; top: 52px; z-index: 3; display: flex; justify-content: space-between; align-items: center; font: 700 18px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; }
 .top .logo { height: 46px; }
 h1 { position: absolute; left: 64px; right: 64px; top: 170px; z-index: 3; height: 560px; text-align: center; font: 400 128px/.96 var(--serif-i); text-transform: uppercase; letter-spacing: -.01em; text-shadow: 0 4px 30px rgba(0,0,0,.35); }

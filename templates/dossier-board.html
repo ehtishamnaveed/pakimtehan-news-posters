@@ -1,20 +1,22 @@
 {% extends "_layout.html" %}
-{# Scrapbook "evidence board": taped photo, pinned note on torn paper, red string. Themes: paper, slate. Needs a photo. #}
+{# Scrapbook "evidence board": taped photo, pinned note on torn paper, red string. Themes: ice, navy. Needs a photo. #}
 {% block style %}
-body { background: #e8dfd0; }
-.poster { background: #e8dfd0; color: #1b1712; }
-[data-theme="slate"] .poster, body[data-theme="slate"] { background: #c9d2dc; color: #121821; }
+body { background: #e4edff; }
+.poster { background: #e4edff; color: #0b1530; }
+[data-theme="navy"] .poster, body[data-theme="navy"] { background: #0b1530; color: #fff; }
+[data-theme="navy"] .kick { color: #93c5fd; }
+[data-theme="navy"] .note { color: #0b1530; }
 .top { position: absolute; left: 60px; right: 60px; top: 48px; display: flex; justify-content: space-between; align-items: center; font: 700 18px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; }
 .top .logo { height: 46px; }
-.kick { position: absolute; left: 60px; top: 128px; font: 700 20px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: #b3261e; }
+.kick { position: absolute; left: 60px; top: 128px; font: 700 20px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: #1d4ed8; }
 h1 { position: absolute; left: 60px; right: 60px; top: 170px; height: 250px; font: 700 66px/1.06 var(--serif-f); letter-spacing: -.02em; }
-h1 mark { background: linear-gradient(#b3261e, #b3261e) 0 60% / 100% 70% no-repeat; color: #fff; padding: 0 .1em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
-.frame { position: absolute; left: 70px; top: 450px; width: 600px; height: 480px; padding: 18px; background: #fbf8f1; transform: rotate(-2.4deg); box-shadow: 10px 16px 24px rgba(0,0,0,.28); }
+h1 mark { background: linear-gradient(#1d4ed8, #1d4ed8) 0 60% / 100% 70% no-repeat; color: #fff; padding: 0 .1em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.frame { position: absolute; left: 70px; top: 450px; width: 600px; height: 480px; padding: 18px; background: #ffffff; transform: rotate(-2.4deg); box-shadow: 10px 16px 24px rgba(0,0,0,.28); }
 .frame .cover { filter: sepia(.35) contrast(1.05) saturate(.85); }
 .frame .tape.t1 { left: -34px; top: -10px; transform: rotate(-38deg); }
 .frame .tape.t2 { right: -40px; bottom: 30px; transform: rotate(-40deg); }
 .pin.p1 { left: 296px; top: 436px; z-index: 6; }
-.note { position: absolute; left: 430px; top: 760px; width: 590px; height: 380px; padding: 40px 38px 50px; background: #f3ead7; transform: rotate(2.2deg); box-shadow: 8px 14px 22px rgba(0,0,0,.25); clip-path: polygon(0 0, 100% 0, 100% 94%, 94% 97%, 88% 94%, 80% 98%, 70% 95%, 60% 98%, 50% 95%, 40% 98%, 30% 95%, 20% 98%, 10% 95%, 0 98%); font: 500 27px/1.45 var(--serif-f); }
+.note { position: absolute; left: 430px; top: 760px; width: 590px; height: 380px; padding: 40px 38px 50px; background: #f4f8ff; transform: rotate(2.2deg); box-shadow: 8px 14px 22px rgba(0,0,0,.25); clip-path: polygon(0 0, 100% 0, 100% 94%, 94% 97%, 88% 94%, 80% 98%, 70% 95%, 60% 98%, 50% 95%, 40% 98%, 30% 95%, 20% 98%, 10% 95%, 0 98%); font: 500 27px/1.45 var(--serif-f); }
 .pin.p2 { left: 700px; top: 740px; z-index: 6; }
 .string { position: absolute; left: 0; top: 0; z-index: 5; width: 1080px; height: 1350px; pointer-events: none; }
 .src { position: absolute; left: 60px; bottom: 120px; font: 700 18px/1.5 var(--mono); letter-spacing: .1em; text-transform: uppercase; max-width: 340px; }
@@ -22,12 +24,12 @@ h1 mark { background: linear-gradient(#b3261e, #b3261e) 0 60% / 100% 70% no-repe
 {% endblock %}
 {% block body %}
 <div class="poster grain">
-  <div class="top"><img class="logo" src="{{ root }}/assets/logo-navy.png"><span data-field="date">Case file · {{ p.date }}</span></div>
+  <div class="top"><img class="logo" src="{{ root }}/assets/logo-{{ 'white' if theme == 'navy' else 'navy' }}.png"><span data-field="date">Case file · {{ p.date }}</span></div>
   <div class="kick" data-field="kicker">{{ p.kicker }}</div>
   <h1 data-field="headline" data-fit="box" data-min="40">{{ p.headline_html }}</h1>
   <div class="frame" data-field="photo"><img class="cover" src="{{ p.image }}"><i class="tape t1"></i><i class="tape t2"></i></div>
   <i class="pin p1"></i>
-  <svg class="string" viewBox="0 0 1080 1350"><path d="M311 451 C 420 560, 640 620, 715 755" stroke="#b3261e" stroke-width="5" fill="none" stroke-linecap="round"/></svg>
+  <svg class="string" viewBox="0 0 1080 1350"><path d="M311 451 C 420 560, 640 620, 715 755" stroke="#1d4ed8" stroke-width="5" fill="none" stroke-linecap="round"/></svg>
   <i class="pin p2"></i>
   <div class="note" data-field="summary">{{ p.summary|truncate(210, True, '…') }}</div>
   <div class="src" data-field="source">Source:<br>{{ p.source }}</div>

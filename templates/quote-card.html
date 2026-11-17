@@ -1,20 +1,20 @@
 {% extends "_layout.html" %}
-{# A statement with the speaker's photo. Themes: royal, paper. Needs p.quote (and p.speaker). #}
+{# A statement with the speaker's photo. Themes: blue, navy. Needs p.quote (and p.speaker). #}
 {% block style %}
-body { background: #fbfaf6; }
-.poster { background: #fbfaf6; color: #14213d; }
-.top { position: absolute; left: 0; right: 0; top: 0; height: 560px; background: #1f3bd6; border-radius: 0 0 50% 50% / 0 0 130px 130px; overflow: hidden; --duo: #1f3bd6; }
-[data-theme="paper"] .top { background: #1a1d24; --duo: #1a1d24; }
-[data-theme="paper"] .poster, body[data-theme="paper"] { background: #efe8dc; }
+body { background: #f6f9ff; }
+.poster { background: #f6f9ff; color: #0b1530; }
+.top { position: absolute; left: 0; right: 0; top: 0; height: 560px; background: #1d4ed8; border-radius: 0 0 50% 50% / 0 0 130px 130px; overflow: hidden; --duo: #1d4ed8; }
+[data-theme="navy"] .top { background: #0b1530; --duo: #0b1530; }
+[data-theme="navy"] .poster, body[data-theme="navy"] { background: #eaf1ff; }
 .top .cover { opacity: .9; }
 .qm { position: absolute; left: 50px; top: 30px; z-index: 3; font: 900 520px/1 var(--serif-d); color: rgba(255,255,255,.2); }
 .logo { position: absolute; left: 56px; top: 48px; z-index: 5; height: 48px; }
 .date { position: absolute; right: 56px; top: 62px; z-index: 5; color: #fff; font: 700 19px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; }
-.q { position: absolute; left: 90px; right: 70px; top: 640px; padding-left: 36px; border-left: 10px solid #1f3bd6; font: 600 52px/1.22 var(--serif-f); letter-spacing: -.015em; height: 300px; }
-[data-theme="paper"] .q { border-left-color: #dc2626; }
+.q { position: absolute; left: 90px; right: 70px; top: 640px; padding-left: 36px; border-left: 10px solid #1d4ed8; font: 600 52px/1.22 var(--serif-f); letter-spacing: -.015em; height: 300px; }
+[data-theme="navy"] .q { border-left-color: #2563eb; }
 .who { position: absolute; left: 126px; right: 70px; top: 990px; font: 700 30px/1.2 var(--grot); }
 .who small { display: block; margin-top: 6px; font: 500 21px/1.35 var(--grot); opacity: .7; }
-.ctx { position: absolute; left: 126px; right: 70px; bottom: 112px; padding-top: 14px; border-top: 2px solid rgba(20,33,61,.25); font: 500 22px/1.35 var(--grot); opacity: .85; }
+.ctx { position: absolute; left: 126px; right: 70px; bottom: 112px; padding-top: 14px; border-top: 2px solid rgba(11,21,48,.25); font: 500 22px/1.35 var(--grot); opacity: .85; }
 .foot { position: absolute; left: 56px; right: 56px; bottom: 36px; display: flex; justify-content: space-between; font: 700 18px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
 {% endblock %}
 {% block body %}

@@ -21,7 +21,7 @@ Last updated: 2026-11-13
 
 ## Live News + local test setup (17 Nov, not committed/deployed yet)
 - Each poster is also a Live News story: AI writes `category`, `breaking`, `key_points`, `body`; `sources` come from
-  the real article links (`story.py`). Two new no-photo designs: `typographic` (blue) and `impact` (light). NO YELLOW on posters (client requirement).
+  the real article links (`story.py`). Two new no-photo designs: `typographic` (blue) and `impact` (light). blue/navy/white palette only.
 - Server (`pi_user_server`) has NO poster table any more: pending = Worker/D1 (read live); approve writes
   `<News Posters dir>/<date>/<id>.jpg + .json` and deletes it from D1; reject deletes from D1; take down moves
   to `_taken-down/`. Public API `/api/v3/live-news[/:slug[/related]]`; admin batch `POST /admin/news-posters/batch`.
@@ -35,7 +35,8 @@ Last updated: 2026-11-13
   society, general). The AI tags each story `tone`, `stat_value/stat_label` (a figure) and `quote/speaker` (both verified against the
   source text); `select_template.py` scores every design (category, tone, photo, figure, quote, headline length, recent use) and
   picks among the best fits. Designs used recently are remembered in the Worker state `recent_templates`; the catalog is published to
-  state `catalog` for the dashboard editor ("Best fit (automatic)" or any design). NO YELLOW (test enforces it).
+  state `catalog` for the dashboard editor ("Best fit (automatic)" or any design). PALETTE (client rule, 17 Nov): ONLY the website's
+  blues, navy and white; no yellow, red, black, green, violet, orange or cream. `tests/` enforces it on every colour in templates/.
   Review every design: `python render_library.py` (contact sheets in out/library/). Tests: `python -m unittest discover -s tests`.
 - LOCAL: Worker `wrangler dev --local --port 8787 --compatibility-date 2026-09-28` (secrets in .dev.vars),
   `.venv-local/bin/python seed_local.py` seeds posters, `python edit.py` (env from ~/.config/pakimtehan-posters/local.env)

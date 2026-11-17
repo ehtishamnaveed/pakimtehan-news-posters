@@ -1,19 +1,19 @@
 {% extends "_layout.html" %}
-{# Human interest: torn-edge photo on warm paper, red circle accent, serif headline, credit band. Theme: warm. Needs a photo. #}
+{# Human interest: torn-edge photo on warm paper, red circle accent, serif headline, credit band. Theme: ice. Needs a photo. #}
 {% block style %}
-body { background: #ede4d3; }
-.poster { background: #ede4d3; color: #1c1611; }
+body { background: #e8f0ff; }
+.poster { background: #e8f0ff; color: #0b1530; }
 .pic { position: absolute; left: 0; right: 0; top: 0; height: 640px; overflow: hidden; }
 .pic .cover { filter: contrast(1.05) saturate(.95); }
-.disc { position: absolute; right: 40px; top: 340px; width: 300px; height: 300px; border-radius: 50%; background: #d9473f; z-index: 2; mix-blend-mode: multiply; opacity: .9; }
-.paper { position: absolute; left: 0; right: 0; top: 585px; bottom: 0; background: #ede4d3; clip-path: polygon(0 4%, 7% 1%, 14% 4%, 22% 1%, 31% 4%, 40% 1%, 49% 4%, 58% 1%, 68% 4%, 78% 1%, 88% 4%, 96% 1%, 100% 3%, 100% 100%, 0 100%); }
+.disc { position: absolute; right: 40px; top: 340px; width: 300px; height: 300px; border-radius: 50%; background: #1d4ed8; z-index: 2; mix-blend-mode: multiply; opacity: .9; }
+.paper { position: absolute; left: 0; right: 0; top: 585px; bottom: 0; background: #e8f0ff; clip-path: polygon(0 4%, 7% 1%, 14% 4%, 22% 1%, 31% 4%, 40% 1%, 49% 4%, 58% 1%, 68% 4%, 78% 1%, 88% 4%, 96% 1%, 100% 3%, 100% 100%, 0 100%); }
 .logo { position: absolute; left: 56px; top: 46px; z-index: 5; height: 46px; }
 .date { position: absolute; right: 56px; top: 60px; z-index: 5; color: #fff; font: 700 18px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; text-shadow: 0 1px 8px rgba(0,0,0,.6); }
-.kick { position: absolute; left: 56px; top: 660px; font: 700 20px/1 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: #b8332c; }
+.kick { position: absolute; left: 56px; top: 660px; font: 700 20px/1 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: #1d4ed8; }
 h1 { position: absolute; left: 56px; right: 56px; top: 704px; height: 290px; font: 800 70px/1.06 var(--serif-f); letter-spacing: -.025em; }
-h1 mark { font-style: italic; color: #b8332c; }
+h1 mark { font-style: italic; color: #1d4ed8; }
 .sum { position: absolute; left: 56px; right: 56px; top: 1004px; height: 150px; font: 500 27px/1.5 var(--grot); }
-.band { position: absolute; left: 0; right: 0; bottom: 0; height: 84px; background: #d9473f; color: #fff; display: flex; justify-content: space-between; align-items: center; padding: 0 56px; font: 700 18px/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+.band { position: absolute; left: 0; right: 0; bottom: 0; height: 84px; background: #1d4ed8; color: #fff; display: flex; justify-content: space-between; align-items: center; padding: 0 56px; font: 700 18px/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; }
 {% endblock %}
 {% block body %}
 <div class="poster grain">

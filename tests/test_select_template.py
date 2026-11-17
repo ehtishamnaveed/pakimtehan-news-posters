@@ -32,8 +32,8 @@ class Catalog(unittest.TestCase):
             for tone in t.get("tones", []):
                 self.assertIn(tone, st.TONES, t["id"])
 
-    def test_no_yellow_in_any_template(self):
-        """Client requirement: no yellow. Every hex colour in the templates must be outside the yellow hue band."""
+    def test_only_website_blues_and_white(self):
+        """Client requirement: only the website's blues, navy and white. No yellow, red, black, green, violet, orange or cream."""
         import colorsys
         import re
         for f in (ROOT / "templates").glob("*"):
@@ -42,7 +42,10 @@ class Catalog(unittest.TestCase):
                 h = "".join(c * 2 for c in h) if len(h) == 3 else h
                 r, g, b = (int(h[i:i + 2], 16) / 255 for i in (0, 2, 4))
                 hue, sat, val = colorsys.rgb_to_hsv(r, g, b)
-                self.assertFalse(0.11 <= hue <= 0.19 and sat > 0.45 and val > 0.55, f"{f.name}: #{m.group(1)} is yellow")
+                hue *= 360
+                blue = 195 <= hue <= 255 and sat >= 0.12
+                white = sat < 0.12 and val > 0.85
+                self.assertTrue(blue or white, f"{f.name}: #{m.group(1)} is not a website blue or white")
 
     def test_enough_variety(self):
         self.assertGreaterEqual(len(st.CATALOG), 30)
@@ -80,12 +83,12 @@ class Fit(unittest.TestCase):
     def test_remembrance_prefers_solemn(self):
         p = story(category="security-defence", tone="solemn", headline="Nation honours its fallen soldiers")
         picks = Counter(st.choose(p, True, rng=random.Random(i)) for i in range(120))
-        self.assertGreater(picks["solemn-dusk"] + picks["quote-paper"] + picks["statement-ink"] + picks["bold-ink"], 60)
+        self.assertGreater(picks["solemn-dusk"] + picks["quote-navy"] + picks["statement-navy"] + picks["bold-navy"], 60)
 
     def test_climate_good_news_is_not_dark_and_urgent(self):
         p = story(category="climate-environment", tone="hopeful")
         for i in range(60):
-            self.assertNotIn(st.choose(p, True, rng=random.Random(i)), ("bold-red", "bold-ink"))
+            self.assertNotIn(st.choose(p, True, rng=random.Random(i)), ("bold-blue", "bold-navy"))
 
 
 class Variety(unittest.TestCase):

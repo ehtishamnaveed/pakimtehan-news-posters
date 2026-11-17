@@ -1,21 +1,21 @@
 {% extends "_layout.html" %}
-{# Giant condensed headline on a flat field. Themes: ink (black + red), red (red + black), royal (blue + white). Photo optional (black-and-white band at the bottom). #}
+{# Giant condensed headline on a flat field. Themes: navy (default), blue, ice (light). Photo optional (black-and-white band at the bottom). #}
 {% block style %}
-body { background: #0a0a0a; }
-.poster { color: #fff; padding: 56px 64px 0; background: #0a0a0a; }
-body[data-theme="red"], [data-theme="red"] .poster { background: #dc2626; }
-body[data-theme="royal"], [data-theme="royal"] .poster { background: #2339ff; }
+body { background: #0b1530; }
+.poster { color: #fff; padding: 56px 64px 0; background: #0b1530; }
+body[data-theme="blue"], [data-theme="blue"] .poster { background: #1d4ed8; }
+body[data-theme="ice"], [data-theme="ice"] .poster { background: #eaf1ff; color: #0b1530; }
 .top { display: flex; justify-content: space-between; align-items: center; font: 700 20px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; }
 .top .logo { height: 50px; }
 .rule { margin-top: 22px; height: 3px; background: currentColor; opacity: .9; }
 .kick { margin-top: 34px; font: 700 22px/1 var(--mono); letter-spacing: .18em; text-transform: uppercase; opacity: .9; }
 h1 { margin-top: 20px; font: 400 150px/1 var(--display); text-transform: uppercase; letter-spacing: -.005em; }
-h1 mark { color: #e11d2e; }
-[data-theme="red"] h1 mark { color: #fff; padding: 0 .08em; background: linear-gradient(#0a0a0a, #0a0a0a) 0 62% / 100% 74% no-repeat; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
-[data-theme="royal"] h1 mark { color: #0a0a0a; padding: 0 .08em; background: linear-gradient(#fff, #fff) 0 62% / 100% 74% no-repeat; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+h1 mark { color: #60a5fa; }
+[data-theme="blue"] h1 mark { color: #fff; padding: 0 .08em; background: linear-gradient(#0b1530, #0b1530) 0 62% / 100% 74% no-repeat; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+[data-theme="ice"] h1 mark { color: #fff; padding: 0 .08em; background: linear-gradient(#0b1530, #0b1530) 0 62% / 100% 74% no-repeat; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 .sum { margin-top: 30px; font: 500 30px/1.45 var(--grot); max-width: 880px; opacity: .95; }
 .band { position: absolute; left: 0; right: 0; bottom: 0; height: 360px; overflow: hidden; }
-.band .cover { filter: grayscale(1) contrast(1.2); }
+.band .cover { filter: var(--bluemono); }
 .band::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.65), rgba(0,0,0,0) 45%); }
 .foot { position: absolute; left: 64px; right: 64px; bottom: 34px; z-index: 3; display: flex; justify-content: space-between; font: 700 20px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
 .why { position: absolute; left: 64px; right: 64px; bottom: 120px; padding-top: 18px; border-top: 3px solid currentColor; font: 500 26px/1.4 var(--grot); }
@@ -23,7 +23,7 @@ h1 mark { color: #e11d2e; }
 {% endblock %}
 {% block body %}
 <div class="poster grain-light">
-  <div class="top"><img class="logo" src="{{ root }}/assets/logo-white.png"><span data-field="date">{{ p.date }}</span></div>
+  <div class="top"><img class="logo" src="{{ root }}/assets/logo-{{ 'navy' if theme == 'ice' else 'white' }}.png"><span data-field="date">{{ p.date }}</span></div>
   <div class="rule"></div>
   <div class="kick" data-field="kicker">{{ p.kicker }}</div>
   <h1 data-field="headline" data-fit="{{ 560 if p.image else 640 }}" data-min="64">{{ p.headline_html }}</h1>

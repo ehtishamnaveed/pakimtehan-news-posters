@@ -1,18 +1,18 @@
 {% extends "_layout.html" %}
-{# Dark explainer: serif headline, key-point chips, a big circle (photo inside when there is one). Themes: teal, ink. #}
+{# Dark explainer: serif headline, key-point chips, a big circle (photo inside when there is one). Themes: navy, deep. #}
 {% block style %}
-body { background: #0f2a2e; }
-.poster { background: #0f2a2e; color: #f4efe6; padding: 56px 64px 0; }
-[data-theme="ink"] .poster, body[data-theme="ink"] { background: #12142b; }
-.top { display: flex; justify-content: space-between; font: 700 17px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: #ff7a59; }
-.rule { width: 70px; height: 5px; margin-top: 46px; background: #ff7a59; }
+body { background: #0b1530; }
+.poster { background: #0b1530; color: #eaf1ff; padding: 56px 64px 0; }
+[data-theme="deep"] .poster, body[data-theme="deep"] { background: #172554; }
+.top { display: flex; justify-content: space-between; font: 700 17px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: #60a5fa; }
+.rule { width: 70px; height: 5px; margin-top: 46px; background: #60a5fa; }
 h1 { margin-top: 22px; font: 700 94px/1.02 var(--serif-f); letter-spacing: -.025em; height: 500px; }
-h1 mark { color: #ff7a59; font-style: italic; }
+h1 mark { color: #60a5fa; font-style: italic; }
 .sum { position: absolute; left: 64px; width: 450px; bottom: 360px; font: 400 27px/1.5 var(--grot); opacity: .92; height: 200px; }
-.circle { position: absolute; right: -190px; bottom: -200px; width: 740px; height: 740px; border-radius: 50%; background: #ff7a59; overflow: hidden; border: 2px solid rgba(255,255,255,.2); outline: 22px solid rgba(255,122,89,.16); }
+.circle { position: absolute; right: -190px; bottom: -200px; width: 740px; height: 740px; border-radius: 50%; background: #3b82f6; overflow: hidden; border: 2px solid rgba(255,255,255,.2); outline: 22px solid rgba(59,130,246,.16); }
 .circle .cover { filter: contrast(1.08); mix-blend-mode: multiply; opacity: .95; }
 .chips { position: absolute; left: 64px; bottom: 190px; display: flex; gap: 12px; flex-wrap: wrap; width: 460px; }
-.chips span { padding: 10px 16px; border: 2px solid rgba(244,239,230,.55); border-radius: 999px; font: 700 17px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+.chips span { padding: 10px 16px; border: 2px solid rgba(219,234,254,.55); border-radius: 999px; font: 700 17px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
 .by { position: absolute; left: 64px; bottom: 104px; font: 700 18px/1.5 var(--mono); letter-spacing: .1em; text-transform: uppercase; }
 .by small { display: block; opacity: .6; font-weight: 400; }
 .foot { position: absolute; left: 64px; bottom: 38px; font: 700 17px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; opacity: .7; }

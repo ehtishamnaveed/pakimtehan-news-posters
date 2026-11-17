@@ -1,22 +1,22 @@
 {% extends "_layout.html" %}
-{# Saturated field, grotesk headline with highlight chips, rounded photo block. Themes: royal, violet. Photo optional. #}
+{# Saturated field, grotesk headline with highlight chips, rounded photo block. Themes: blue, navy. Photo optional. #}
 {% block style %}
-body { background: #2339ff; }
-.poster { background: #2339ff; color: #fff; padding: 56px 60px 0; }
-[data-theme="violet"] .poster, body[data-theme="violet"] { background: #5b21d6; }
+body { background: #2563eb; }
+.poster { background: #2563eb; color: #fff; padding: 56px 60px 0; }
+[data-theme="navy"] .poster, body[data-theme="navy"] { background: #0b1530; }
 .top { display: flex; justify-content: space-between; align-items: center; }
 .top .logo { height: 50px; }
 .pill { padding: 12px 20px; border: 2px solid #fff; border-radius: 999px; font: 700 19px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; }
 h1 { margin-top: 44px; font: 700 {{ 84 if p.headline|length < 70 else 70 }}px/1.18 var(--grot); letter-spacing: -.035em; height: 430px; }
-h1 mark { background: #fff; color: #10153a; padding: 0 .12em; border-radius: 6px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+h1 mark { background: #fff; color: #0b1530; padding: 0 .12em; border-radius: 6px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 .sum { margin-top: 12px; font: 500 28px/1.45 var(--grot); max-width: 800px; height: 130px; opacity: .95; }
-.photo { position: absolute; left: 60px; right: 60px; bottom: 112px; height: 470px; border-radius: 40px; overflow: hidden; --duo: #5a74ff; }
-[data-theme="violet"] .photo { --duo: #9a6bff; }
+.photo { position: absolute; left: 60px; right: 60px; bottom: 112px; height: 470px; border-radius: 40px; overflow: hidden; --duo: #60a5fa; }
+[data-theme="navy"] .photo { --duo: #60a5fa; }
 .photo .cover { filter: grayscale(1) contrast(1.05) brightness(1.3); mix-blend-mode: multiply; }
 .abstract { position: absolute; left: 60px; right: 60px; bottom: 112px; height: 470px; border-radius: 40px; overflow: hidden; background: radial-gradient(circle at 78% 30%, rgba(255,255,255,.22) 0 120px, transparent 121px), radial-gradient(circle at 78% 30%, rgba(255,255,255,.12) 0 210px, transparent 211px), radial-gradient(circle at 78% 30%, rgba(255,255,255,.07) 0 310px, transparent 311px), rgba(255,255,255,.08); border: 2px solid rgba(255,255,255,.3); }
 .abstract b { position: absolute; left: 40px; bottom: 26px; font: 400 150px/1 var(--display); text-transform: uppercase; opacity: .9; letter-spacing: .01em; }
 .nophoto { position: absolute; left: 60px; right: 60px; bottom: 112px; height: 470px; border-radius: 40px; background: rgba(255,255,255,.1); border: 2px solid rgba(255,255,255,.35); padding: 40px; font: 600 40px/1.3 var(--grot); display: flex; align-items: center; }
-.go { position: absolute; right: 90px; bottom: 140px; z-index: 4; width: 84px; height: 84px; border-radius: 50%; background: #fff; color: #10153a; display: flex; align-items: center; justify-content: center; font-size: 36px; }
+.go { position: absolute; right: 90px; bottom: 140px; z-index: 4; width: 84px; height: 84px; border-radius: 50%; background: #fff; color: #0b1530; display: flex; align-items: center; justify-content: center; font-size: 36px; }
 .foot { position: absolute; left: 60px; right: 60px; bottom: 36px; display: flex; justify-content: space-between; font: 700 18px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
 {% endblock %}
 {% block body %}
