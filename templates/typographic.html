@@ -26,16 +26,16 @@ h1 mark { color: #fde047; }
 {% block body %}
 <div class="poster">
   <div class="slab"></div><div class="slab2"></div>
-  <div class="head"><img class="logo" src="{{ root }}/assets/logo-white.png"><span class="date">{{ p.date }}</span></div>
+  <div class="head"><img class="logo" src="{{ root }}/assets/logo-white.png"><span class="date" data-field="date">{{ p.date }}</span></div>
   <div class="main">
-    <span class="kick">{{ p.kicker }}</span>
-    <h1 data-fit="470" data-min="60">{{ p.headline_html }}</h1>
-    <p class="sum" data-fit="180" data-min="20">{{ p.summary }}</p>
+    <span class="kick" data-field="kicker">{{ p.kicker }}</span>
+    <h1 data-field="headline" data-fit="470" data-min="60">{{ p.headline_html }}</h1>
+    <p class="sum" data-field="summary" data-fit="180" data-min="20">{{ p.summary }}</p>
   </div>
-  <div class="why">
+  <div class="why" data-field="why">
     <b>Why it matters for your exam</b>{{ p.why }}
     <div class="chips">{% for s in p.syllabus %}<span>{{ s }}</span>{% endfor %}</div>
   </div>
-  <div class="foot"><span>Source: {{ p.source }}</span><span><strong>pakimtehan.com</strong> · Daily Brief</span></div>
+  <div class="foot"><span data-field="source">Source: {{ p.source }}</span><span><strong>pakimtehan.com</strong> · Daily Brief</span></div>
 </div>
 {% endblock %}

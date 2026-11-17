@@ -126,6 +126,7 @@ def cmd_render():
     assign_templates(posts, cfg["settings"]["templates"], random.Random())
     for r, p in zip(render(posts, out, out), posts):
         p["file"] = Path(r["file"]).name
+        p["regions"] = r.get("regions", {})
         if p.get("image"):  # keep the photo, so an admin's text edit can re-render the same poster
             p["photo_file"] = f"{Path(r['file']).stem}-photo.jpg"
             save_photo(p["image"], out / p["photo_file"])

@@ -73,6 +73,7 @@ def process(poster, topics, tmp: Path):
     data.pop("image", None)
     data["template"] = result["template"]
     data["file"] = Path(result["file"]).name
+    data["regions"] = result.get("regions", {})
     data["photo_file"] = f"{pid}-photo.jpg" if photo else None
     data["edited_by"], data["edited_at"] = edit.get("by"), edit.get("at")
 

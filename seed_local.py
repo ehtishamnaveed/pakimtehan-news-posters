@@ -44,6 +44,7 @@ base = ROOT / "samples"
 for r, p in zip(render(posts + extra, out, base), posts + extra):
     p["file"] = Path(r["file"]).name
     p["template"] = r["template"]
+    p["regions"] = r.get("regions", {})
     if p.get("image"):
         p["photo_file"] = f"{Path(r['file']).stem}-photo.jpg"
         save_photo(base / p["image"], out / p["photo_file"])

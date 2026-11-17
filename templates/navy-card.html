@@ -25,16 +25,16 @@ h1 mark { color: #fde047; }
 {% endblock %}
 {% block body %}
 <div class="poster">
-  <div class="pic"><img class="photo" src="{{ p.image }}"></div>
+  <div class="pic" data-field="photo"><img class="photo" src="{{ p.image }}"></div>
   <div class="logobox"><img src="{{ root }}/assets/logo-white.png"></div>
-  <span class="date">{{ p.date }}</span>
-  <span class="kick">{{ p.kicker }}</span>
-  <h1 data-fit="box" data-min="46">{{ p.headline_html }}</h1>
+  <span class="date" data-field="date">{{ p.date }}</span>
+  <span class="kick" data-field="kicker">{{ p.kicker }}</span>
+  <h1 data-field="headline" data-fit="box" data-min="46">{{ p.headline_html }}</h1>
   <div class="card">
-    <p class="sum" data-fit="140" data-min="20">{{ p.summary }}</p>
-    {% if p.why %}<p class="why"><b>Why it matters · {{ p.syllabus|join(' · ') }}</b>{{ p.why }}</p>{% endif %}
+    <p class="sum" data-field="summary" data-fit="140" data-min="20">{{ p.summary }}</p>
+    {% if p.why %}<p class="why" data-field="why"><b>Why it matters · {{ p.syllabus|join(' · ') }}</b>{{ p.why }}</p>{% endif %}
   </div>
   <div class="slab1"></div><div class="slab2"></div>
-  <div class="foot"><span><strong>pakimtehan.com</strong> · Source: {{ p.source }}</span>{% if p.credit %}<span class="credit">Photo: {{ p.credit }}</span>{% endif %}</div>
+  <div class="foot"><span data-field="source"><strong>pakimtehan.com</strong> · Source: {{ p.source }}</span>{% if p.credit %}<span class="credit" data-field="credit">Photo: {{ p.credit }}</span>{% endif %}</div>
 </div>
 {% endblock %}

@@ -24,14 +24,14 @@ h1 mark { color: #fff; padding: 0 8px; background: linear-gradient(var(--navy-95
   <div class="num">{{ p.date.split(' ')[0] }}</div>
   <div class="head"><img src="{{ root }}/assets/logo-navy.png"><span>Daily Current Affairs · {{ p.date }}</span></div>
   <div class="main">
-    <span class="kick">{{ p.kicker }}</span>
-    <h1 data-fit="480" data-min="60">{{ p.headline_html }}</h1>
-    <p class="sum" data-fit="175" data-min="20">{{ p.summary }}</p>
+    <span class="kick" data-field="kicker">{{ p.kicker }}</span>
+    <h1 data-field="headline" data-fit="480" data-min="60">{{ p.headline_html }}</h1>
+    <p class="sum" data-field="summary" data-fit="175" data-min="20">{{ p.summary }}</p>
   </div>
-  <div class="why">
+  <div class="why" data-field="why">
     <b>Why it matters for your exam</b>{{ p.why }}
     <div class="chips">{% for s in p.syllabus %}<span>{{ s }}</span>{% endfor %}</div>
   </div>
-  <div class="foot"><span>Source: {{ p.source }}</span><span>pakimtehan.com · Daily Brief</span></div>
+  <div class="foot"><span data-field="source">Source: {{ p.source }}</span><span>pakimtehan.com · Daily Brief</span></div>
 </div>
 {% endblock %}

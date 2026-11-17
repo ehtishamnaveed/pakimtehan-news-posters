@@ -95,11 +95,23 @@ def render(posters, out_dir: Path, base: Path, keep_html=False):
             html_path.write_text(html, encoding="utf-8")
             page.goto(html_path.as_uri(), wait_until="networkidle")
             page.wait_for_selector("body[data-ready='1']", timeout=15000)
+            # Where each editable field sits on the 1080x1350 image, so the dashboard can show which part of
+            # the poster an edit will change. Several elements with the same data-field are merged.
+            regions = page.evaluate("""() => {
+              const out = {};
+              document.querySelectorAll('[data-field]').forEach(el => {
+                const r = el.getBoundingClientRect();
+                if (r.width < 2 || r.height < 2) return;
+                const k = el.dataset.field, x1 = r.left, y1 = r.top, x2 = r.right, y2 = r.bottom, o = out[k];
+                out[k] = o ? [Math.min(o[0], x1), Math.min(o[1], y1), Math.max(o[2], x2), Math.max(o[3], y2)] : [x1, y1, x2, y2];
+              });
+              return Object.fromEntries(Object.entries(out).map(([k, v]) => [k, [Math.round(Math.max(0, v[0])), Math.round(Math.max(0, v[1])), Math.round(Math.min(1080, v[2]) - Math.max(0, v[0])), Math.round(Math.min(1350, v[3]) - Math.max(0, v[1]))]]));
+            }""")
             img = out_dir / f"{i:02d}-{t}.jpg"
             Image.open(io.BytesIO(page.screenshot(type="png"))).convert("RGB").save(img, "JPEG", **JPEG_OPTS)
             if not keep_html:
                 html_path.unlink()
-            results.append({"file": str(img), "template": t, **{k: p.get(k) for k in ("headline", "source")}})
+            results.append({"file": str(img), "template": t, "regions": regions, **{k: p.get(k) for k in ("headline", "source")}})
             print(f"rendered {img.name}")
         browser.close()
     return results
