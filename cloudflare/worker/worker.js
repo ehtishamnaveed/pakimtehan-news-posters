@@ -55,6 +55,19 @@ async function putFile(env, id, kind, b64) {
   await env.DB.prepare("INSERT OR REPLACE INTO files (poster_id, kind, b64) VALUES (?, ?, ?)").bind(id, kind, b64).run();
 }
 
+// Safety net so D1 never fills up: posters nobody approved or rejected within RETAIN_DAYS are deleted
+// together with their files, and files whose poster no longer exists are removed.
+const RETAIN_DAYS = 14;
+async function cleanup(env) {
+  const cutoff = new Date(Date.now() - RETAIN_DAYS * 86400000).toISOString().slice(0, 10);
+  const old = await env.DB.prepare("DELETE FROM files WHERE poster_id IN (SELECT id FROM posters WHERE date < ?)").bind(cutoff).run();
+  const posters = await env.DB.prepare("DELETE FROM posters WHERE date < ?").bind(cutoff).run();
+  const orphans = await env.DB.prepare("DELETE FROM files WHERE poster_id NOT IN (SELECT id FROM posters)").run();
+  const n = (posters.meta?.changes || 0) + (orphans.meta?.changes || 0);
+  if (n) console.log(`cleanup: removed ${posters.meta?.changes || 0} old poster(s), ${orphans.meta?.changes || 0} orphan file(s)`);
+  return { oldPosters: posters.meta?.changes || 0, oldFiles: old.meta?.changes || 0, orphanFiles: orphans.meta?.changes || 0 };
+}
+
 const rowOut = (r) => ({
   id: r.id, date: r.date, rev: r.rev, state: r.state, error: r.error,
   data: JSON.parse(r.data), edit: r.edit ? JSON.parse(r.edit) : null,
@@ -74,6 +87,14 @@ async function route(req, env, ctx) {
       "SELECT * FROM posters WHERE date >= ? ORDER BY date DESC, id ASC").bind(since).all();
     return json({ ok: true, posters: results.map(rowOut) });
   }
+  // GET /usage   how much is stored (to watch the D1 limit)
+  if (m === "GET" && parts.length === 1 && parts[0] === "usage") {
+    const p = await env.DB.prepare("SELECT COUNT(*) n FROM posters").first();
+    const f = await env.DB.prepare("SELECT COUNT(*) n, COALESCE(SUM(LENGTH(b64)),0) bytes FROM files").first();
+    return json({ ok: true, posters: p.n, files: f.n, megabytes: +(f.bytes / 1048576).toFixed(2), limit_mb: 5120 });
+  }
+  // POST /cleanup   run the retention cleanup now
+  if (m === "POST" && parts.length === 1 && parts[0] === "cleanup") return json({ ok: true, ...(await cleanup(env)) });
   // GET /edits   (posters waiting to be re-rendered)
   if (m === "GET" && parts.length === 1 && parts[0] === "edits") {
     const { results } = await env.DB.prepare("SELECT * FROM posters WHERE state = 'editing' ORDER BY updated_at").all();
@@ -104,6 +125,7 @@ async function route(req, env, ctx) {
     await putFile(env, id, "image", b.image);
     if (b.photo) await putFile(env, id, "photo", b.photo);
     const t = now();
+    ctx.waitUntil(cleanup(env).catch((e) => console.log(`cleanup failed: ${e.message}`)));
     await env.DB.prepare(
       "INSERT OR REPLACE INTO posters (id, date, rev, state, data, edit, error, created_at, updated_at) VALUES (?, ?, 1, 'ready', ?, NULL, NULL, ?, ?)"
     ).bind(id, b.date, JSON.stringify(b.data), t, t).run();
@@ -205,6 +227,7 @@ async function route(req, env, ctx) {
 export default {
   async scheduled(event, env) {
     console.log(`cron "${event.cron}" fired at ${new Date(event.scheduledTime).toISOString()}`);
+    await cleanup(env);
     await dispatch(env, DAILY_WORKFLOW);
   },
   async fetch(req, env, ctx) {
