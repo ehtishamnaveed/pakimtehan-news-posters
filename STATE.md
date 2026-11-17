@@ -56,6 +56,10 @@ Last updated: 2026-11-17
   inline ifs). Click text -> focuses its field, click photo -> file chooser; story tab shows a live Live News page. Server has new
   `GET /admin/news-posters/:id/photo` and `render`/`factCheck` in `/source`. Dashboard + server changes are uncommitted in their own repos.
 
+- Z.ai (GLM) free backup, added 17 Nov: `zai:glm-4.7-flash` (text) after the two Gemini models, `zai:glm-4.6v-flash` (photos). Only the 3 free
+  models are allowed (code refuses others). Secret ZAI_API_KEY (must be set in GitHub). Thinking is OFF for writing (else it returns nothing)
+  and ON for fact-check. 429/1305 = "overloaded" (random, retried), NOT quota. No official monthly cap is published; check z.ai/manage-apikey/rate-limits.
+
 ## Branches
 - `main` only is used now. `daily-posters-test` (old test output) is no longer written; can be deleted.
   Tag `archive/daily-posters` keeps the 12 Nov routine output.

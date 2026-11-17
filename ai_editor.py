@@ -38,19 +38,25 @@ NVIDIA_VISION = "nvidia/nemotron-3.5-super-vl-120b-a12b"
 OPENROUTER_TEXT = "nvidia/nemotron-3-ultra-550b-a55b:free"
 OPENROUTER_VISION = "nvidia/nemotron-3.5-super-vl:free"
 
+# Z.ai: ONLY these three models are free ($0). Anything else is paid, so call() refuses it.
+ZAI_FREE = {"glm-4.7-flash", "glm-4.5-flash", "glm-4.6v-flash"}
+ZAI_TEXT = "glm-4.7-flash"
+ZAI_VISION = "glm-4.6v-flash"
+
 OPENAI_COMPAT = {
+    "zai": ("https://api.z.ai/api/paas/v4", "ZAI_API_KEY", {}),
     "nvidia": ("https://integrate.api.nvidia.com/v1", "NVIDIA_API_KEY", {}),
     "openrouter": ("https://openrouter.ai/api/v1", "OPENROUTER_API_KEY",
                    {"HTTP-Referer": "https://pakimtehan.com", "X-Title": "Pak Imtehan posters"}),
 }
 
-DEFAULT_PROVIDERS = (f"gemini:gemini-3.6-flash,gemini:gemini-3.5-flash-lite,"
+DEFAULT_PROVIDERS = (f"gemini:gemini-3.6-flash,gemini:gemini-3.5-flash-lite,zai:{ZAI_TEXT},"
                      f"nvidia:{NVIDIA_TEXT},nvidia:{NVIDIA_VISION},"
                      f"openrouter:{OPENROUTER_TEXT},"
                      f"cloudflare:@cf/google/gemma-4-26b-a4b-it")
 # Photo picks: Flash-Lite first. In the 13 Nov run 3.6 Flash returned 429/timeouts on 13 of 15 picks
 # and spent ~980 thinking tokens on each a/b/c answer; Flash-Lite answered every one in seconds.
-VISION_PROVIDERS = (f"gemini:gemini-3.5-flash-lite,gemini:gemini-3.6-flash,"
+VISION_PROVIDERS = (f"gemini:gemini-3.5-flash-lite,gemini:gemini-3.6-flash,zai:{ZAI_VISION},"
                     f"nvidia:{NVIDIA_VISION},openrouter:{OPENROUTER_VISION}")
 
 EDITOR_PROMPT = """You are the current-affairs editor for Pak Imtehan (pakimtehan.com), a CSS/PMS exam
@@ -190,7 +196,7 @@ def _cloudflare(model, prompt, image=None, json_mode=False, max_tokens=4096, tim
     return text
 
 
-def _openai_compat(kind, model, prompt, image=None, json_mode=False, max_tokens=4096, timeout=180):
+def _openai_compat(kind, model, prompt, image=None, json_mode=False, max_tokens=4096, timeout=180, extra_body=None):
     """One adapter for every OpenAI-compatible endpoint (NVIDIA NIM, OpenRouter).
 
     Both providers serve the same Nemotron models, but on separate quota pools, so a 429 on one
@@ -209,7 +215,7 @@ def _openai_compat(kind, model, prompt, image=None, json_mode=False, max_tokens=
     else:
         content = prompt
     body = {"model": model, "messages": [{"role": "user", "content": content}],
-            "max_tokens": max_tokens, "temperature": 0.3, "top_p": 0.95}
+            "max_tokens": max_tokens, "temperature": 0.3, "top_p": 0.95, **(extra_body or {})}
     # No response_format here: the prompt asks for a JSON *array*, and the json_object mode some
     # providers enforce would wrap it in an object. extract_json_array() handles prose/fences instead.
     r = requests.post(f"{base}/chat/completions",
@@ -237,6 +243,14 @@ def _nvidia(model, prompt, **kw):
     return _openai_compat("nvidia", model, prompt, **kw)
 
 
+def _zai(model, prompt, think=False, **kw):
+    """Z.ai (GLM), free Flash models only: 1 request at a time, so MIN_GAP paces it.
+    Thinking is OFF unless asked for: with it on, GLM spends most of max_tokens reasoning and can return nothing."""
+    if model not in ZAI_FREE:
+        raise RuntimeError(f"{model} is not a free Z.ai model; refusing to call it")
+    return _openai_compat("zai", model, prompt, extra_body=None if think else {"thinking": {"type": "disabled"}}, **kw)
+
+
 def _openrouter(model, prompt, **kw):
     """OpenRouter, same models on a separate free-tier quota."""
     return _openai_compat("openrouter", model, prompt, **kw)
@@ -245,7 +259,7 @@ def _openrouter(model, prompt, **kw):
 # Minimum seconds between two requests to the same model. Gemini's free tier allows only a few
 # requests per minute per model: in the 12 Nov run, back-to-back photo calls got 429s. 15 photo
 # calls at this pace take ~2 min instead of hitting the limit.
-MIN_GAP = {"gemini": 7.0}
+MIN_GAP = {"gemini": 7.0, "zai": 2.0}
 _last_call = {}
 
 
@@ -259,9 +273,11 @@ def _pace(spec):
 
 def call(spec, prompt, **kw):
     kind, model = spec.split(":", 1)
+    if kind != "zai":
+        kw.pop("think", None)  # only Z.ai has a thinking switch
     fn = {"gemini": _gemini, "cloudflare": _cloudflare,
-          "nvidia": _nvidia, "openrouter": _openrouter}[kind]
-    for attempt in range(2):
+          "nvidia": _nvidia, "openrouter": _openrouter, "zai": _zai}[kind]
+    for attempt in range(3):
         _pace(spec)
         try:
             return fn(model, prompt, **kw)
@@ -271,6 +287,10 @@ def call(spec, prompt, **kw):
             # next provider immediately. Only a 5xx (temporary server fault) is worth one quick retry.
             if attempt == 0 and re.search(r"HTTP 5\d\d", msg):
                 time.sleep(3)
+                continue
+            # Z.ai answers 429 with code 1305 ("service temporarily overloaded") at random, even with quota left: retry twice.
+            if kind == "zai" and attempt < 2 and re.search(r"HTTP 429.*1305", msg):
+                time.sleep(6 * (attempt + 1))
                 continue
             raise
 
@@ -467,7 +487,7 @@ def _verify_batch(batch, evidence, earlier, providers, avoid):
     order = [s for s in providers if s != avoid] + [s for s in providers if s == avoid]
     for spec in order:
         try:
-            raw = call(spec, prompt, max_tokens=max(4096, len(batch) * 700 + 3000), timeout=240)
+            raw = call(spec, prompt, think=True, max_tokens=max(12000, len(batch) * 2500 + 6000), timeout=300)  # reasoning models (GLM, Nemotron) spend most of it thinking
             rows = extract_json_array(raw)
             got = {int(r["n"]) - 1: r for r in rows if isinstance(r, dict) and str(r.get("n", "")).isdigit()}
             if all(i in got for i, _ in batch):
