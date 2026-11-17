@@ -31,9 +31,10 @@ from PIL import Image
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parent
-TEMPLATES = ["breaking-photo", "navy-card", "editorial", "newspaper", "typographic", "brief-light"]
+TEMPLATES = ["breaking-photo", "navy-card", "editorial", "newspaper", "typographic", "impact", "brief-light"]
 JPEG_OPTS = dict(quality=90, subsampling=0, optimize=True, progressive=True)
 NEEDS_PHOTO = {"breaking-photo", "navy-card", "brief-light"}
+NO_PHOTO_ONLY = {"typographic", "impact"}  # full-text designs; with a photo we use the photo templates
 
 env = Environment(loader=FileSystemLoader(ROOT / "templates"), autoescape=select_autoescape(["html"]))
 

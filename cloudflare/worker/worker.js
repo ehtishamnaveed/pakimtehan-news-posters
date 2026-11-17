@@ -19,6 +19,8 @@ const KINDS = new Set(["image", "photo", "edit_photo"]);
 const MAX_B64 = 1_900_000; // D1 caps a row at 2 MB
 
 async function dispatch(env, workflow) {
+  // Local testing (wrangler dev): no GitHub call; run `python edit.py` by hand against the local Worker.
+  if (env.DEV_SKIP_DISPATCH === "1") { console.log(`dispatch ${workflow} skipped (DEV_SKIP_DISPATCH)`); return; }
   const r = await fetch(`https://api.github.com/repos/${REPO}/actions/workflows/${workflow}/dispatches`, {
     method: "POST",
     headers: {
@@ -133,6 +135,18 @@ async function route(req, env, ctx) {
   if (m === "PUT" && action === "edit-photo") {
     const b = await body();
     await putFile(env, id, "edit_photo", b.b64);
+    return json({ ok: true });
+  }
+
+  // POST /posters/<id>/story   {fields:{category,breaking,key_points,body,sources,slug}}
+  // Story-only changes: they do not appear on the poster image, so no re-render is needed.
+  if (m === "POST" && action === "story") {
+    if (row.state === "editing") return fail(409, "an edit is already being applied");
+    const b = await body();
+    if (typeof b.fields !== "object" || b.fields === null) return fail(400, "fields required");
+    const data = JSON.parse(row.data);
+    for (const k of ["category", "breaking", "key_points", "body", "sources"]) if (k in b.fields) data[k] = b.fields[k];
+    await env.DB.prepare("UPDATE posters SET data = ?, updated_at = ? WHERE id = ?").bind(JSON.stringify(data), now(), id).run();
     return json({ ok: true });
   }
 

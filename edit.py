@@ -17,7 +17,8 @@ from yaml import safe_load
 
 import store
 from build import ROOT, save_photo, validate
-from render import NEEDS_PHOTO, TEMPLATES, render
+from render import NEEDS_PHOTO, NO_PHOTO_ONLY, TEMPLATES, render
+from story import normalize_story
 
 TEXT_FIELDS = {"kicker": 60, "headline": 140, "highlight": 80, "summary": 400, "why": 250,
                "source": 120, "credit": 160}
@@ -29,6 +30,11 @@ def apply_changes(data, changes):
             data[key] = str(changes[key]).strip()[:limit]
     if isinstance(changes.get("syllabus"), list):
         data["syllabus"] = [str(s).strip() for s in changes["syllabus"] if str(s).strip()][:3]
+    if "key_points" in changes or "body" in changes or "category" in changes or "breaking" in changes:
+        for k in ("category", "breaking", "key_points", "body"):
+            if k in changes:
+                data[k] = changes[k]
+        normalize_story(data)
     if changes.get("template") in TEMPLATES:
         data["template"] = changes["template"]
     if not data.get("headline"):
@@ -57,7 +63,7 @@ def process(poster, topics, tmp: Path):
 
     if not photo and data.get("template") in NEEDS_PHOTO:
         data["template"] = "typographic"  # the photo templates need a photo
-    if photo and data.get("template") == "typographic" and "template" not in (edit.get("changes") or {}):
+    if photo and data.get("template") in NO_PHOTO_ONLY and "template" not in (edit.get("changes") or {}):
         data["template"] = "editorial"     # a new photo should be visible unless the admin chose otherwise
 
     validate(data, topics)                 # same checks as the daily run (highlight must be in headline, ...)

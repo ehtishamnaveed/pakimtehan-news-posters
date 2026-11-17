@@ -1,0 +1,37 @@
+{% extends "_layout.html" %}
+{# Style F (no photo): yellow cover — black/navy giant type, white highlight blocks, navy "why" panel, barcode-style footer; inspired by magazine covers. #}
+{% block style %}
+body { background: #fcd835; }
+.poster { background: #fcd835; color: var(--navy-950); padding: 56px 64px 0; display: flex; flex-direction: column; }
+.head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 5px solid var(--navy-950); }
+.head img { height: 54px; }
+.head span { font: 800 20px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; }
+.num { position: absolute; right: 44px; top: 150px; font: 700 520px/.8 var(--condensed); color: rgba(3,10,26,.05); }
+.main { position: relative; flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 14px 0; }
+.kick { align-self: flex-start; background: var(--navy-950); color: #fcd835; padding: 13px 20px; font: 800 23px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; }
+h1 { margin-top: 26px; font: 700 124px/1.02 var(--condensed); text-transform: uppercase; letter-spacing: -.01em; }
+h1 mark { color: #fff; padding: 0 8px; background: linear-gradient(var(--navy-950), var(--navy-950)) 0 54% / 100% 80% no-repeat; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.sum { margin-top: 30px; font: 600 31px/1.42 var(--sans); max-width: 930px; }
+.why { position: relative; background: var(--navy-950); color: #fff; padding: 32px 36px; margin-bottom: 30px; font: 500 26px/1.42 var(--sans); }
+.why::before { content: "“"; position: absolute; right: 28px; top: -6px; font: 900 150px/1 var(--serif); color: #fcd835; }
+.why b { display: block; color: #fcd835; font: 800 18px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 12px; }
+.chips { margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap; }
+.chips span { background: #fcd835; color: var(--navy-950); padding: 9px 15px; font: 800 17px/1 var(--sans); letter-spacing: .03em; }
+.foot { height: 94px; border-top: 5px solid var(--navy-950); display: flex; justify-content: space-between; align-items: center; font: 700 21px/1 var(--sans); }
+{% endblock %}
+{% block body %}
+<div class="poster">
+  <div class="num">{{ p.date.split(' ')[0] }}</div>
+  <div class="head"><img src="{{ root }}/assets/logo-navy.png"><span>Daily Current Affairs · {{ p.date }}</span></div>
+  <div class="main">
+    <span class="kick">{{ p.kicker }}</span>
+    <h1 data-fit="480" data-min="60">{{ p.headline_html }}</h1>
+    <p class="sum" data-fit="175" data-min="20">{{ p.summary }}</p>
+  </div>
+  <div class="why">
+    <b>Why it matters for your exam</b>{{ p.why }}
+    <div class="chips">{% for s in p.syllabus %}<span>{{ s }}</span>{% endfor %}</div>
+  </div>
+  <div class="foot"><span>Source: {{ p.source }}</span><span>pakimtehan.com · Daily Brief</span></div>
+</div>
+{% endblock %}

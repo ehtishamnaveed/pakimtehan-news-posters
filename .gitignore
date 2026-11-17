@@ -5,3 +5,4 @@ out/
 preview/
 site/
 graphify-out/
+.venv-local/

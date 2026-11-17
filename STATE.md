@@ -19,13 +19,20 @@ Last updated: 2026-11-13
   POSTERS_STORE_TOKEN and in `~/.config/pakimtehan-posters/store.env` (local server, mode 600).
 - Old worker `pakimtehan-posters-trigger` deleted.
 
-## Server and dashboard (other repos, not committed yet; review and commit there)
-- `pi_user_server`: syncs from the Worker (NEWS_POSTERS_STORE_URL/TOKEN); approve copies image to
-  NEWS_POSTERS_STORAGE_DIR then deletes from Worker; reject deletes from Worker; edit endpoints
-  (`GET .../:id/source`, `PUT .../:id/edit-photo` raw image, `POST .../:id/edit`).
-  Production DB needs `schema/news-posters-editing.sql` once (applied to local `pi_local` already).
-- `pi_user_dashboard`: News Posters page with "Request changes" form.
-- `pak-imtehan-website`: download name change only.
+## Live News + local test setup (17 Nov, not committed/deployed yet)
+- Each poster is also a Live News story: AI writes `category`, `breaking`, `key_points`, `body`; `sources` come from
+  the real article links (`story.py`). Two new no-photo designs: `typographic` (blue) and `impact` (yellow).
+- Server (`pi_user_server`) has NO poster table any more: pending = Worker/D1 (read live); approve writes
+  `<News Posters dir>/<date>/<id>.jpg + .json` and deletes it from D1; reject deletes from D1; take down moves
+  to `_taken-down/`. Public API `/api/v3/live-news[/:slug[/related]]`; admin batch `POST /admin/news-posters/batch`.
+  Worker has new `POST /posters/:id/story` (story-only edits, no re-render) and `DEV_SKIP_DISPATCH`.
+- Dashboard: select + batch approve/reject/edit (category, breaking), full edit form incl. story fields.
+- Website branch `agent/2026-11-17-live-news`: `src/lib/liveNews.js` now calls the API (sample = VITE_LIVE_NEWS_SAMPLE=true).
+- LOCAL: Worker `wrangler dev --local --port 8787 --compatibility-date 2026-09-28` (secrets in .dev.vars),
+  `.venv-local/bin/python seed_local.py` seeds posters, `python edit.py` (env from ~/.config/pakimtehan-posters/local.env)
+  stands in for the GitHub edit Action. Server .env has local Worker URL; website/dashboard `.env.local` point at :4000.
+- BEFORE PRODUCTION: `wrangler deploy` (new endpoint), set server env STORE_URL/TOKEN/STORAGE_DIR, delete the
+  website/dashboard `.env.local`, apply nothing in MySQL (old `news_posters` table is unused: drop it by hand).
 
 ## Branches
 - `main` only is used now. `daily-posters-test` (old test output) is no longer written; can be deleted.

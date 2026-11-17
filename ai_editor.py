@@ -74,6 +74,12 @@ Return ONLY a JSON array with exactly {n} objects, each with these keys:
   "why":         max 130 characters: why it matters for CSS/PMS aspirants
   "syllabus":    1-3 items copied exactly from TOPICS
   "source":      outlet names of the ids used, comma separated
+  "category":    one of: pakistan-affairs, international-affairs, politics-governance, economy, geopolitics,
+                 security-defence, science-technology, climate-environment, education
+  "breaking":    true only if the source text itself calls the news breaking or just happened, else false
+  "key_points":  2-3 short facts (max 110 characters each), taken only from the headline/teaser text
+  "body":        max 450 characters of Markdown for the story page: 1-2 short paragraphs using only facts
+                 from the text, then a line "## Why it matters for CSS and PMS" and one sentence. No links.
   "image_query": 1-2 words naming a concrete, commonly photographed object or place
                  (e.g. "oil tanker", "Islamabad", "solar panels"); never a person's name or an event
 
@@ -98,6 +104,8 @@ SCHEMA = {
             "summary": {"type": "string"}, "why": {"type": "string"},
             "syllabus": {"type": "array", "items": {"type": "string"}},
             "source": {"type": "string"}, "image_query": {"type": "string"},
+            "category": {"type": "string"}, "breaking": {"type": "boolean"},
+            "key_points": {"type": "array", "items": {"type": "string"}}, "body": {"type": "string"},
         },
         "required": ["story_ids", "kicker", "headline", "highlight", "summary", "why", "syllabus", "source", "image_query"],
     },
@@ -307,6 +315,7 @@ def validate(posts, n_items, topics, want):
             "syllabus": syllabus,
             "source": str(p.get("source", "")).strip()[:120],
             "image_query": str(p.get("image_query", "")).strip()[:40],
+            **{k: p.get(k) for k in ("category", "breaking", "key_points", "body")},
         })
         used_ids |= set(ids)
         if len(good) >= want:

@@ -16,7 +16,8 @@ from PIL import Image, ImageDraw
 
 from fetch_news import fetch_all
 from images import candidates
-from render import NEEDS_PHOTO, render
+from render import NEEDS_PHOTO, NO_PHOTO_ONLY, render
+from story import normalize_story
 
 ROOT = Path(__file__).resolve().parent
 WORK = ROOT / "work"
@@ -88,7 +89,7 @@ def validate(p, topics):
 def assign_templates(posts, templates, rng):
     """Random template per poster, no repeats in a day; photo templates only when there is a photo."""
     def fits(t, p):  # with a photo: any template that shows one; without: only photo-less ones
-        return t != "typographic" if p.get("image") else t not in NEEDS_PHOTO
+        return t not in NO_PHOTO_ONLY if p.get("image") else t not in NEEDS_PHOTO
 
     pool = []
     for p in posts:
@@ -115,7 +116,10 @@ def cmd_render():
         pick = next((c for j, c in enumerate(cands) if chr(97 + j) == choice), None)
         p.update({"image": pick["image"], "credit": pick["credit"], "image_source": pick["image_source"]} if pick
                  else {"image": None, "credit": ""})
-        p["links"] = [heads[i]["link"] for i in p.get("story_ids", []) if 0 <= i < len(heads)]
+        picked = [heads[i] for i in p.get("story_ids", []) if 0 <= i < len(heads)]
+        p["links"] = [h["link"] for h in picked]
+        normalize_story(p, sources=[{"label": h["source"][:60], "url": h["link"]} for h in picked
+                                    if str(h["link"]).startswith(("http://", "https://"))])
         p["date"] = now.strftime("%-d %b %Y")
         p["edition"] = "Daily Current Affairs"
 
