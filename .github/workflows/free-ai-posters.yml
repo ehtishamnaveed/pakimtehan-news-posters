@@ -102,28 +102,35 @@ jobs:
         if: steps.news.outputs.go == 'true'
         run: python ai_editor.py write
 
-      - name: Find and choose photos
+      # FACT-CHECK GATE (client rule: nothing unchecked is ever published). Reads the articles, compares every claim with
+      # them, and keeps only posters that pass. Fails closed: a poster the checker could not verify is dropped.
+      - name: Fact-check posters
+        id: facts
         if: steps.news.outputs.go == 'true'
+        run: python ai_editor.py verify
+
+      - name: Find and choose photos
+        if: steps.facts.outputs.ok == 'true'
         run: |
           python build.py photos
           python ai_editor.py photos
 
       - name: Install Chromium
-        if: steps.news.outputs.go == 'true'
+        if: steps.facts.outputs.ok == 'true'
         run: python -m playwright install --with-deps chromium
 
       - name: Render posters
-        if: steps.news.outputs.go == 'true'
+        if: steps.facts.outputs.ok == 'true'
         run: python build.py render
 
       - name: Store posters for review (Cloudflare)
-        if: steps.news.outputs.go == 'true'
+        if: steps.facts.outputs.ok == 'true'
         run: |
           python store.py upload "posters/$TODAY" "$BATCH"
           python store.py push-state "$TODAY"
 
       - name: Summary
-        if: always() && steps.news.outputs.go == 'true'
+        if: always() && steps.facts.outputs.ok == 'true'
         run: |
           {
             echo "## Posters for $TODAY, batch $BATCH (stored for review in the dashboard)"

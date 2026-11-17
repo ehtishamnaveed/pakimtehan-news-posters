@@ -24,7 +24,7 @@ h1 mark { color: #60a5fa; font-style: italic; }
   <h1 data-field="headline" data-fit="box" data-min="50">{{ p.headline_html }}</h1>
   <p class="sum" data-field="summary" data-fit="box" data-min="19">{{ p.summary }}</p>
   <div class="circle" data-field="photo">{% if p.image %}<img class="cover" src="{{ p.image }}">{% endif %}</div>
-  <div class="chips">{% for s in p.syllabus[:3] %}<span>{{ s }}</span>{% endfor %}</div>
+  <div class="chips">{% for s in p.syllabus|head(3) %}<span>{{ s }}</span>{% endfor %}</div>
   <div class="by" data-field="source"><small>Source</small>{{ p.source }}</div>
   <div class="foot">pakimtehan.com · Daily brief</div>
 </div>

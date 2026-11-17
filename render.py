@@ -39,6 +39,8 @@ NEEDS_PHOTO = {t["id"] for t in CATALOG if t.get("photo") == "required"}
 NO_PHOTO_ONLY = {t["id"] for t in CATALOG if t.get("photo") == "none"}  # text-only designs; with a photo we prefer photo designs
 
 env = Environment(loader=FileSystemLoader(ROOT / "templates"), autoescape=select_autoescape(["html"]))
+# Not Jinja slices: the dashboard's live preview draws these same templates with nunjucks, which has no [:n] (see livePoster.js)
+env.filters["head"] = lambda items, n: list(items or [])[:n]
 
 
 def headline_html(p):

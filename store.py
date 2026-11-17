@@ -22,6 +22,7 @@ import requests
 ROOT = Path(__file__).resolve().parent
 SEEN = ROOT / "state" / "seen.json"
 RECENT = ROOT / "state" / "recent_templates.json"
+STORIES = ROOT / "state" / "recent_stories.json"
 
 
 def _base():
@@ -89,6 +90,9 @@ def cmd_pull_state():
     recent = api("GET", "/state/recent_templates")["value"] or []
     RECENT.write_text(json.dumps(recent))
     print(f"{len(recent)} recently used design(s) -> {RECENT.relative_to(ROOT)}")
+    stories = api("GET", "/state/recent_stories")["value"] or []
+    STORIES.write_text(json.dumps(stories, ensure_ascii=False))
+    print(f"{len(stories)} story(ies) that already have a poster -> {STORIES.relative_to(ROOT)}")
 
 
 def cmd_push_state(date):
@@ -96,6 +100,8 @@ def cmd_push_state(date):
     api("PUT", "/state/seen", {"value": seen})
     if RECENT.exists():
         api("PUT", "/state/recent_templates", {"value": json.loads(RECENT.read_text())})
+    if STORIES.exists():
+        api("PUT", "/state/recent_stories", {"value": json.loads(STORIES.read_text())})
     from select_template import CATALOG  # the design list the dashboard's editor shows (one source of truth: catalog.yaml)
     api("PUT", "/state/catalog", {"value": [{k: t.get(k) for k in ("id", "label", "family", "photo", "needs")} for t in CATALOG]})
     api("PUT", "/state/last_run", {"value": date})

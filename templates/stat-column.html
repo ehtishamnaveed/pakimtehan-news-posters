@@ -27,7 +27,7 @@ h1 mark { background: linear-gradient(#2563eb, #2563eb) 0 62% / 100% 70% no-repe
   <div class="col" data-field="why">
     <h4>{{ 'By the numbers' if p.stat else 'The key points' }}</h4>
     {% if p.stat %}<div class="it"><b>{{ p.stat.value }}</b><span>{{ p.stat.label }}</span></div>{% endif %}
-    {% for k in (p.key_points or [])[:(2 if p.stat else 3)] %}<div class="it"><span style="font-size:19px">{{ k|truncate(78, True, '…') }}</span></div>{% endfor %}
+    {% for k in (p.key_points or [])|head(2 if p.stat else 3) %}<div class="it"><span style="font-size:19px">{{ k|truncate(78, True, '…') }}</span></div>{% endfor %}
   </div>
   <p class="sum" data-field="summary" data-fit="box" data-min="18">{{ p.summary }}</p>
   <div class="foot"><span data-field="source">{{ p.source }} · pakimtehan.com</span>{% if p.credit %}<span class="credit" data-field="credit">Photo: {{ p.credit }}</span>{% endif %}</div>

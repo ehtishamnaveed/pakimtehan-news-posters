@@ -14,6 +14,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
+import factcheck
 from fetch_news import fetch_all
 from images import candidates
 from render import render
@@ -37,6 +38,10 @@ def cmd_fetch():
     items, cfg = fetch_all()
     seen = set(json.loads(SEEN.read_text())) if SEEN.exists() else set()
     items = [it for it in items if it["link"] not in seen]
+    recent = factcheck.load_recent()  # stories that already have a poster: a new outlet's version is not a new story
+    fresh = [it for it in items if not factcheck.repeat_of(it["title"], recent)]
+    print(f"  {len(items) - len(fresh)} headline(s) repeat a story that already has a poster")
+    items = fresh
     (WORK / "headlines.json").write_text(json.dumps(items, ensure_ascii=False, indent=1))
     lines = [f"{i} | {it['source']} | {it['title']} | {it['summary'][:220]}" for i, it in enumerate(items)]
     cap = cfg["settings"].get("posters_per_run", cfg["settings"].get("posters_per_day", 15))
@@ -143,6 +148,7 @@ def cmd_render():
                "Links: " + " · ".join(f"[{j + 1}]({l})" for j, l in enumerate(p["links"])) + "\n"]
     (out / "README.md").write_text("\n".join(md))
 
+    factcheck.remember(posts)
     seen = json.loads(SEEN.read_text()) if SEEN.exists() else []  # oldest first
     new = [l for p in posts for l in p["links"] if l not in set(seen)]
     SEEN.parent.mkdir(exist_ok=True)

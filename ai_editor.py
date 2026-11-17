@@ -2,6 +2,7 @@
 
     python ai_editor.py check    # one tiny request per provider; exits non-zero if none work
     python ai_editor.py write    # work/headlines.txt -> work/posts.json  (story choice + text)
+    python ai_editor.py verify   # fact-check gate: keeps only posters whose every claim is in the sources
     python ai_editor.py photos   # look at work/photos/sheet-N.jpg and set "photo" on each post
 
 Providers are tried in order until one returns valid output (AI_PROVIDERS overrides). Gemini is the
@@ -22,6 +23,9 @@ import time
 from pathlib import Path
 
 import requests
+
+import factcheck
+from factcheck import repeat_of
 
 ROOT = Path(__file__).resolve().parent
 WORK = ROOT / "work"
@@ -59,6 +63,9 @@ Choosing stories:
   person or company.
 - Skip sports, celebrity, crime, lifestyle and gossip, and anything you cannot state neutrally.
 - If several outlets report the same story, merge them into one poster and list every id.
+- Do NOT choose a story that is already covered by an earlier poster (list below), even when a new outlet
+  reports it with different words. Only a clearly NEW development (a decision, a ruling, a new figure)
+  may be chosen, and then the headline must say what is new.
 
 Writing rules:
 - Use ONLY facts present in the headline/teaser text. Never add numbers, names or claims that are not there.
@@ -92,6 +99,12 @@ Return ONLY a JSON array with exactly {n} objects, each with these keys:
   "speaker":     who said it, name and role as in the text, max 60 characters; "" if no quote
   "image_query": 1-2 words naming a concrete, commonly photographed object or place
                  (e.g. "oil tanker", "Islamabad", "solar panels"); never a person's name or an event
+
+Every poster is fact-checked against the sources afterwards and REJECTED if it states anything they do not say
+(a number, name, date, place, cause or claim). When unsure, leave it out.
+
+ALREADY COVERED (earlier posters, do not repeat):
+{covered}
 
 {headlines}
 """
@@ -286,23 +299,10 @@ def extract_json_array(text):
     return json.loads(text[start:end + 1])
 
 
-STOP = set("after amid over says said with from into that this their they have will would about "
-           "against before between under amid says pakistan pakistani pakistans".split())
+from factcheck import same_story  # noqa: E402  (shared with build.py fetch and the verifier)
 
 
-def _words(headline):
-    return {w for w in re.findall(r"[a-z0-9]+", headline.lower()) if len(w) > 3 and w not in STOP}
-
-
-def same_story(a, b):
-    """Two headlines about one story, e.g. 'Jensen Huang resigns as Nvidia CEO...' and
-    'Jensen Huang quits Nvidia after 33 years...' (13 Nov run)."""
-    wa, wb = _words(a), _words(b)
-    shared = wa & wb
-    return len(shared) >= 3 and len(shared) / max(1, min(len(wa), len(wb))) >= 0.5
-
-
-def validate(posts, n_items, topics, want):
+def validate(posts, n_items, topics, want, recent=()):
     good = []
     used_ids = set()
     for p in posts if isinstance(posts, list) else []:
@@ -314,6 +314,10 @@ def validate(posts, n_items, topics, want):
             continue
         if any(same_story(headline, g["headline"]) for g in good):
             print(f"    dropped duplicate story: {headline}")
+            continue
+        earlier = repeat_of(headline, recent)
+        if earlier:
+            print(f"    dropped, already had a poster: {headline}  (= {earlier})")
             continue
         hl = str(p.get("highlight", "")).strip()
         syllabus = [s for s in p.get("syllabus", []) if s in topics][:3] or ["Current Affairs"]
@@ -378,10 +382,13 @@ def cmd_write():
     want = int(re.search(r"POSTERS WANTED:\s*(\d+)", text).group(1))
     n_items = len(json.loads((WORK / "headlines.json").read_text()))
     heads = json.loads((WORK / "headlines.json").read_text())
-    prompt = EDITOR_PROMPT.format(n=want, headlines=text)
+    recent = factcheck.load_recent()
+    covered = "\n".join(f"- {r['h']}" for r in recent[-120:]) or "(none yet)"
+    prompt = EDITOR_PROMPT.format(n=want, headlines=text, covered=covered)
     # Cloudflare's free tier is 10,000 neurons/day: send it a shorter list (header + first 90 headlines).
     lines = text.splitlines()
-    short_prompt = EDITOR_PROMPT.format(n=want, headlines="\n".join(lines[:5 + 90]))
+    short_prompt = EDITOR_PROMPT.format(n=want, headlines="\n".join(lines[:5 + 90]),
+                                        covered="\n".join(f"- {r['h']}" for r in recent[-30:]) or "(none yet)")
 
     # ~180 output tokens per poster, plus room for Gemini thinking / Nemotron reasoning tokens,
     # which count against the same limit. 15 posters -> 15000. Cloudflare's free tier is smaller.
@@ -404,7 +411,7 @@ def cmd_write():
         try:
             raw = call(spec, short_prompt if spec.startswith("cloudflare:") else prompt,
                        json_mode=True, max_tokens=budget)
-            posts = validate(extract_json_array(raw), n_items, topics, want)
+            posts = validate(extract_json_array(raw), n_items, topics, want, recent)
         except Exception as e:  # noqa: BLE001 - any failure means: try the next provider
             print(f"    failed: {str(e)[:160]}")
             continue
@@ -419,6 +426,103 @@ def cmd_write():
         save(*best)
         return
     sys.exit("All AI providers failed; no posters written.")
+
+
+VERIFY_PROMPT = """You are the fact-checker on a news desk. A poster may be published ONLY if every claim on it is stated
+by the SOURCES under it. Nobody will read it before it goes live, so be strict: if you are not sure a claim is
+in the sources, it is NOT supported.
+
+For each poster check every claim in HEADLINE, SUMMARY, WHY, KEY POINTS, BODY and QUOTE:
+- names, titles, roles, organisations, places, dates, numbers, units, causes and results must be in the sources;
+- who said or did what must match the sources (a source saying "claims" or "says" must not become "confirms");
+- the WHY line may explain relevance for exam candidates, but must not state a new fact;
+- a quotation must be word for word in the sources;
+- general knowledge that the sources do not state counts as NOT supported.
+Also say if the poster is about the SAME event as one of the EARLIER POSTERS (a new outlet or new wording does not
+make it a new story; a clearly new development does).
+
+Return ONLY a JSON array with one object per poster:
+  {{"n": <poster number>, "supported": true or false, "issues": ["the exact unsupported claim", ...],
+    "repeat_of": null or the earlier poster headline it repeats}}
+
+EARLIER POSTERS:
+{earlier}
+
+{posters}
+"""
+
+VERIFY_BATCH = 4
+
+
+def _poster_block(n, p, ev):
+    kp = "; ".join(str(k) for k in (p.get("key_points") or []))
+    return (f"=== POSTER {n} ===\nHEADLINE: {p['headline']}\nSUMMARY: {p.get('summary', '')}\nWHY: {p.get('why', '')}\n"
+            f"KEY POINTS: {kp}\nBODY: {p.get('body') or ''}\nQUOTE: {p.get('quote') or ''}\n"
+            f"SOURCES:\n{ev['text'][:6000]}\n")
+
+
+def _verify_batch(batch, evidence, earlier, providers, avoid):
+    """-> ({poster index: verdict}, provider) for one batch; tries independent providers first. ({}, None) if none worked."""
+    prompt = VERIFY_PROMPT.format(earlier=earlier, posters="\n".join(_poster_block(i + 1, posts_i, evidence[i]) for i, posts_i in batch))
+    order = [s for s in providers if s != avoid] + [s for s in providers if s == avoid]
+    for spec in order:
+        try:
+            raw = call(spec, prompt, max_tokens=max(4096, len(batch) * 700 + 3000), timeout=240)
+            rows = extract_json_array(raw)
+            got = {int(r["n"]) - 1: r for r in rows if isinstance(r, dict) and str(r.get("n", "")).isdigit()}
+            if all(i in got for i, _ in batch):
+                return {i: got[i] for i, _ in batch}, spec
+            print(f"    {spec}: answered {len(got)} of {len(batch)} posters, trying next provider")
+        except Exception as e:  # noqa: BLE001
+            print(f"    {spec} failed: {str(e)[:140]}")
+    return {}, None
+
+
+def cmd_verify():
+    """The fact-check gate. Rewrites work/posts.json with ONLY the posters that pass; rejects the rest, and anything it
+    cannot check (fails closed). Report in work/factcheck.json."""
+    posts = json.loads((WORK / "posts.json").read_text())
+    heads = json.loads((WORK / "headlines.json").read_text())
+    evidence = factcheck.gather_evidence(posts, heads)
+    recent = factcheck.load_recent()
+    earlier = "\n".join(f"- {r['h']}" for r in recent[-150:]) or "(none)"
+    providers = [s.strip() for s in os.environ.get("AI_PROVIDERS", DEFAULT_PROVIDERS).split(",") if s.strip()]
+    providers = [s for s in providers if not s.startswith("cloudflare:")] or providers  # small model: not trusted as a fact-checker
+
+    reasons = {i: [f"{m}"] for i, m in factcheck.check_numbers(posts, evidence)}
+    todo = [(i, posts[i]) for i in range(len(posts)) if i not in reasons]
+    checked_by = {}
+    for k in range(0, len(todo), VERIFY_BATCH):
+        batch = todo[k:k + VERIFY_BATCH]
+        verdicts, spec = _verify_batch(batch, evidence, earlier, providers, avoid=posts[batch[0][0]].get("_editor"))
+        for i, p in batch:
+            v = verdicts.get(i)
+            if v is None:
+                reasons[i] = ["could not be verified (no fact-checking model answered)"]
+            elif v.get("supported") is not True:
+                reasons[i] = [f"not in the sources: {x}" for x in (v.get("issues") or ["unspecified"])][:4]
+            elif v.get("repeat_of"):
+                reasons[i] = [f"repeats an earlier poster: {v['repeat_of']}"]
+            else:
+                checked_by[i] = spec
+    kept, report = [], []
+    for i, p in enumerate(posts):
+        ok = i in checked_by and i not in reasons
+        report.append({"headline": p["headline"], "passed": ok, "reasons": reasons.get(i, [])})
+        if ok:
+            ev = evidence[i]
+            p["fact_check"] = {"passed": True, "checker": checked_by[i], "outlets": ev["outlets"], "articles_read": ev["articles"],
+                               "basis": "article text" if ev["articles"] else "headline and teaser",
+                               "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+            kept.append(p)
+        else:
+            print(f"  REJECTED: {p['headline']}\n      " + "\n      ".join(reasons.get(i, ["unknown"])))
+    (WORK / "factcheck.json").write_text(json.dumps(report, ensure_ascii=False, indent=1))
+    (WORK / "posts.json").write_text(json.dumps(kept, ensure_ascii=False, indent=1))
+    print(f"  fact-check: {len(kept)} of {len(posts)} poster(s) passed")
+    if os.environ.get("GITHUB_OUTPUT"):
+        with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+            f.write(f"ok={'true' if kept else 'false'}\n")
 
 
 def cmd_photos():
@@ -446,4 +550,4 @@ def cmd_photos():
 
 
 if __name__ == "__main__":
-    {"write": cmd_write, "photos": cmd_photos, "check": cmd_check}[sys.argv[1]]()
+    {"write": cmd_write, "photos": cmd_photos, "check": cmd_check, "verify": cmd_verify}[sys.argv[1]]()
