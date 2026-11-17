@@ -5,7 +5,7 @@ Last updated: 2026-11-13
 ## How posters are made now
 - GitHub Action `.github/workflows/free-ai-posters.yml` runs the pipeline with free AI
   (`ai_editor.py`: Gemini 3.6 Flash -> 3.5 Flash-Lite -> NVIDIA NIM -> OpenRouter -> Cloudflare).
-- 15 posters per run (`config/sources.yaml` -> `posters_per_day`), JPEG q90 4:4:4 (~235 KB each).
+- 15 posters per run (`config/sources.yaml` -> `posters_per_run`), JPEG q90 4:4:4 (~235 KB each).
 - Output: stored in the Cloudflare Worker `pakimtehan-posters` (D1 database `pakimtehan-posters`)
   with all values + the photo, id `<date>_<HHMM batch>-<nn>`. GitHub no longer stores posters.
 
@@ -52,7 +52,7 @@ Last updated: 2026-11-13
 - Replace any classic GitHub token with a fine-grained one: this repo only,
   Actions read/write. `cd cloudflare/worker && wrangler secret put GITHUB_TOKEN`, then revoke the old one.
 - Schedule DECIDED (17 Nov): every HOUR (`7 * * * *`), set in wrangler.toml but NOT deployed. Production also needs GitHub variable POSTERS_TEST_MODE=false.
-  Per run: 3 posters, stops early under 6 unseen headlines; D1 keeps unreviewed posters 7 days. Repo is public (free Actions minutes).
+  Per run: up to 15 posters (about one per 3 unseen headlines), stops early under 9 unseen headlines; D1 keeps unreviewed posters 7 days. Repo is public (free Actions minutes).
 - Photo-library keys (PEXELS/UNSPLASH/PIXABAY) are not set as repo secrets.
 - `docs/Pak-Imtehan-Poster-Automation.pdf` is untracked (not committed).
 

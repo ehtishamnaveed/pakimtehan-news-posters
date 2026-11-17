@@ -60,7 +60,7 @@ topics:
   - Governance & Public Policy
 
 settings:
-  posters_per_run: 3          # posters made by ONE run (the Worker starts a run every hour: about 72 a day at most)
-  min_new_headlines: 6        # a run with fewer unseen headlines than this stops early, so quiet hours cost almost nothing
-  max_age_hours: 8            # ignore stories older than this
+  posters_per_run: 15         # posters made by ONE run at most (the Worker starts a run every hour); fewer when there are few new stories
+  min_new_headlines: 9        # a run with fewer unseen headlines than this stops early, so quiet hours cost almost nothing
+  max_age_hours: 12           # ignore stories older than this
   max_per_source: 12          # cap headlines per source sent to Gemini (keeps tokens low)

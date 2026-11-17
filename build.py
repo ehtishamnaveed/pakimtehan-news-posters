@@ -39,8 +39,10 @@ def cmd_fetch():
     items = [it for it in items if it["link"] not in seen]
     (WORK / "headlines.json").write_text(json.dumps(items, ensure_ascii=False, indent=1))
     lines = [f"{i} | {it['source']} | {it['title']} | {it['summary'][:220]}" for i, it in enumerate(items)]
+    cap = cfg["settings"].get("posters_per_run", cfg["settings"].get("posters_per_day", 15))
+    want = min(cap, max(3, len(items) // 3))  # about one poster per three unseen headlines (outlets repeat stories)
     (WORK / "headlines.txt").write_text(
-        f"TOPICS: {', '.join(cfg['topics'])}\nPOSTERS WANTED: {cfg['settings'].get('posters_per_run', cfg['settings'].get('posters_per_day', 4))}\n\n"
+        f"TOPICS: {', '.join(cfg['topics'])}\nPOSTERS WANTED: {want}\n\n"
         "id | source | headline | teaser\n" + "\n".join(lines) + "\n")
     print(f"{len(items)} new headlines -> work/headlines.txt")
 

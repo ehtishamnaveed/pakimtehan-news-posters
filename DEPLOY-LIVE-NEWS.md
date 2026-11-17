@@ -156,8 +156,8 @@ It only takes effect when you deploy:
 ```bash
 cd ~/Documents/GitHub/pakimtehan-news-posters/cloudflare/worker && wrangler deploy
 ```
-The change can take up to 15 minutes to reach Cloudflare. Each run makes at most 3 posters (`posters_per_run`) and stops early when fewer
-than 6 unseen headlines exist (`min_new_headlines`), so quiet hours cost almost nothing. Posters nobody reviews are deleted from Cloudflare
+The change can take up to 15 minutes to reach Cloudflare. Each run makes at most 15 posters (`posters_per_run`; fewer when there are fewer new stories) and stops early when fewer
+than 9 unseen headlines exist (`min_new_headlines`), so quiet hours cost almost nothing. Posters nobody reviews are deleted from Cloudflare
 after 7 days. To pause: set `crons = []` and deploy again.
 
 ---

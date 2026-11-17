@@ -30,7 +30,7 @@ concurrency:
 jobs:
   posters:
     runs-on: ubuntu-latest
-    timeout-minutes: 20   # 3 posters per run: ~1 min AI pacing + up to 3 photo searches
+    timeout-minutes: 40   # up to 15 posters per run: ~2 min AI pacing + up to 15 photo searches
     env:
       TEST_MODE: ${{ vars.POSTERS_TEST_MODE || 'true' }}
       POSTERS_STORE_URL: ${{ vars.POSTERS_STORE_URL }}
