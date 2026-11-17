@@ -26,7 +26,7 @@ Last updated: 2026-11-13
   `<News Posters dir>/<date>/<id>.jpg + .json` and deletes it from D1; reject deletes from D1; take down moves
   to `_taken-down/`. Public API `/api/v3/live-news[/:slug[/related]]`; admin batch `POST /admin/news-posters/batch`.
   Worker has new `POST /posters/:id/story` (story-only edits, no re-render) and `DEV_SKIP_DISPATCH`.
-- Dashboard: select + batch approve/reject/edit (category, breaking), full edit form incl. story fields.
+- Dashboard: compact table, tabbed edit form. Save only SAVES (Worker `edit` with apply:false); "Update poster image" (`/apply`) starts the re-render; approve is blocked while changes are unrendered.
 - Website branch `agent/2026-11-17-live-news`: `src/lib/liveNews.js` now calls the API (sample = VITE_LIVE_NEWS_SAMPLE=true).
 - LOCAL: Worker `wrangler dev --local --port 8787 --compatibility-date 2026-09-28` (secrets in .dev.vars),
   `.venv-local/bin/python seed_local.py` seeds posters, `python edit.py` (env from ~/.config/pakimtehan-posters/local.env)
