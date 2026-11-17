@@ -1,8 +1,8 @@
 {% extends "_layout.html" %}
-{# Style F: bright brief — yellow frame, offset photo block, navy condensed headline, summary, CTA. Needs a photo. #}
+{# Style F: light brief — pale blue frame, offset photo block, navy condensed headline, summary, CTA. Needs a photo. #}
 {% block style %}
-body { background: #fcd835; }
-.poster { background: #fcd835; color: var(--navy-950); padding: 52px 60px 130px; display: flex; flex-direction: column; }
+body { background: #e8f0ff; }
+.poster { background: #e8f0ff; color: var(--navy-950); padding: 52px 60px 130px; display: flex; flex-direction: column; }
 .head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 18px; border-bottom: 5px solid var(--navy-950); }
 .head img { height: 52px; }
 .head span { font: 800 20px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; }
@@ -14,7 +14,7 @@ h1 mark { color: #fff; padding: 0 8px; background: linear-gradient(var(--navy-95
 .sum { margin-top: 18px; font: 600 27px/1.42 var(--sans); }
 .foot { position: absolute; left: 60px; right: 60px; bottom: 0; height: 104px; border-top: 5px solid var(--navy-950); display: flex; justify-content: space-between; align-items: center; font: 700 21px/1 var(--sans); }
 .cta { background: var(--navy-950); color: #fff; padding: 15px 26px; }
-.cta::after { content: "  →"; color: #fcd835; }
+.cta::after { content: "  →"; color: #93c5fd; }
 {% endblock %}
 {% block body %}
 <div class="poster">

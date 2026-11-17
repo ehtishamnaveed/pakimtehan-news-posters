@@ -1,5 +1,5 @@
 {% extends "_layout.html" %}
-{# Style B: bold blue news poster — full-bleed photo fading into saturated blue, slanted yellow kicker, big condensed headline, white summary card with "why it matters". Needs a photo. #}
+{# Style B: bold blue news poster — full-bleed photo fading into saturated blue, slanted white kicker, big condensed headline, white summary card with "why it matters". Needs a photo. #}
 {% block style %}
 body { background: var(--blue-950); }
 .poster { color: #fff; background: linear-gradient(180deg, #1d4ed8 0, #1d4ed8 720px, #0b1530 1350px); }
@@ -9,10 +9,10 @@ body { background: var(--blue-950); }
 .logobox { position: absolute; top: 56px; left: 60px; background: var(--navy-900); padding: 16px 24px; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
 .logobox img { height: 52px; }
 .date { position: absolute; top: 70px; right: 60px; background: #fff; color: var(--blue-900); padding: 13px 22px; border-radius: 999px; font: 800 20px/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; }
-.kick { position: absolute; top: 622px; left: 60px; background: #fde047; color: var(--navy-950); padding: 15px 46px 15px 24px; font: 800 26px/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; font-style: italic; clip-path: polygon(0 0, 100% 0, calc(100% - 22px) 100%, 0 100%); box-shadow: 0 0 0 #0000; }
+.kick { position: absolute; top: 622px; left: 60px; background: #fff; color: var(--blue-900); padding: 15px 46px 15px 24px; font: 800 26px/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; font-style: italic; clip-path: polygon(0 0, 100% 0, calc(100% - 22px) 100%, 0 100%); box-shadow: 0 0 0 #0000; }
 .kick::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 10px; background: #dc2626; }
 h1 { position: absolute; top: 700px; left: 60px; right: 60px; height: 250px; font: 700 88px/.98 var(--condensed); text-transform: uppercase; letter-spacing: -.003em; text-shadow: 0 5px 0 rgba(3,10,26,.35); }
-h1 mark { color: #fde047; }
+h1 mark { color: #fff; padding: 0 8px; background: linear-gradient(var(--navy-950), var(--navy-950)) 0 58% / 100% 74% no-repeat; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 .card { position: absolute; left: 60px; right: 60px; top: 962px; bottom: 112px; background: #fff; color: var(--ink); padding: 28px 36px 24px; display: flex; flex-direction: column; justify-content: space-between; }
 .sum { font: 500 26px/1.45 var(--sans); color: var(--ink); }
 .why { border-left: 6px solid var(--blue-600); padding-left: 18px; margin-right: 130px; font: 600 20px/1.38 var(--sans); color: var(--slate-700); }

@@ -21,7 +21,7 @@ Last updated: 2026-11-13
 
 ## Live News + local test setup (17 Nov, not committed/deployed yet)
 - Each poster is also a Live News story: AI writes `category`, `breaking`, `key_points`, `body`; `sources` come from
-  the real article links (`story.py`). Two new no-photo designs: `typographic` (blue) and `impact` (yellow).
+  the real article links (`story.py`). Two new no-photo designs: `typographic` (blue) and `impact` (light). NO YELLOW on posters (client requirement).
 - Server (`pi_user_server`) has NO poster table any more: pending = Worker/D1 (read live); approve writes
   `<News Posters dir>/<date>/<id>.jpg + .json` and deletes it from D1; reject deletes from D1; take down moves
   to `_taken-down/`. Public API `/api/v3/live-news[/:slug[/related]]`; admin batch `POST /admin/news-posters/batch`.

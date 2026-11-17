@@ -1,5 +1,5 @@
 {% extends "_layout.html" %}
-{# Style E (no photo): bold blue poster — slanted kicker, giant condensed headline with yellow highlight, white "why it matters" card with red/yellow corner slabs. #}
+{# Style E (no photo): bold blue poster — slanted kicker, giant condensed headline with light-blue highlight, white "why it matters" card with blue corner slabs. #}
 {% block style %}
 body { background: var(--blue-700); }
 .poster { color: #fff; padding: 56px 64px 0; display: flex; flex-direction: column;
@@ -7,15 +7,15 @@ body { background: var(--blue-700); }
     radial-gradient(circle at 1px 1px, rgba(255,255,255,.13) 1.6px, transparent 2px) 0 0 / 22px 22px,
     linear-gradient(165deg, #2563eb 0%, #1d4ed8 38%, #172554 100%); }
 .slab { position: absolute; left: -80px; right: -80px; bottom: -40px; height: 400px; background: var(--navy-950); transform: skewY(-5deg); transform-origin: left bottom; }
-.slab2 { position: absolute; right: -60px; bottom: 150px; width: 520px; height: 34px; background: #fde047; transform: skewX(-24deg); }
+.slab2 { position: absolute; right: -60px; bottom: 150px; width: 520px; height: 34px; background: #60a5fa; transform: skewX(-24deg); }
 .head { position: relative; display: flex; justify-content: space-between; align-items: center; }
 .head .date { background: #fff; color: var(--blue-900); font: 800 19px/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; padding: 12px 18px; border-radius: 999px; }
 .main { position: relative; flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 10px 0 24px; }
-.kick { align-self: flex-start; background: #fde047; color: var(--navy-950); padding: 14px 34px 14px 20px; font: 800 24px/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; clip-path: polygon(0 0, 100% 0, calc(100% - 18px) 100%, 0 100%); }
+.kick { align-self: flex-start; background: #fff; color: var(--blue-900); padding: 14px 34px 14px 20px; font: 800 24px/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; clip-path: polygon(0 0, 100% 0, calc(100% - 18px) 100%, 0 100%); }
 h1 { margin-top: 26px; font: 700 124px/.96 var(--condensed); text-transform: uppercase; letter-spacing: -.005em; text-shadow: 0 6px 0 rgba(3,10,26,.35); }
-h1 mark { color: #fde047; }
-.sum { margin-top: 28px; padding-left: 24px; border-left: 8px solid #fde047; font: 500 30px/1.45 var(--sans); color: #fff; max-width: 920px; }
-.why { position: relative; background: #fff; color: var(--ink); padding: 30px 34px 30px; margin-bottom: 34px; box-shadow: 14px 14px 0 #fde047; font: 600 25px/1.42 var(--sans); }
+h1 mark { color: #93c5fd; }
+.sum { margin-top: 28px; padding-left: 24px; border-left: 8px solid #93c5fd; font: 500 30px/1.45 var(--sans); color: #fff; max-width: 920px; }
+.why { position: relative; background: #fff; color: var(--ink); padding: 30px 34px 30px; margin-bottom: 34px; box-shadow: 14px 14px 0 #60a5fa; font: 600 25px/1.42 var(--sans); }
 .why b { display: block; color: var(--blue-700); font: 800 18px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 12px; }
 .chips { margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap; }
 .chips span { background: var(--navy-900); color: #fff; padding: 10px 16px; font: 700 18px/1 var(--sans); letter-spacing: .02em; }
