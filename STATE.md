@@ -28,6 +28,8 @@ Last updated: 2026-11-13
   Worker has new `POST /posters/:id/story` (story-only edits, no re-render) and `DEV_SKIP_DISPATCH`.
 - Dashboard: compact table, tabbed edit form. Save only SAVES (Worker `edit` with apply:false); "Update poster image" (`/apply`) starts the re-render; approve is blocked while changes are unrendered.
 - Website branch `agent/2026-11-17-live-news`: `src/lib/liveNews.js` now calls the API (sample = VITE_LIVE_NEWS_SAMPLE=true).
+- SEO: `pi_user_server/src/services/newsSeo.service.js` writes static story/day/front pages + sitemaps into the website web root
+  (`NEWS_SEO_WEBROOT`) on every approve/edit/take-down; website serves them via `_pages/` rules. Stories open as full pages (popup removed).
 - LOCAL: Worker `wrangler dev --local --port 8787 --compatibility-date 2026-09-28` (secrets in .dev.vars),
   `.venv-local/bin/python seed_local.py` seeds posters, `python edit.py` (env from ~/.config/pakimtehan-posters/local.env)
   stands in for the GitHub edit Action. Server .env has local Worker URL; website/dashboard `.env.local` point at :4000.

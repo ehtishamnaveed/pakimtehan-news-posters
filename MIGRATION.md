@@ -36,6 +36,9 @@ The routine is tied to the Claude account that created it. These are the steps t
   - `NEWS_POSTERS_STORE_URL=https://pakimtehan-posters.<subdomain>.workers.dev`
   - `NEWS_POSTERS_STORE_TOKEN=<the Worker secret STORE_TOKEN>`
   - `NEWS_POSTERS_STORAGE_DIR=/home/<cpanel-user>/News Posters` (outside `public_html`; keep it in backups)
+- For Google: set `NEWS_SEO_WEBROOT=/home/<cpanel-user>/public_html` (the folder with `spa.html`). The server then writes the
+  Live News pages and the two sitemaps there on every approve/edit/take-down (see `newsSeo.service.js`). In Search Console
+  submit `https://pakimtehan.com/live-news-sitemap.xml` and `https://pakimtehan.com/news-sitemap.xml`.
 - Never set `DISABLE_SUBSCRIPTION_CRON` in production. It is for laptops only.
 - Redeploy the Worker (`cd cloudflare/worker && wrangler deploy`) so the story, apply and discard endpoints exist.
 
