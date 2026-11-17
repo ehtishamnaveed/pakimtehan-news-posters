@@ -53,9 +53,9 @@ herdr tab create --workspace "$ws_id" --cwd "$POSTERS_DIR" --label posters >/dev
 cat <<EOF
 
 Pak Imtehan local stack is starting in herdr workspace "pak-imtehan-local".
-  Server     http://localhost:4000/health   (syncs posters from GitHub now and every 5 min)
+  Server     http://localhost:4000/health   (reads pending posters from the Worker)
   Dashboard  http://localhost:5174/posters  (sign in with a local admin account)
-  Website    http://localhost:5173/current-affairs
+  Website    http://localhost:5173/live-news
 
 Attach to watch the logs:  herdr
 Stop everything:           herdr workspace close $ws_id

@@ -30,18 +30,18 @@ The routine is tied to the Claude account that created it. These are the steps t
 5. Disable the old routine on the original account so the two don't both run.
 
 ## 3. Production server (pi_user_server)
-- Run `schema/news-posters.sql` once (production doesn't auto-create tables).
+- No database table is needed: pending posters live in the Cloudflare Worker (D1) and approved ones are
+  files in the News Posters folder.
 - Add these to the production `.env`:
-  - `NEWS_POSTERS_GITHUB_REPO=<owner>/pakimtehan-news-posters`
-  - `NEWS_POSTERS_GITHUB_BRANCH=daily-posters`
-  - `NEWS_POSTERS_GITHUB_TOKEN=<fine-grained token: this repo only, Contents read-only>`
+  - `NEWS_POSTERS_STORE_URL=https://pakimtehan-posters.<subdomain>.workers.dev`
+  - `NEWS_POSTERS_STORE_TOKEN=<the Worker secret STORE_TOKEN>`
+  - `NEWS_POSTERS_STORAGE_DIR=/home/<cpanel-user>/News Posters` (outside `public_html`; keep it in backups)
 - Never set `DISABLE_SUBSCRIPTION_CRON` in production. It is for laptops only.
-- The poster PNGs are stored in `storage/news-posters/` (or `NEWS_POSTERS_STORAGE_DIR`). Keep it on
-  persistent disk and include it in backups.
+- Redeploy the Worker (`cd cloudflare/worker && wrangler deploy`) so the story, apply and discard endpoints exist.
 
 ## 4. If the repo owner changes
-Update `NEWS_POSTERS_GITHUB_REPO` and issue a new token. Nothing else references the owner, except
-`scripts/local-stack.sh` (the local test launcher).
+Update `REPO` in `cloudflare/worker/worker.js` and the Worker's `GITHUB_TOKEN`, then `wrangler deploy`.
+Nothing else references the owner.
 
 ## 5. Things to know (Claude docs, Nov 2026)
 - Scheduled tasks ("routines") are a **research preview**. Behaviour, limits and settings may change.

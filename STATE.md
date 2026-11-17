@@ -32,7 +32,7 @@ Last updated: 2026-11-13
   `.venv-local/bin/python seed_local.py` seeds posters, `python edit.py` (env from ~/.config/pakimtehan-posters/local.env)
   stands in for the GitHub edit Action. Server .env has local Worker URL; website/dashboard `.env.local` point at :4000.
 - BEFORE PRODUCTION: `wrangler deploy` (new endpoint), set server env STORE_URL/TOKEN/STORAGE_DIR, delete the
-  website/dashboard `.env.local`, apply nothing in MySQL (old `news_posters` table is unused: drop it by hand).
+  website/dashboard `.env.local`, nothing to run in MySQL (the old `news_posters` table is unused; drop it by hand if it exists).
 
 ## Branches
 - `main` only is used now. `daily-posters-test` (old test output) is no longer written; can be deleted.
