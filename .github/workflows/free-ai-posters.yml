@@ -30,7 +30,7 @@ concurrency:
 jobs:
   posters:
     runs-on: ubuntu-latest
-    timeout-minutes: 40   # 15 posters: ~2 min AI pacing + up to 15 photo searches
+    timeout-minutes: 20   # 4 posters per run: ~1 min AI pacing + up to 4 photo searches
     env:
       TEST_MODE: ${{ vars.POSTERS_TEST_MODE || 'true' }}
       POSTERS_STORE_URL: ${{ vars.POSTERS_STORE_URL }}
@@ -59,11 +59,12 @@ jobs:
       - name: Install
         run: pip install -r requirements.txt
 
-      - name: Already done today? (production only)
+      # The Worker starts a run every 2 hours. This only stops a manual start from doubling a run that just finished.
+      - name: Ran in the last 90 minutes? (production only)
         id: done
         run: |
-          if [ "$TEST_MODE" != "true" ] && python store.py ran-today "$TODAY"; then
-            echo "Today's posters are already stored; nothing to do."
+          if [ "$TEST_MODE" != "true" ] && python store.py ran-recently 90; then
+            echo "A batch was stored less than 90 minutes ago; nothing to do."
             echo "skip=true" >> "$GITHUB_OUTPUT"
           fi
 
@@ -82,36 +83,47 @@ jobs:
         if: steps.done.outputs.skip != 'true'
         run: python images.py check || true
 
-      - name: Install Chromium
-        if: steps.done.outputs.skip != 'true'
-        run: python -m playwright install --with-deps chromium
-
       - name: Fetch news
         if: steps.done.outputs.skip != 'true'
         run: python build.py fetch
 
-      - name: Choose stories and write text (free AI)
+      # Quiet hours: too few unseen headlines to make good posters. Stop here, before the slow steps (Chromium, photos,
+      # rendering). The headlines are not marked as seen, so the next run picks them up.
+      - name: Enough new headlines?
+        id: news
         if: steps.done.outputs.skip != 'true'
+        run: |
+          N=$(python -c "import json;print(len(json.load(open('work/headlines.json'))))")
+          MIN=$(python -c "import yaml;print(yaml.safe_load(open('config/sources.yaml'))['settings'].get('min_new_headlines', 6))")
+          echo "$N unseen headlines (need $MIN)"
+          if [ "$N" -ge "$MIN" ]; then echo "go=true" >> "$GITHUB_OUTPUT"; else echo "Quiet hour: nothing to publish this run."; fi
+
+      - name: Choose stories and write text (free AI)
+        if: steps.news.outputs.go == 'true'
         run: python ai_editor.py write
 
       - name: Find and choose photos
-        if: steps.done.outputs.skip != 'true'
+        if: steps.news.outputs.go == 'true'
         run: |
           python build.py photos
           python ai_editor.py photos
 
+      - name: Install Chromium
+        if: steps.news.outputs.go == 'true'
+        run: python -m playwright install --with-deps chromium
+
       - name: Render posters
-        if: steps.done.outputs.skip != 'true'
+        if: steps.news.outputs.go == 'true'
         run: python build.py render
 
       - name: Store posters for review (Cloudflare)
-        if: steps.done.outputs.skip != 'true'
+        if: steps.news.outputs.go == 'true'
         run: |
           python store.py upload "posters/$TODAY" "$BATCH"
           python store.py push-state "$TODAY"
 
       - name: Summary
-        if: always() && steps.done.outputs.skip != 'true'
+        if: always() && steps.news.outputs.go == 'true'
         run: |
           {
             echo "## Posters for $TODAY, batch $BATCH (stored for review in the dashboard)"

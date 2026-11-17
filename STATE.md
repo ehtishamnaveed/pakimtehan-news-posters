@@ -43,7 +43,8 @@ Last updated: 2026-11-13
 ## Open items
 - Replace the classic GitHub token (pasted in chat) with a fine-grained one: this repo only,
   Actions read/write. `cd cloudflare/worker && wrangler secret put GITHUB_TOKEN`, then revoke the old one.
-- Decide the Worker schedule: every 2 h for testing (`23 */2 * * *`) or daily production (`40 2 * * *`).
+- Schedule DECIDED (17 Nov): every 2 h (`7 */2 * * *`), set in wrangler.toml but NOT deployed. Production also needs GitHub variable POSTERS_TEST_MODE=false.
+  Per run: 4 posters, stops early under 6 unseen headlines; D1 keeps unreviewed posters 7 days.
 - Photo-library keys (PEXELS/UNSPLASH/PIXABAY) are not set as repo secrets.
 - `docs/Pak-Imtehan-Poster-Automation.pdf` is untracked (not committed).
 

@@ -146,13 +146,19 @@ Merge the `agent/2026-11-17-live-news` branch the way you normally do (pull requ
 - Bing Webmaster Tools → import your site from Search Console. Optional: set `NEWS_INDEXNOW_KEY` (Step 4).
 Indexing takes days to weeks; the sitemaps update by themselves after every approve, edit or take-down.
 
-## Step 10. Turn on the daily schedule (after the client meeting)
+## Step 10. Turn on the schedule: a run every 2 hours (after the client meeting)
 
-Edit `cloudflare/worker/wrangler.toml`: set `crons = ["40 2 * * *"]` (07:40 Pakistan time), then:
+The Worker schedule is already set to every 2 hours in `cloudflare/worker/wrangler.toml` (`crons = ["7 */2 * * *"]`, 12 runs a day,
+UTC). It only takes effect when you deploy:
+1. GitHub → repo → Settings → *Secrets and variables* → Actions → **Variables** → add `POSTERS_TEST_MODE` = `false`
+   (this turns on the "a batch was stored in the last 90 minutes" guard).
+2. Then:
 ```bash
 cd ~/Documents/GitHub/pakimtehan-news-posters/cloudflare/worker && wrangler deploy
 ```
-The change can take up to 15 minutes to take effect.
+The change can take up to 15 minutes to reach Cloudflare. Each run makes at most 4 posters (`posters_per_run`), and stops early
+when fewer than 6 unseen headlines exist (`min_new_headlines`), so quiet hours cost almost nothing. Posters nobody reviews are deleted
+from Cloudflare after 7 days. To pause: set `crons = []` and deploy again.
 
 ---
 

@@ -38,7 +38,7 @@ def cmd_fetch():
     (WORK / "headlines.json").write_text(json.dumps(items, ensure_ascii=False, indent=1))
     lines = [f"{i} | {it['source']} | {it['title']} | {it['summary'][:220]}" for i, it in enumerate(items)]
     (WORK / "headlines.txt").write_text(
-        f"TOPICS: {', '.join(cfg['topics'])}\nPOSTERS WANTED: {cfg['settings']['posters_per_day']}\n\n"
+        f"TOPICS: {', '.join(cfg['topics'])}\nPOSTERS WANTED: {cfg['settings'].get('posters_per_run', cfg['settings'].get('posters_per_day', 4))}\n\n"
         "id | source | headline | teaser\n" + "\n".join(lines) + "\n")
     print(f"{len(items)} new headlines -> work/headlines.txt")
 

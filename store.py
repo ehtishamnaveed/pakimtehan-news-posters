@@ -6,9 +6,11 @@ Env: POSTERS_STORE_URL (e.g. https://pakimtehan-posters.<sub>.workers.dev), POST
     python store.py pull-state                       # Worker -> state/seen.json (links already used)
     python store.py push-state <date>                # state/seen.json -> Worker, last_run = <date>
     python store.py ran-today <date>                 # exit 0 if a batch for <date> is already stored
+    python store.py ran-recently <minutes>           # exit 0 if a batch was stored in the last <minutes>
     python store.py upload <posters/DATE> <batch>    # store every poster of a rendered batch
 """
 import base64
+import calendar
 import json
 import os
 import sys
@@ -89,6 +91,7 @@ def cmd_push_state(date):
     seen = json.loads(SEEN.read_text()) if SEEN.exists() else []
     api("PUT", "/state/seen", {"value": seen})
     api("PUT", "/state/last_run", {"value": date})
+    api("PUT", "/state/last_run_at", {"value": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())})
     print(f"{len(seen)} seen link(s) saved; last_run = {date}")
 
 
@@ -96,6 +99,16 @@ def cmd_ran_today(date):
     last = api("GET", "/state/last_run")["value"]
     print(f"last stored batch: {last}")
     sys.exit(0 if last == date else 1)
+
+
+def cmd_ran_recently(minutes):
+    """Exit 0 when a batch was stored less than <minutes> ago (stops a manual start from doubling a scheduled run)."""
+    last = api("GET", "/state/last_run_at")["value"]
+    print(f"last stored batch at: {last}")
+    if not last:
+        sys.exit(1)
+    age = time.time() - calendar.timegm(time.strptime(last, "%Y-%m-%dT%H:%M:%SZ"))
+    sys.exit(0 if age < float(minutes) * 60 else 1)
 
 
 def cmd_upload(folder, batch):
@@ -118,4 +131,4 @@ def cmd_upload(folder, batch):
 if __name__ == "__main__":
     cmd, args = sys.argv[1], sys.argv[2:]
     {"pull-state": cmd_pull_state, "push-state": cmd_push_state, "ran-today": cmd_ran_today,
-     "upload": cmd_upload}[cmd](*args)
+     "upload": cmd_upload, "ran-recently": cmd_ran_recently}[cmd](*args)

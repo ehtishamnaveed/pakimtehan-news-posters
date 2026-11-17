@@ -15,13 +15,13 @@ database_name = "pakimtehan-posters"
 database_id = "5843fdc9-6667-4974-954a-05eb7611a228"
 
 [triggers]
-# Cron is in UTC. Now: 07:40 UTC = 12:40 Asia/Karachi, once a day (test).
-# Every 2 hours: "23 */2 * * *". Daily production: "40 2 * * *" (07:40 Asia/Karachi).
-# A new or changed cron takes up to 15 minutes to reach Cloudflare's network: set test times
-# at least 20 minutes ahead.
-# PAUSED 13 Nov 2026 until the client meeting: no automatic runs. To resume, set e.g.
-# crons = ["40 2 * * *"]  (07:40 Asia/Karachi) and run `wrangler deploy`.
-crons = []
+# Cron is in UTC. Every 2 hours, 24 hours a day, at minute 07: 00:07, 02:07, ... 22:07 UTC = 12 runs a day
+# (05:07, 07:07, ... 03:07 Pakistan time). Quiet hours cost almost nothing: the run stops early when there are
+# fewer than `min_new_headlines` unseen headlines (config/sources.yaml).
+# Daytime only (06:07-22:07 Pakistan, 9 runs): "7 1-17/2 * * *".  Once a day at 07:40 Pakistan: "40 2 * * *".
+# A new or changed cron takes up to 15 minutes to reach Cloudflare's network. Apply with `wrangler deploy`.
+# NOT DEPLOYED YET: the live Worker keeps its old (empty) schedule until you run `wrangler deploy`.
+crons = ["7 */2 * * *"]
 
 [observability]
 enabled = true

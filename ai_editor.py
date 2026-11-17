@@ -355,7 +355,7 @@ def cmd_write():
 
     # ~180 output tokens per poster, plus room for Gemini thinking / Nemotron reasoning tokens,
     # which count against the same limit. 15 posters -> 15000. Cloudflare's free tier is smaller.
-    need = max(1, -(-want * 4 // 5))  # accept 80% (12 of 15) rather than failing the whole run
+    need = max(1, want - max(1, want // 5))  # accept about 80% (12 of 15, 3 of 4) rather than failing the whole run
     best = []
 
     def save(posts, spec):

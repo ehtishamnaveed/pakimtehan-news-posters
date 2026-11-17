@@ -57,7 +57,7 @@ async function putFile(env, id, kind, b64) {
 
 // Safety net so D1 never fills up: posters nobody approved or rejected within RETAIN_DAYS are deleted
 // together with their files, and files whose poster no longer exists are removed.
-const RETAIN_DAYS = 14;
+const RETAIN_DAYS = 7;
 async function cleanup(env) {
   const cutoff = new Date(Date.now() - RETAIN_DAYS * 86400000).toISOString().slice(0, 10);
   const old = await env.DB.prepare("DELETE FROM files WHERE poster_id IN (SELECT id FROM posters WHERE date < ?)").bind(cutoff).run();
