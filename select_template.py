@@ -62,6 +62,8 @@ def score(entry, p, has_photo, in_batch, recent):
         s += {"required": 1.0, "optional": 0.5, "none": -1.5}[photo]
     elif photo == "none":
         s += 0.5
+    elif entry.get("photo_heavy"):
+        s -= 2.5   # a design built around a big photo looks thin without one
     lo, hi = entry.get("chars", [20, 120])
     n = len(p.get("headline", ""))
     s -= min(3.0, (lo - n) / 20 if n < lo else (n - hi) / 20 if n > hi else 0)

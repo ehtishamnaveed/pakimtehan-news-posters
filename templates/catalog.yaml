@@ -4,6 +4,7 @@
 # best fits and avoids what was used recently. NO YELLOW anywhere (client requirement).
 #
 #   photo:       required | optional | none   (how the design uses a photo)
+#   photo_heavy: true                         (optional photo, but the design looks thin without one: avoided then)
 #   needs:       [stat] and/or [quote]        (the story must have one, or the design is not offered)
 #   families:    editorial groups shown in the dashboard
 #   categories:  Live News category ids this design suits
@@ -55,14 +56,14 @@ templates:
   - {id: solemn-dusk, layout: solemn-serif, theme: dusk, label: "Solemn", family: security, photo: required, categories: [security-defence, geopolitics, international-affairs, pakistan-affairs], tones: [solemn, serious, hopeful], chars: [10, 42]}
 
   # ---- science and technology ------------------------------------------------------------------------------------
-  - {id: tech-royal,  layout: tech-highlight, theme: royal,  label: "Tech (blue)",   family: science-tech, photo: optional, categories: [science-technology, economy, education, geopolitics], tones: [analytical, explainer, hopeful, urgent], chars: [30, 95]}
-  - {id: tech-violet, layout: tech-highlight, theme: violet, label: "Tech (violet)", family: science-tech, photo: optional, categories: [science-technology, climate-environment, education, international-affairs], tones: [analytical, explainer, hopeful], chars: [30, 95]}
-  - {id: circle-teal, layout: dark-circle, theme: teal, label: "Explainer circle (teal)", family: science-tech, photo: optional, categories: [science-technology, climate-environment, economy, education], tones: [explainer, analytical, hopeful], chars: [25, 70]}
-  - {id: circle-ink,  layout: dark-circle, theme: ink,  label: "Explainer circle (night)", family: science-tech, photo: optional, categories: [science-technology, geopolitics, security-defence, politics-governance], tones: [analytical, serious, explainer], chars: [25, 70]}
+  - {id: tech-royal, photo_heavy: true,  layout: tech-highlight, theme: royal,  label: "Tech (blue)",   family: science-tech, photo: optional, categories: [science-technology, economy, education, geopolitics], tones: [analytical, explainer, hopeful, urgent], chars: [30, 95]}
+  - {id: tech-violet, photo_heavy: true, layout: tech-highlight, theme: violet, label: "Tech (violet)", family: science-tech, photo: optional, categories: [science-technology, climate-environment, education, international-affairs], tones: [analytical, explainer, hopeful], chars: [30, 95]}
+  - {id: circle-teal, photo_heavy: true, layout: dark-circle, theme: teal, label: "Explainer circle (teal)", family: science-tech, photo: optional, categories: [science-technology, climate-environment, economy, education], tones: [explainer, analytical, hopeful], chars: [25, 70]}
+  - {id: circle-ink, photo_heavy: true,  layout: dark-circle, theme: ink,  label: "Explainer circle (night)", family: science-tech, photo: optional, categories: [science-technology, geopolitics, security-defence, politics-governance], tones: [analytical, serious, explainer], chars: [25, 70]}
 
   # ---- climate and environment -----------------------------------------------------------------------------------
-  - {id: sage-grid, layout: sage-grid, theme: sage, label: "Notebook (sage)", family: climate, photo: optional, categories: [climate-environment, education, science-technology, pakistan-affairs], tones: [hopeful, explainer, analytical], chars: [20, 60]}
-  - {id: mist-grid, layout: sage-grid, theme: mist, label: "Notebook (mist)", family: climate, photo: optional, categories: [climate-environment, economy, science-technology, international-affairs], tones: [explainer, analytical, serious], chars: [20, 60]}
+  - {id: sage-grid, photo_heavy: true, layout: sage-grid, theme: sage, label: "Notebook (sage)", family: climate, photo: optional, categories: [climate-environment, education, science-technology, pakistan-affairs], tones: [hopeful, explainer, analytical], chars: [20, 60]}
+  - {id: mist-grid, photo_heavy: true, layout: sage-grid, theme: mist, label: "Notebook (mist)", family: climate, photo: optional, categories: [climate-environment, economy, science-technology, international-affairs], tones: [explainer, analytical, serious], chars: [20, 60]}
 
   # ---- society and human interest --------------------------------------------------------------------------------
   - {id: stat-coral,  layout: stat-column, theme: coral, label: "Photo and facts", family: society, photo: required, categories: [pakistan-affairs, education, climate-environment, economy, security-defence], tones: [data, serious, hopeful, solemn], chars: [25, 70]}

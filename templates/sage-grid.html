@@ -22,7 +22,7 @@ h1 mark { font-style: italic; font-weight: 600; background: linear-gradient(#fff
   <h1 data-field="headline" data-fit="box" data-min="52">{{ p.headline_html }}</h1>
   <div>{% for s in p.syllabus[:2] %}<span class="bub">{{ s }}</span>{% endfor %}</div>
   <p class="sum" data-field="summary" data-fit="box" data-min="19">{{ p.summary }}</p>
-  {% if p.image %}<div class="strip" data-field="photo"><img class="cover" src="{{ p.image }}"></div>{% else %}<div class="nostrip" data-field="why">{{ p.why or '' }}</div>{% endif %}
+  {% if p.image %}<div class="strip" data-field="photo"><img class="cover" src="{{ p.image }}"></div>{% elif p.why or p.key_points %}<div class="nostrip" data-field="why">{{ p.why or p.key_points[0] }}</div>{% else %}<div class="nostrip"><span style="font: 900 130px/1 var(--serif-f); letter-spacing:-.04em;">{{ (p.kicker or 'News').split('·')[0]|trim }}</span></div>{% endif %}
   <div class="foot"><span data-field="source">{{ p.source }}</span><span data-field="date">{{ p.date }}</span></div>
 </div>
 {% endblock %}

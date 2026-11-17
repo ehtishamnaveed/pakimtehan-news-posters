@@ -37,10 +37,19 @@ def sample_for(entry, n):
 
 
 def main(ids):
-    out = ROOT / "out" / "library"
+    nophoto = "--nophoto" in ids
+    ids = [i for i in ids if not i.startswith("--")]
+    out = ROOT / "out" / ("library-nophoto" if nophoto else "library")
     out.mkdir(parents=True, exist_ok=True)
-    entries = [BY_ID[i] for i in ids] if ids else CATALOG
+    entries = [BY_ID[i] for i in ids] if ids else [t for t in CATALOG if not nophoto or t.get("photo") != "required"]
     posts = [sample_for(e, n) for n, e in enumerate(entries)]
+    if nophoto:  # the sparsest story: no photo, no "why", no key points, no figure
+        for p in posts:
+            p["image"] = None
+            for k in ("why", "key_points", "stat", "credit"):
+                p.pop(k, None)
+            if "stat" in BY_ID[p["template"]].get("needs", []):
+                p["stat"] = {"value": "22GW", "label": "rooftop solar added in two years"}
     results = render(posts, out, ROOT / "samples")
     W, H = 432, 540
     for si in range(0, len(results), 6):
