@@ -1,0 +1,34 @@
+{% extends "_layout.html" %}
+{# One striking number as the hero. Themes: blue, ink, paper. Needs p.stat {value, label}. #}
+{% block style %}
+body { background: #2339ff; }
+.poster { background: #2339ff; color: #fff; padding: 56px 64px 0; }
+[data-theme="ink"] .poster, body[data-theme="ink"] { background: #0b1020; }
+[data-theme="paper"] .poster, body[data-theme="paper"] { background: #efe8dc; color: #111418; }
+.top { display: flex; justify-content: space-between; align-items: center; font: 700 20px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; }
+.top .logo { height: 50px; }
+.kick { margin-top: 40px; display: inline-block; padding: 12px 18px; border: 2px solid currentColor; font: 700 21px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; }
+.num { margin-top: 26px; font: 400 {{ 400 if p.stat.value|length <= 4 else 320 if p.stat.value|length <= 6 else 230 if p.stat.value|length <= 9 else 160 }}px/.92 var(--display); letter-spacing: -.01em; white-space: nowrap; }
+[data-theme="paper"] .num { color: #2339ff; }
+.lab { margin-top: 18px; max-width: 860px; font: 600 34px/1.3 var(--grot); opacity: .95; text-transform: uppercase; letter-spacing: .02em; }
+.card { position: absolute; left: 64px; right: 64px; bottom: 112px; padding: 34px 38px; background: #fff; color: #111418; }
+[data-theme="paper"] .card { background: #111418; color: #fff; }
+.card h1 { font: 600 52px/1.12 var(--serif-f); letter-spacing: -.01em; height: 235px; }
+.card h1 mark { color: #2339ff; font-style: italic; }
+[data-theme="paper"] .card h1 mark { color: #93b4ff; }
+.card p { margin-top: 18px; font: 400 25px/1.45 var(--grot); opacity: .85; height: 110px; }
+.foot { position: absolute; left: 64px; right: 64px; bottom: 36px; display: flex; justify-content: space-between; font: 700 19px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+{% endblock %}
+{% block body %}
+<div class="poster grain-light">
+  <div class="top"><img class="logo" src="{{ root }}/assets/logo-{{ 'navy' if theme == 'paper' else 'white' }}.png"><span data-field="date">{{ p.date }}</span></div>
+  <span class="kick" data-field="kicker">{{ p.kicker }}</span>
+  <div class="num">{{ p.stat.value }}</div>
+  <div class="lab">{{ p.stat.label }}</div>
+  <div class="card" data-field="headline">
+    <h1 data-fit="box" data-min="34">{{ p.headline_html }}</h1>
+    <p data-field="summary" data-fit="box" data-min="19">{{ p.summary }}</p>
+  </div>
+  <div class="foot"><span data-field="source">{{ p.source }}</span><span>pakimtehan.com</span></div>
+</div>
+{% endblock %}

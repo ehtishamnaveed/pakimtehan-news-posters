@@ -30,6 +30,13 @@ Last updated: 2026-11-13
 - Website branch `agent/2026-11-17-live-news`: `src/lib/liveNews.js` now calls the API (sample = VITE_LIVE_NEWS_SAMPLE=true).
 - SEO: `pi_user_server/src/services/newsSeo.service.js` writes static story/day/front pages + sitemaps into the website web root
   (`NEWS_SEO_WEBROOT`) on every approve/edit/take-down; website serves them via `_pages/` rules. Stories open as full pages (popup removed).
+- POSTER LIBRARY (17 Nov, client brief: many designs, chosen by the news, not random): `templates/catalog.yaml` lists 34 designs
+  (layout + colour theme, grouped in families: breaking, politics, economy, world, security, science-tech, climate, education,
+  society, general). The AI tags each story `tone`, `stat_value/stat_label` (a figure) and `quote/speaker` (both verified against the
+  source text); `select_template.py` scores every design (category, tone, photo, figure, quote, headline length, recent use) and
+  picks among the best fits. Designs used recently are remembered in the Worker state `recent_templates`; the catalog is published to
+  state `catalog` for the dashboard editor ("Best fit (automatic)" or any design). NO YELLOW (test enforces it).
+  Review every design: `python render_library.py` (contact sheets in out/library/). Tests: `python -m unittest discover -s tests`.
 - LOCAL: Worker `wrangler dev --local --port 8787 --compatibility-date 2026-09-28` (secrets in .dev.vars),
   `.venv-local/bin/python seed_local.py` seeds posters, `python edit.py` (env from ~/.config/pakimtehan-posters/local.env)
   stands in for the GitHub edit Action. Server .env has local Worker URL; website/dashboard `.env.local` point at :4000.

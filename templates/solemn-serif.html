@@ -1,0 +1,25 @@
+{% extends "_layout.html" %}
+{# Solemn / remembrance: full photo, tall serif capitals, quiet summary. Theme: dusk. Needs a photo. #}
+{% block style %}
+body { background: #10141c; }
+.poster { background: #10141c; color: #fff; }
+.pic { position: absolute; inset: 0; }
+.pic::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,14,22,.62), rgba(10,14,22,.15) 38%, rgba(10,14,22,.2) 58%, rgba(10,14,22,.92) 100%); }
+.top { position: absolute; left: 64px; right: 64px; top: 52px; z-index: 3; display: flex; justify-content: space-between; align-items: center; font: 700 18px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; }
+.top .logo { height: 46px; }
+h1 { position: absolute; left: 64px; right: 64px; top: 170px; z-index: 3; height: 560px; text-align: center; font: 400 128px/.96 var(--serif-i); text-transform: uppercase; letter-spacing: -.01em; text-shadow: 0 4px 30px rgba(0,0,0,.35); }
+h1 mark { opacity: .8; font-style: italic; }
+.sum { position: absolute; left: 150px; right: 150px; bottom: 170px; z-index: 3; text-align: center; font: 500 29px/1.5 var(--grot); height: 130px; }
+.date { position: absolute; left: 0; right: 0; bottom: 120px; z-index: 3; text-align: center; font: 700 21px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; opacity: .85; }
+.foot { position: absolute; left: 64px; right: 64px; bottom: 38px; z-index: 3; display: flex; justify-content: space-between; font: 700 17px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; opacity: .75; }
+{% endblock %}
+{% block body %}
+<div class="poster">
+  <div class="pic" data-field="photo"><img class="cover" src="{{ p.image }}"></div>
+  <div class="top"><img class="logo" src="{{ root }}/assets/logo-white.png"><span data-field="kicker">{{ p.kicker }}</span></div>
+  <h1 data-field="headline" data-fit="box" data-min="56">{{ p.headline_html }}</h1>
+  <p class="sum" data-field="summary" data-fit="box" data-min="19">{{ p.summary }}</p>
+  <div class="date" data-field="date">{{ p.date }}</div>
+  <div class="foot"><span data-field="source">{{ p.source }}</span><span>pakimtehan.com</span></div>
+</div>
+{% endblock %}

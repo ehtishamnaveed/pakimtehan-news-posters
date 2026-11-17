@@ -21,6 +21,7 @@ import requests
 
 ROOT = Path(__file__).resolve().parent
 SEEN = ROOT / "state" / "seen.json"
+RECENT = ROOT / "state" / "recent_templates.json"
 
 
 def _base():
@@ -85,11 +86,18 @@ def cmd_pull_state():
     SEEN.parent.mkdir(exist_ok=True)
     SEEN.write_text(json.dumps(seen, indent=0))
     print(f"{len(seen)} seen link(s) -> {SEEN.relative_to(ROOT)}")
+    recent = api("GET", "/state/recent_templates")["value"] or []
+    RECENT.write_text(json.dumps(recent))
+    print(f"{len(recent)} recently used design(s) -> {RECENT.relative_to(ROOT)}")
 
 
 def cmd_push_state(date):
     seen = json.loads(SEEN.read_text()) if SEEN.exists() else []
     api("PUT", "/state/seen", {"value": seen})
+    if RECENT.exists():
+        api("PUT", "/state/recent_templates", {"value": json.loads(RECENT.read_text())})
+    from select_template import CATALOG  # the design list the dashboard's editor shows (one source of truth: catalog.yaml)
+    api("PUT", "/state/catalog", {"value": [{k: t.get(k) for k in ("id", "label", "family", "photo", "needs")} for t in CATALOG]})
     api("PUT", "/state/last_run", {"value": date})
     api("PUT", "/state/last_run_at", {"value": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())})
     print(f"{len(seen)} seen link(s) saved; last_run = {date}")

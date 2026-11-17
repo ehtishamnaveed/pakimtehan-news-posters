@@ -42,9 +42,16 @@ def clean_text(v, n):
 
 def normalize_story(p, sources=None):
     """Fill/repair the story fields on poster dict `p` in place; returns p."""
+    from select_template import TONES, default_tone  # local import: select_template reads the catalog
     cat = str(p.get("category") or "").strip()
     p["category"] = cat if cat in CATEGORIES else guess_category(p.get("syllabus"))
     p["breaking"] = p.get("breaking") is True
+    # Poster extras the design selector uses: a headline figure and a quotation (already checked against the source text).
+    sv, sl = clean_text(p.pop("stat_value", "") or (p.get("stat") or {}).get("value", ""), 8), clean_text(p.pop("stat_label", "") or (p.get("stat") or {}).get("label", ""), 50)
+    p["stat"] = {"value": sv, "label": sl} if sv else None
+    p["quote"] = clean_text(p.get("quote"), 130)
+    p["speaker"] = clean_text(p.get("speaker"), 60) if p["quote"] else ""
+    p["tone"] = p.get("tone") if p.get("tone") in TONES else default_tone(p)
     pts = p.get("key_points") if isinstance(p.get("key_points"), list) else []
     p["key_points"] = [clean_text(x, 140) for x in pts if clean_text(x, 140)][:4]
     body = clean_text(p.get("body"), 3000)

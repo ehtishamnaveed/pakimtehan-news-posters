@@ -8,7 +8,7 @@ Usage:
     python render.py samples/today.json --html   # also keep the filled HTML (for debugging)
 
 Each poster object:
-    template   one of TEMPLATES (or "random")
+    template   a design id from templates/catalog.yaml (or "auto": the best fit for the story)
     kicker     short tag, e.g. "Climate · COP31"
     headline   the headline; `highlight` (optional) is a phrase inside it to colour
     summary    2-3 sentence summary in our own words
@@ -31,10 +31,12 @@ from PIL import Image
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parent
-TEMPLATES = ["breaking-photo", "navy-card", "editorial", "newspaper", "typographic", "impact", "brief-light"]
+from select_template import BY_ID, CATALOG, choose  # noqa: E402
+
+TEMPLATES = [t["id"] for t in CATALOG]
 JPEG_OPTS = dict(quality=90, subsampling=0, optimize=True, progressive=True)
-NEEDS_PHOTO = {"breaking-photo", "navy-card", "brief-light"}
-NO_PHOTO_ONLY = {"typographic", "impact"}  # full-text designs; with a photo we use the photo templates
+NEEDS_PHOTO = {t["id"] for t in CATALOG if t.get("photo") == "required"}
+NO_PHOTO_ONLY = {t["id"] for t in CATALOG if t.get("photo") == "none"}  # text-only designs; with a photo we prefer photo designs
 
 env = Environment(loader=FileSystemLoader(ROOT / "templates"), autoescape=select_autoescape(["html"]))
 
@@ -48,12 +50,13 @@ def headline_html(p):
 
 
 def pick_template(p, rng=random):
-    t = p.get("template", "random")
-    if t == "random" or t not in TEMPLATES:
-        pool = TEMPLATES if p.get("image") else [x for x in TEMPLATES if x not in NEEDS_PHOTO]
-        t = rng.choice(pool)
-    if t in NEEDS_PHOTO and not p.get("image"):
-        t = "typographic"
+    """The design to use: the one named in the poster, else the best fit for the story (never random)."""
+    t = p.get("template", "auto")
+    has_photo = bool(p.get("image"))
+    if t not in BY_ID:
+        return choose(p, has_photo, rng=rng)
+    if t in NEEDS_PHOTO and not has_photo:
+        return choose(p, False, rng=rng)
     return t
 
 
@@ -90,7 +93,8 @@ def render(posters, out_dir: Path, base: Path, keep_html=False):
             t = pick_template(p)
             data = dict(p, headline_html=headline_html(p), image=to_uri(p.get("image"), base),
                         syllabus=p.get("syllabus") or [], edition=p.get("edition", ""))
-            html = env.get_template(f"{t}.html").render(p=data, root=ROOT.as_uri())
+            entry = BY_ID[t]
+            html = env.get_template(f"{entry['layout']}.html").render(p=data, root=ROOT.as_uri(), theme=entry.get("theme"))
             html_path = out_dir / f"{i:02d}-{t}.html"
             html_path.write_text(html, encoding="utf-8")
             page.goto(html_path.as_uri(), wait_until="networkidle")

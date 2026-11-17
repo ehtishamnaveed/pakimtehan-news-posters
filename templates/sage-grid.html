@@ -1,0 +1,28 @@
+{% extends "_layout.html" %}
+{# Calm "notebook" poster: grid paper, big soft serif, speech-bubble tags, photo strip. Themes: sage, mist. Photo optional. #}
+{% block style %}
+body { background: #cfe3c3; }
+.poster { background: #cfe3c3; color: #17251a; padding: 52px 60px 0;
+  background-image: linear-gradient(rgba(23,37,26,.09) 1px, transparent 1px), linear-gradient(90deg, rgba(23,37,26,.09) 1px, transparent 1px); background-size: 54px 54px; }
+[data-theme="mist"] .poster, body[data-theme="mist"] { background-color: #d5e3ee; color: #101e2b; }
+.top { display: flex; justify-content: space-between; align-items: center; font: 700 18px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; }
+.top .logo { height: 46px; }
+h1 { margin-top: 40px; font: 900 108px/.98 var(--serif-f); letter-spacing: -.045em; height: 470px; }
+h1 mark { font-style: italic; font-weight: 600; background: linear-gradient(#fff, #fff) 0 70% / 100% 55% no-repeat; padding: 0 .08em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.bub { display: inline-block; margin: 14px 12px 0 0; padding: 9px 16px; background: #fff; border: 2px solid #17251a; border-radius: 12px; font: 700 18px/1 var(--mono); letter-spacing: .06em; }
+.sum { margin-top: 26px; width: 880px; font: 400 27px/1.5 var(--grot); height: 130px; }
+.strip { position: absolute; left: 0; right: 0; bottom: 96px; height: 360px; border-radius: 26px 26px 0 0; overflow: hidden; margin: 0 60px; border: 3px solid #17251a; }
+.strip .cover { object-position: center 40%; }
+.nostrip { position: absolute; left: 60px; right: 60px; bottom: 96px; height: 300px; border: 3px solid #17251a; background: #fff; padding: 34px; font: 700 30px/1.3 var(--mono); text-transform: uppercase; }
+.foot { position: absolute; left: 60px; right: 60px; bottom: 34px; display: flex; justify-content: space-between; font: 700 18px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+{% endblock %}
+{% block body %}
+<div class="poster">
+  <div class="top"><img class="logo" src="{{ root }}/assets/logo-navy.png"><span data-field="kicker">{{ p.kicker }}</span></div>
+  <h1 data-field="headline" data-fit="box" data-min="52">{{ p.headline_html }}</h1>
+  <div>{% for s in p.syllabus[:2] %}<span class="bub">{{ s }}</span>{% endfor %}</div>
+  <p class="sum" data-field="summary" data-fit="box" data-min="19">{{ p.summary }}</p>
+  {% if p.image %}<div class="strip" data-field="photo"><img class="cover" src="{{ p.image }}"></div>{% else %}<div class="nostrip" data-field="why">{{ p.why or '' }}</div>{% endif %}
+  <div class="foot"><span data-field="source">{{ p.source }}</span><span data-field="date">{{ p.date }}</span></div>
+</div>
+{% endblock %}

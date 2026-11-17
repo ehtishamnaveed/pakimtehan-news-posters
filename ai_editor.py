@@ -80,6 +80,16 @@ Return ONLY a JSON array with exactly {n} objects, each with these keys:
   "key_points":  2-3 short facts (max 110 characters each), taken only from the headline/teaser text
   "body":        max 450 characters of Markdown for the story page: 1-2 short paragraphs using only facts
                  from the text, then a line "## Why it matters for CSS and PMS" and one sentence. No links.
+  "tone":        how the story should FEEL, one of: urgent (breaking or fast-moving), serious (hard news), analytical
+                 (policy, economy, explanation), hopeful (progress, good news), solemn (loss, remembrance, tragedy),
+                 explainer (teaches a concept), data (the story is driven by a number), statement (a named person
+                 says something important)
+  "stat_value":  the ONE most striking figure in the text, copied exactly as written (e.g. "22GW", "$500", "48%",
+                 "1.1m"), max 8 characters; "" if the text has no such figure
+  "stat_label":  max 50 characters saying what that figure measures; "" if no figure
+  "quote":       a sentence a named person actually said, copied word for word from the text, max 130 characters;
+                 "" unless the text contains such a direct quotation
+  "speaker":     who said it, name and role as in the text, max 60 characters; "" if no quote
   "image_query": 1-2 words naming a concrete, commonly photographed object or place
                  (e.g. "oil tanker", "Islamabad", "solar panels"); never a person's name or an event
 
@@ -105,6 +115,8 @@ SCHEMA = {
             "syllabus": {"type": "array", "items": {"type": "string"}},
             "source": {"type": "string"}, "image_query": {"type": "string"},
             "category": {"type": "string"}, "breaking": {"type": "boolean"},
+            "tone": {"type": "string"}, "stat_value": {"type": "string"}, "stat_label": {"type": "string"},
+            "quote": {"type": "string"}, "speaker": {"type": "string"},
             "key_points": {"type": "array", "items": {"type": "string"}}, "body": {"type": "string"},
         },
         "required": ["story_ids", "kicker", "headline", "highlight", "summary", "why", "syllabus", "source", "image_query"],
@@ -315,12 +327,30 @@ def validate(posts, n_items, topics, want):
             "syllabus": syllabus,
             "source": str(p.get("source", "")).strip()[:120],
             "image_query": str(p.get("image_query", "")).strip()[:40],
-            **{k: p.get(k) for k in ("category", "breaking", "key_points", "body")},
+            **{k: p.get(k) for k in ("category", "breaking", "key_points", "body", "tone", "stat_value", "stat_label",
+                                       "quote", "speaker")},
         })
         used_ids |= set(ids)
         if len(good) >= want:
             break
     return good
+
+
+def _norm(t):
+    return re.sub(r"[^a-z0-9%$.]+", "", str(t).lower())
+
+
+def verify_extras(p, source_text):
+    """Keep a headline figure or a quotation ONLY if it really appears in the source text (no invented numbers or quotes)."""
+    hay = _norm(f"{source_text} {p.get('headline', '')} {p.get('summary', '')}")
+    sv = str(p.get("stat_value") or "").strip()
+    if not sv or len(sv) > 8 or _norm(sv) not in hay:
+        p["stat_value"] = p["stat_label"] = ""
+    q = str(p.get("quote") or "").strip().strip("\"'“”‘’ ")
+    if not q or len(q) > 130 or _norm(q) not in _norm(source_text):
+        p["quote"] = p["speaker"] = ""
+    else:
+        p["quote"] = q
 
 
 # ---------------------------------------------------------------------------
@@ -363,6 +393,7 @@ def cmd_write():
             if not p["source"]:
                 p["source"] = ", ".join(dict.fromkeys(heads[i]["source"] for i in p["story_ids"]))
             p["_editor"] = spec
+            verify_extras(p, " ".join(f"{heads[i].get('title', '')} {heads[i].get('summary', '')}" for i in p["story_ids"]))
         (WORK / "posts.json").write_text(json.dumps(posts, ensure_ascii=False, indent=1))
         print(f"  {len(posts)} poster(s) written by {spec}")
 

@@ -16,13 +16,15 @@ from PIL import Image, ImageDraw
 
 from fetch_news import fetch_all
 from images import candidates
-from render import NEEDS_PHOTO, NO_PHOTO_ONLY, render
+from render import render
+from select_template import RECENT_KEEP, choose
 from story import normalize_story
 
 ROOT = Path(__file__).resolve().parent
 WORK = ROOT / "work"
 POSTS = WORK / "posts.json"
 SEEN = ROOT / "state" / "seen.json"
+RECENT = ROOT / "state" / "recent_templates.json"
 PKT = dt.timezone(dt.timedelta(hours=5))
 
 
@@ -86,19 +88,14 @@ def validate(p, topics):
             print(f"  warning: {k} is {len(p[k])} chars (max {n}) — may be shrunk to fit")
 
 
-def assign_templates(posts, templates, rng):
-    """Random template per poster, no repeats in a day; photo templates only when there is a photo."""
-    def fits(t, p):  # with a photo: any template that shows one; without: only photo-less ones
-        return t not in NO_PHOTO_ONLY if p.get("image") else t not in NEEDS_PHOTO
-
-    pool = []
+def assign_templates(posts, rng, recent=()):
+    """Pick each poster's design from what the story is (category, tone, photo, figure, quote), never at random.
+    Within a batch no design repeats; across batches recently used designs are avoided (see select_template.py)."""
+    used = []
     for p in posts:
-        if not any(fits(t, p) for t in pool):  # refill when nothing left suits this poster
-            pool = templates[:]                # (before: the pool got stuck on "typographic" and
-            rng.shuffle(pool)                  #  every later photo poster became breaking-photo)
-        p["template"] = next((t for t in pool if fits(t, p)), "typographic")
-        if p["template"] in pool:
-            pool.remove(p["template"])
+        p["template"] = choose(p, bool(p.get("image")), in_batch=used, recent=recent, rng=rng)
+        used.append(p["template"])
+    return used
 
 
 def cmd_render():
@@ -123,7 +120,10 @@ def cmd_render():
         p["date"] = now.strftime("%-d %b %Y")
         p["edition"] = "Daily Current Affairs"
 
-    assign_templates(posts, cfg["settings"]["templates"], random.Random())
+    recent = json.loads(RECENT.read_text()) if RECENT.exists() else []
+    used = assign_templates(posts, random.Random(), recent)
+    RECENT.parent.mkdir(exist_ok=True)
+    RECENT.write_text(json.dumps((recent + used)[-RECENT_KEEP:]))
     for r, p in zip(render(posts, out, out), posts):
         p["file"] = Path(r["file"]).name
         p["regions"] = r.get("regions", {})

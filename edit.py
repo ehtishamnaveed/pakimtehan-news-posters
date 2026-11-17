@@ -18,6 +18,7 @@ from yaml import safe_load
 import store
 from build import ROOT, save_photo, validate
 from render import NEEDS_PHOTO, NO_PHOTO_ONLY, TEMPLATES, render
+from select_template import choose
 from story import normalize_story
 
 TEXT_FIELDS = {"kicker": 60, "headline": 140, "highlight": 80, "summary": 400, "why": 250,
@@ -35,7 +36,7 @@ def apply_changes(data, changes):
             if k in changes:
                 data[k] = changes[k]
         normalize_story(data)
-    if changes.get("template") in TEMPLATES:
+    if changes.get("template") in TEMPLATES or changes.get("template") == "auto":
         data["template"] = changes["template"]
     if not data.get("headline"):
         raise ValueError("the headline cannot be empty")
@@ -61,10 +62,12 @@ def process(poster, topics, tmp: Path):
     else:  # remove
         data["credit"], data["image_source"] = "", ""
 
+    if data.get("template") == "auto":
+        data["template"] = choose(data, bool(photo))   # the admin asked for the best fit
     if not photo and data.get("template") in NEEDS_PHOTO:
-        data["template"] = "typographic"  # the photo templates need a photo
+        data["template"] = choose(data, False)  # the design needs a photo: take the best fit without one
     if photo and data.get("template") in NO_PHOTO_ONLY and "template" not in (edit.get("changes") or {}):
-        data["template"] = "editorial"     # a new photo should be visible unless the admin chose otherwise
+        data["template"] = choose(data, True)   # a new photo should be visible unless the admin chose otherwise
 
     validate(data, topics)                 # same checks as the daily run (highlight must be in headline, ...)
     data["image"] = str(photo) if photo else None

@@ -1,0 +1,29 @@
+{% extends "_layout.html" %}
+{# Saturated field, grotesk headline with highlight chips, rounded photo block. Themes: royal, violet. Photo optional. #}
+{% block style %}
+body { background: #2339ff; }
+.poster { background: #2339ff; color: #fff; padding: 56px 60px 0; }
+[data-theme="violet"] .poster, body[data-theme="violet"] { background: #5b21d6; }
+.top { display: flex; justify-content: space-between; align-items: center; }
+.top .logo { height: 50px; }
+.pill { padding: 12px 20px; border: 2px solid #fff; border-radius: 999px; font: 700 19px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; }
+h1 { margin-top: 44px; font: 700 {{ 84 if p.headline|length < 70 else 70 }}px/1.18 var(--grot); letter-spacing: -.035em; height: 430px; }
+h1 mark { background: #fff; color: #10153a; padding: 0 .12em; border-radius: 6px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.sum { margin-top: 12px; font: 500 28px/1.45 var(--grot); max-width: 800px; height: 130px; opacity: .95; }
+.photo { position: absolute; left: 60px; right: 60px; bottom: 112px; height: 470px; border-radius: 40px; overflow: hidden; --duo: #5a74ff; }
+[data-theme="violet"] .photo { --duo: #9a6bff; }
+.photo .cover { filter: grayscale(1) contrast(1.05) brightness(1.3); mix-blend-mode: multiply; }
+.nophoto { position: absolute; left: 60px; right: 60px; bottom: 112px; height: 470px; border-radius: 40px; background: rgba(255,255,255,.1); border: 2px solid rgba(255,255,255,.35); padding: 40px; font: 600 40px/1.3 var(--grot); display: flex; align-items: center; }
+.go { position: absolute; right: 90px; bottom: 140px; z-index: 4; width: 84px; height: 84px; border-radius: 50%; background: #fff; color: #10153a; display: flex; align-items: center; justify-content: center; font-size: 36px; }
+.foot { position: absolute; left: 60px; right: 60px; bottom: 36px; display: flex; justify-content: space-between; font: 700 18px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+{% endblock %}
+{% block body %}
+<div class="poster grain-light">
+  <div class="top"><img class="logo" src="{{ root }}/assets/logo-white.png"><span class="pill" data-field="kicker">{{ p.kicker }}</span></div>
+  <h1 data-field="headline" data-fit="box" data-min="44">{{ p.headline_html }}</h1>
+  <p class="sum" data-field="summary" data-fit="box" data-min="19">{{ p.summary }}</p>
+  {% if p.image %}<div class="photo duo" data-field="photo"><img class="cover" src="{{ p.image }}"></div>{% elif p.why or p.key_points %}<div class="nophoto" data-field="why">{{ p.why or p.key_points[0] }}</div>{% endif %}
+  <div class="go"><span class="arrow"></span></div>
+  <div class="foot"><span data-field="source">{{ p.source }}</span><span data-field="date">{{ p.date }}</span></div>
+</div>
+{% endblock %}
