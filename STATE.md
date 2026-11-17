@@ -1,6 +1,6 @@
 # Where we are (keep under ~80 lines; replace stale lines, don't append history)
 
-Last updated: 2026-11-17
+Last updated: 2026-11-17 (evening)
 
 ## How posters are made now
 - GitHub Action `.github/workflows/free-ai-posters.yml` runs the pipeline with free AI
@@ -71,6 +71,7 @@ Last updated: 2026-11-17
 ## Open items
 - Replace any classic GitHub token with a fine-grained one: this repo only,
   Actions read/write. `cd cloudflare/worker && wrangler secret put GITHUB_TOKEN`, then revoke the old one.
+- PAUSED again 17 evening: Worker redeployed with `crons = []` (testing done). Tomorrow: set `crons = ["7 * * * *"]`, `wrangler deploy`, add secrets ZAI_API_KEY + GROQ_API_KEY, rotate the keys pasted in chat.
 - Schedule DECIDED (17 Nov): every HOUR (`7 * * * *`), set in wrangler.toml but NOT deployed. Production also needs GitHub variable POSTERS_TEST_MODE=false.
   Per run: up to 15 posters (about one per 3 unseen headlines), stops early under 9 unseen headlines; D1 keeps unreviewed posters 7 days. Repo is public (free Actions minutes).
 - Photo-library keys (PEXELS/UNSPLASH/PIXABAY) are not set as repo secrets.
