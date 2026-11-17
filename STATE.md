@@ -9,7 +9,7 @@ Last updated: 2026-11-13
 - Output: stored in the Cloudflare Worker `pakimtehan-posters` (D1 database `pakimtehan-posters`)
   with all values + the photo, id `<date>_<HHMM batch>-<nn>`. GitHub no longer stores posters.
 
-## Worker (`cloudflare/worker/`, https://pakimtehan-posters.ehtisham-bsit597.workers.dev)
+## Worker (`cloudflare/worker/`, https://pakimtehan-posters.<subdomain>.workers.dev)
 - **PAUSED (13 Nov): Worker cron removed (`crons = []`) until the client meeting.** Crons take
   up to 15 min to propagate: set test times 20+ min ahead. GitHub's own cron was removed (never fired).
 - Storage API (Bearer STORE_TOKEN): list/get/file/edit/render/delete posters, state (seen links, last_run).
@@ -41,10 +41,10 @@ Last updated: 2026-11-13
   Tag `archive/daily-posters` keeps the 12 Nov routine output.
 
 ## Open items
-- Replace the classic GitHub token (pasted in chat) with a fine-grained one: this repo only,
+- Replace any classic GitHub token with a fine-grained one: this repo only,
   Actions read/write. `cd cloudflare/worker && wrangler secret put GITHUB_TOKEN`, then revoke the old one.
-- Schedule DECIDED (17 Nov): every 2 h (`7 */2 * * *`), set in wrangler.toml but NOT deployed. Production also needs GitHub variable POSTERS_TEST_MODE=false.
-  Per run: 4 posters, stops early under 6 unseen headlines; D1 keeps unreviewed posters 7 days.
+- Schedule DECIDED (17 Nov): every HOUR (`7 * * * *`), set in wrangler.toml but NOT deployed. Production also needs GitHub variable POSTERS_TEST_MODE=false.
+  Per run: 3 posters, stops early under 6 unseen headlines; D1 keeps unreviewed posters 7 days. Repo is public (free Actions minutes).
 - Photo-library keys (PEXELS/UNSPLASH/PIXABAY) are not set as repo secrets.
 - `docs/Pak-Imtehan-Poster-Automation.pdf` is untracked (not committed).
 

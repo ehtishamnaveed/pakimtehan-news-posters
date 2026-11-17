@@ -6,3 +6,5 @@ preview/
 site/
 graphify-out/
 .venv-local/
+.claude/
+docs/

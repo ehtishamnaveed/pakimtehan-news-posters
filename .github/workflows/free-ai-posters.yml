@@ -30,7 +30,7 @@ concurrency:
 jobs:
   posters:
     runs-on: ubuntu-latest
-    timeout-minutes: 20   # 4 posters per run: ~1 min AI pacing + up to 4 photo searches
+    timeout-minutes: 20   # 3 posters per run: ~1 min AI pacing + up to 3 photo searches
     env:
       TEST_MODE: ${{ vars.POSTERS_TEST_MODE || 'true' }}
       POSTERS_STORE_URL: ${{ vars.POSTERS_STORE_URL }}
@@ -59,12 +59,12 @@ jobs:
       - name: Install
         run: pip install -r requirements.txt
 
-      # The Worker starts a run every 2 hours. This only stops a manual start from doubling a run that just finished.
-      - name: Ran in the last 90 minutes? (production only)
+      # The Worker starts a run every hour. This only stops a manual start from doubling a run that just finished.
+      - name: Ran in the last 45 minutes? (production only)
         id: done
         run: |
-          if [ "$TEST_MODE" != "true" ] && python store.py ran-recently 90; then
-            echo "A batch was stored less than 90 minutes ago; nothing to do."
+          if [ "$TEST_MODE" != "true" ] && python store.py ran-recently 45; then
+            echo "A batch was stored less than 45 minutes ago; nothing to do."
             echo "skip=true" >> "$GITHUB_OUTPUT"
           fi
 

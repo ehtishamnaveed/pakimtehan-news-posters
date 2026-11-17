@@ -7,7 +7,7 @@
 name = "pakimtehan-posters"
 main = "worker.js"
 compatibility_date = "2026-11-01"
-workers_dev = true   # https://pakimtehan-posters.ehtisham-bsit597.workers.dev (every call needs STORE_TOKEN)
+workers_dev = true   # https://pakimtehan-posters.<subdomain>.workers.dev (every call needs STORE_TOKEN)
 
 [[d1_databases]]
 binding = "DB"
@@ -15,13 +15,12 @@ database_name = "pakimtehan-posters"
 database_id = "5843fdc9-6667-4974-954a-05eb7611a228"
 
 [triggers]
-# Cron is in UTC. Every 2 hours, 24 hours a day, at minute 07: 00:07, 02:07, ... 22:07 UTC = 12 runs a day
-# (05:07, 07:07, ... 03:07 Pakistan time). Quiet hours cost almost nothing: the run stops early when there are
-# fewer than `min_new_headlines` unseen headlines (config/sources.yaml).
-# Daytime only (06:07-22:07 Pakistan, 9 runs): "7 1-17/2 * * *".  Once a day at 07:40 Pakistan: "40 2 * * *".
+# Cron is in UTC. Every hour at minute 07 = 24 runs a day. Quiet hours cost almost nothing: the run stops early when
+# there are fewer than `min_new_headlines` unseen headlines (config/sources.yaml).
+# Every 2 hours: "7 */2 * * *".  Daytime only (06:07-22:07 Pakistan, hourly): "7 1-17 * * *".  Once a day at 07:40 Pakistan: "40 2 * * *".
 # A new or changed cron takes up to 15 minutes to reach Cloudflare's network. Apply with `wrangler deploy`.
 # NOT DEPLOYED YET: the live Worker keeps its old (empty) schedule until you run `wrangler deploy`.
-crons = ["7 */2 * * *"]
+crons = ["7 * * * *"]
 
 [observability]
 enabled = true
